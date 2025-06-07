@@ -1,5 +1,8 @@
 package calendar.controller.commands.newcalendarcommand;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
@@ -11,35 +14,52 @@ import calendar.view.ICalendarView;
  * instance with the provided parameters.
  */
 public class CreateCalendarCommand implements CalendarCommand {
-  private final String calendarName;
-  private final String timezone;
+  private final String arguments;
+  private static final Pattern CREATE_CALENDAR = Pattern.compile(
+          "create calendar --name \"?(?<name>[^\"]+)\"? --timezone (?<timezone>.+)");
 
   /**
-   * Constructor for CreateCalendarCommand.
-   * @param calendarName the name of the calendar to be created
-   * @param timezone the timezone of the calendar to be created
+   * Constructs a CreateCalendarCommand with the given arguments.
+   * @param arguments the command arguments, which specify the calendar name and timezone
    */
-  public CreateCalendarCommand(String calendarName, String timezone) {
-    this.calendarName = calendarName;
-    this.timezone = timezone;
+  public CreateCalendarCommand(String arguments) {
+    this.arguments = arguments;
   }
 
   @Override
   public void execute(ICalendar model, ICalendarView view) {
-    if (model instanceof CalendarManagerModel) {
-      CalendarManagerModel manager = (CalendarManagerModel) model;
-
-      try {
-        manager.createCalendar(calendarName, timezone);
-        view.displayMessage("Calendar '" + calendarName + "' created successfully.");
-      } catch (IllegalArgumentException e) {
-        view.displayException(new IllegalArgumentException("Error creating calendar: "
-                + e.getMessage()));
-      }
-    } else {
-      view.displayException(new IllegalArgumentException("Invalid model type." +
-              " Expected CalendarManagerModel."));
+    if (arguments == null || arguments.isBlank()) {
+      view.displayException(new IllegalArgumentException("Invalid arguments."));
     }
+    String trimmedArguments = arguments.trim();
+    Matcher matcher = CREATE_CALENDAR.matcher(trimmedArguments);
 
+    if (matcher.matches()) {
+      if (model instanceof CalendarManagerModel) {
+        CalendarManagerModel manager = (CalendarManagerModel) model;
+        this.parseCreateCalendar(matcher, manager, view);
+      }
+    }
   }
+
+  /**
+   * Parses the matcher to extract calendar name and timezone, and creates a new calendar.
+   * @param matcher the matcher containing the calendar creation details
+   * @param manager the calendar manager model to create the calendar
+   * @param view the view to display messages or exceptions
+   */
+  private void parseCreateCalendar(Matcher matcher, CalendarManagerModel manager,
+                                   ICalendarView view) {
+    String calendarName = matcher.group("name");
+    String timezone = matcher.group("timezone");
+
+    try {
+      manager.createCalendar(calendarName, timezone);
+      view.displayMessage("Calendar '" + calendarName + "' created successfully.");
+    } catch (IllegalArgumentException e) {
+      view.displayException(new IllegalArgumentException("Error creating calendar: "
+              + e.getMessage()));
+    }
+  }
+
 }

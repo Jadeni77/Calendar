@@ -1,37 +1,76 @@
 package calendar.controller.commands.newcalendarcommand;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.view.ICalendarView;
 
+/**
+ * Represents a command to switch to a specified calendar by name.
+ * This command is part of the calendar application and allows users to switch
+ * the current calendar context to the one specified by the user.
+ */
 public class EditCalendarCommand implements CalendarCommand {
-  private final String calendarName;
-  private final String timezone;
-  private final String value;
+  private final String arguments;
+  private static final Pattern EDIT_CALENDAR = Pattern.compile(
+          "edit calendar --name \"?(?<name>[^\"]+)\"? --property " +
+                  "(?<property>\\w+) (?<newValue>.+)");
 
-  public EditCalendarCommand(String calendarName, String timezone, String value) {
-    this.calendarName = calendarName;
-    this.timezone = timezone;
-    this.value = value;
+  /**
+   * Constructs an EditCalendarCommand with the given arguments.
+   * @param arguments the command arguments, which specify the calendar name,
+   */
+  public EditCalendarCommand(String arguments) {
+    this.arguments = arguments;
   }
 
   @Override
   public void execute(ICalendar model, ICalendarView view) {
-    if (model instanceof CalendarManagerModel) {
-      CalendarManagerModel manager = (CalendarManagerModel) model;
+    if (arguments == null || arguments.isBlank()) {
+      view.displayException(new IllegalArgumentException("Invalid arguments."));
+    }
+    String trimmedArguments = arguments.trim();
+    Matcher matcher = EDIT_CALENDAR.matcher(trimmedArguments);
 
-      try {
-        manager.editCalendar(calendarName, timezone, value);
-        view.displayMessage("Calendar '" + calendarName + "' edited successfully.");
-      } catch (IllegalArgumentException e) {
-        view.displayException(new IllegalArgumentException("Error editing calendar: "
-                + e.getMessage()));
+    if (matcher.matches()) {
+      if (model instanceof CalendarManagerModel) {
+        CalendarManagerModel manager = (CalendarManagerModel) model;
+        this.parseEditCalendar(matcher, manager, view);
+      } else {
+        view.displayException(new IllegalArgumentException("Invalid model type." +
+                " Expected CalendarManagerModel."));
       }
     } else {
-      view.displayException(new IllegalArgumentException("Invalid model type." +
-              " Expected CalendarManagerModel."));
+      view.displayMessage("Invalid 'edit calendar' command format. Please use 'edit calendar " +
+              "--name \"<name>\" --property <property> <value>'.");
     }
 
   }
+
+  /**
+   * Parses the matcher to extract calendar name, property, and new value,
+   * @param matcher the matcher containing the calendar edit details
+   * @param manager the calendar manager model to edit the calendar
+   * @param view the view to display messages or exceptions
+   */
+  private void parseEditCalendar(Matcher matcher, CalendarManagerModel manager,
+                                 ICalendarView view) {
+    String calendarName = matcher.group("name");
+    String property = matcher.group("property");
+    String value = matcher.group("newValue").trim();
+
+    try {
+      manager.editCalendar(calendarName, property, value);
+      view.displayMessage("Calendar '" + calendarName + "' updated successfully.");
+    } catch (IllegalArgumentException e) {
+      view.displayException(new IllegalArgumentException("Error editing calendar: "
+              + e.getMessage()));
+    }
+  }
+
+
+
 }

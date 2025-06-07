@@ -1,33 +1,70 @@
 package calendar.controller.commands.newcalendarcommand;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.view.ICalendarView;
 
+/**
+ * Represents a command to switch to a specified calendar by name.
+ * This command is part of the calendar application and allows users to switch
+ * the current calendar context to the one specified by the user.
+ */
 public class UseCalendarCommand implements CalendarCommand {
-  private final String calendarName;
+  private final String arguments;
+  private static final Pattern USE_CALENDAR = Pattern.compile(
+          "use calendar --name \"?(?<name>[^\"]+)\"?"
+  );
 
-  public UseCalendarCommand(String calendarName) {
-    this.calendarName = calendarName;
+  /**
+   * Constructs a UseCalendarCommand with the given arguments.
+   * @param arguments the command arguments, which specify the calendar name to switch to
+   */
+  public UseCalendarCommand(String arguments) {
+    this.arguments = arguments;
   }
 
   @Override
   public void execute(ICalendar model, ICalendarView view) {
-    if (model instanceof CalendarManagerModel) {
-      CalendarManagerModel manager = (CalendarManagerModel) model;
+    if (arguments == null || arguments.isBlank()) {
+      view.displayException(new IllegalArgumentException("Invalid arguments."));
+    }
+    String trimmedArguments = arguments.trim();
+    Matcher matcher = USE_CALENDAR.matcher(trimmedArguments);
 
-      try {
-        manager.setCurrentCalendar(calendarName);
-        view.displayMessage("Switched to calendar '" + calendarName + "'.");
-      } catch (IllegalArgumentException e) {
-        view.displayException(new IllegalArgumentException("Error switching to calendar: "
-                + e.getMessage()));
+    if (matcher.matches()) {
+      if (model instanceof CalendarManagerModel) {
+        CalendarManagerModel manager = (CalendarManagerModel) model;
+        this.parseUseCalendar(matcher, manager, view);
+      } else {
+        view.displayException(new IllegalArgumentException("Invalid model type." +
+                " Expected CalendarManagerModel."));
       }
     } else {
-      view.displayException(new IllegalArgumentException("Invalid model type." +
-              " Expected CalendarManagerModel."));
+      view.displayMessage("Invalid 'use calendar' command format. Please use 'use calendar " +
+              "--name \"<name>\"'.");
     }
+  }
 
+  /**
+   * Parses the matcher to extract the calendar name and switches to that calendar.
+   * @param matcher the matcher containing the calendar name
+   * @param manager the calendar manager model to switch calendars
+   * @param view the view to display messages or exceptions
+   */
+  private void parseUseCalendar(Matcher matcher, CalendarManagerModel manager,
+                                ICalendarView view) {
+    String calendarName = matcher.group("name");
+
+    try {
+      manager.setCurrentCalendar(calendarName);
+      view.displayMessage("Switched to calendar '" + calendarName + "'.");
+    } catch (IllegalArgumentException e) {
+      view.displayException(new IllegalArgumentException("Error switching to calendar: "
+              + e.getMessage()));
+    }
   }
 }
