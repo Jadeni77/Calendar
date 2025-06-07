@@ -1,4 +1,0 @@
-create event Meeting from 2025-06-07T11:30 to 2025-06-07T12:30
-create event Skiing on 2025-11-17
-edit event location Skiing from 2025-11-17T08:00 to 2025-11-17T17:00 with physical
-print events on 2025-11-17
