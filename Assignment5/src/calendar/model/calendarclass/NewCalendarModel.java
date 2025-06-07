@@ -10,12 +10,13 @@ import java.time.ZonedDateTime;
  * in the context of the calendar's time zone.
  */
 public class NewCalendarModel extends CalendarModel {
-  private final String name;
-  private final ZoneId timeZone;
+  private String name;
+  private ZoneId timeZone;
 
   /**
    * Constructor for a NewCalendarModel.
-   * @param name the name of the calendar
+   *
+   * @param name     the name of the calendar
    * @param timeZone the time zone of the calendar
    */
   public NewCalendarModel(String name, ZoneId timeZone) {
@@ -24,7 +25,44 @@ public class NewCalendarModel extends CalendarModel {
   }
 
   /**
+   * Get the name of the calendar.
+   *
+   * @return the name of the calendar
+   */
+  public String getName() {
+    return this.name;
+  }
+
+  /**
+   * Set the name of the calendar.
+   *
+   * @param name the new name of the calendar
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * Get the time zone of the calendar.
+   *
+   * @return the time zone of the calendar
+   */
+  public ZoneId getTimeZone() {
+    return this.timeZone;
+  }
+
+  /**
+   * Set the time zone of the calendar.
+   *
+   * @param timeZone the new time zone of the calendar
+   */
+  public void setTimeZone(ZoneId timeZone) {
+    this.timeZone = timeZone;
+  }
+
+  /**
    * Convert a given LocalDateTime to a ZonedDateTime in the calendar's time zone.
+   *
    * @param local the given LocalDateTime to convert
    * @return the ZonedDateTime in the calendar's time zone
    */
@@ -34,6 +72,7 @@ public class NewCalendarModel extends CalendarModel {
 
   /**
    * Convert a given ZonedDateTime to a LocalDateTime in the calendar's time zone.
+   *
    * @param zone the given ZonedDateTime to convert
    * @return the LocalDateTime in the calendar's time zone
    */
