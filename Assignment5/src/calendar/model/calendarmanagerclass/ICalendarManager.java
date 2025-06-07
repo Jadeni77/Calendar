@@ -1,9 +1,12 @@
 package calendar.model.calendarmanagerclass;
 
-import java.util.Calendar;
-
 import calendar.model.calendarclass.ICalendar;
+import calendar.model.calendarclass.NewCalendarModel;
 
+/**
+ * This interface defines the operations for managing calendars within the application.
+ * It allows for creating, editing, and retrieving calendars, as well as setting the current active calendar.
+ */
 public interface ICalendarManager {
 
   /**
@@ -42,5 +45,5 @@ public interface ICalendarManager {
    * @return the target calendar with the given name.
    *
    */
-  ICalendar getTargetCalendar(String name);
+  NewCalendarModel getTargetCalendar(String name);
 }

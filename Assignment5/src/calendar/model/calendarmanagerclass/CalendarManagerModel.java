@@ -7,11 +7,15 @@ import java.util.Map;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.NewCalendarModel;
 
-public class CalendarManager implements ICalendarManager {
+/**
+ * CalendarManager represents a manager for handling multiple calendars.
+ * It allows creating, editing, and managing calendars,
+ */
+public class CalendarManagerModel implements ICalendarManager {
   private final Map<String, NewCalendarModel> calendars;
   private String currentCalendarName;
 
-  public CalendarManager() {
+  public CalendarManagerModel() {
     this.calendars = new HashMap<>();
   }
 
