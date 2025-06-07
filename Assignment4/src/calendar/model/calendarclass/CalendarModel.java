@@ -425,7 +425,6 @@ public class CalendarModel implements ICalendar {
     } catch (Exception e) {
       throw new IllegalArgumentException("Invalid date format. Please use 'yyyy-MM-ddTHH:mm'.");
     }
-
     List<Event> targetEvents = findEventsBySubjectAndStart(eventSubject, startTime);
     if (targetEvents.isEmpty()) {
       throw new IllegalArgumentException("No events found with subject '" + eventSubject + "' "
