@@ -55,6 +55,10 @@ public class CalendarController implements ICalendarController {
     CalendarCommand c;
     Scanner s = new Scanner(in);
     boolean quitEntered = false;
+
+    view.displayMessage("Welcome to the Calendar Program!");
+    view.displayMessage("Enter 'menu' to see a list of commands.");
+
     while (s.hasNext()) {
       String userInput = s.nextLine().trim();
 

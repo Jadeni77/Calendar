@@ -37,33 +37,12 @@ public class CalendarControllerTest {
    */
   private String getExpectedInitialOutput() {
     return "Welcome to the Calendar Program!\n" +
-            "Available operations:\n" +
-            " -> create event <eventSubject> from <dateStringTtimeString> to " +
-            "<dateStringTtimeString>\n" +
-            " -> create event <eventSubject> from <dateStringTtimeString> to " +
-            "<dateStringTtimeString> repeats <weekdays> for <N> times\n" +
-            " -> create event <eventSubject> from <dateStringTtimeString> to " +
-            "<dateStringTtimeString> repeats <weekdays> until <dateString>\n" +
-            " -> create event <eventSubject> on <dateString>\n" +
-            " -> create event <eventSubject> on <dateString> repeats <weekdays> for <N> times\n" +
-            " -> create event <eventSubject> on <dateString> repeats <weekdays> " +
-            "until <dateString>\n" +
-            " -> edit event <property> <eventSubject> from <dateStringTtimeString>" +
-            " to <dateStringTtimeString> with <NewPropertyValue>\n" +
-            " -> edit events <property> <eventSubject> from <dateStringTtimeString> " +
-            "with <NewPropertyValue>\n" +
-            " -> edit series <property> <eventSubject> from <dateStringTtimeString> " +
-            "with <NewPropertyValue>\n" +
-            " -> print events on <dateString>\n" +
-            " -> print events from <dateStringTtimeString> to <dateStringTtimeString>\n" +
-            " -> show status on <dateStringTtimeString>\n" +
-            " -> menu (Show this menu)\n" +
-            " -> q or quit (Exit the program)";
+            "Enter 'menu' to see a list of commands.\n";
   }
 
   private String getFullExpectedOutput(String... messages) {
     StringBuilder expected = new StringBuilder();
-    expected.append(getExpectedInitialOutput()).append("\n");
+    expected.append(getExpectedInitialOutput());
     for (String message : messages) {
       expected.append(message).append("\n");
     }
@@ -260,9 +239,37 @@ public class CalendarControllerTest {
     StringReader fakeInput = new StringReader("menu");
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
-    // Menu should be displayed twice (initial + explicit command)
-    assertTrue(log.toString().contains("Available operations:\n" +
-            " -> create event"));
+
+    StringBuilder expectedOutput = new StringBuilder();
+    expectedOutput.append(getExpectedInitialOutput());
+
+    expectedOutput.append("Available operations:\n");
+    expectedOutput.append("create event <eventSubject> from <dateStringTtimeString> " +
+            "to <dateStringTtimeString>\n");
+    expectedOutput.append("create event <eventSubject> from <dateStringTtimeString>" +
+            " to <dateStringTtimeString> repeats <weekdays> for <N> times\n");
+    expectedOutput.append("create event <eventSubject> from <dateStringTtimeString> " +
+            "to <dateStringTtimeString> repeats <weekdays> until <dateString>\n");
+    expectedOutput.append("create event <eventSubject> on <dateString>\n");
+    expectedOutput.append("create event <eventSubject> on <dateString> repeats " +
+            "<weekdays> for <N> times\n");
+    expectedOutput.append("create event <eventSubject> on <dateString> repeats" +
+            " <weekdays> until <dateString>\n");
+    expectedOutput.append("edit event <property> <eventSubject> from " +
+            "<dateStringTtimeString> to <dateStringTtimeString> with <NewPropertyValue>\n");
+    expectedOutput.append("edit events <property> <eventSubject> from " +
+            "<dateStringTtimeString> with <NewPropertyValue>\n");
+    expectedOutput.append("edit series <property> <eventSubject> from " +
+            "<dateStringTtimeString> with <NewPropertyValue>\n");
+    expectedOutput.append("print events on <dateString>\n");
+    expectedOutput.append("print events from <dateStringTtimeString> to" +
+            " <dateStringTtimeString>\n");
+    expectedOutput.append("show status on <dateStringTtimeString>\n");
+    expectedOutput.append("menu (Show this menu)\n");
+    expectedOutput.append("q or quit (Exit the program)\n");
+    expectedOutput.append("Error: the 'quit' command was never entered. Quitting now...\n");
+
+    assertEquals(expectedOutput.toString(), this.log.toString());
   }
 
   @Test
@@ -295,7 +302,7 @@ public class CalendarControllerTest {
     StringReader fakeInput = new StringReader("");
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
-    assertTrue(log.toString().contains("Available operations:"));
+    assertEquals(getFullExpectedOutput(), log.toString());
   }
 
   @Test

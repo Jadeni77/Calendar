@@ -497,7 +497,7 @@ public class CalendarModelTest {
     try {
       cm2.editSingleEvent("subject", "ehhh",
               "2025-10-27T10:30", "2025-10-27T19:30", "woohoo");
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals("No event found with subject 'ehhh' starting at 2025-10-27 " +
               "and ending at 2025-10-27.", e.getMessage());
     }
@@ -607,7 +607,7 @@ public class CalendarModelTest {
     try {
       cm2.editMultipleEvents("subject", "123",
               "2025-10-27T10:30", "new", false);
-    } catch (NullPointerException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals("No events found with subject '123' starting at 2025-10-27T10:30.",
               e.getMessage());
     }
