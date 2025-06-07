@@ -2,6 +2,7 @@ package calendar.controller.commands.newcalendarcommand;
 
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
+import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.view.ICalendarView;
 
 /**
@@ -10,21 +11,35 @@ import calendar.view.ICalendarView;
  * instance with the provided parameters.
  */
 public class CreateCalendarCommand implements CalendarCommand {
-  private final String name;
+  private final String calendarName;
   private final String timezone;
 
   /**
    * Constructor for CreateCalendarCommand.
-   * @param name the name of the calendar to be created
+   * @param calendarName the name of the calendar to be created
    * @param timezone the timezone of the calendar to be created
    */
-  public CreateCalendarCommand(String name, String timezone) {
-    this.name = name;
+  public CreateCalendarCommand(String calendarName, String timezone) {
+    this.calendarName = calendarName;
     this.timezone = timezone;
   }
 
   @Override
   public void execute(ICalendar model, ICalendarView view) {
+    if (model instanceof CalendarManagerModel) {
+      CalendarManagerModel manager = (CalendarManagerModel) model;
+
+      try {
+        manager.createCalendar(calendarName, timezone);
+        view.displayMessage("Calendar '" + calendarName + "' created successfully.");
+      } catch (Exception e) {
+        view.displayException(new IllegalArgumentException("Error creating calendar: "
+                + e.getMessage()));
+      }
+    } else {
+      view.displayException(new IllegalArgumentException("Invalid model type." +
+              " Expected CalendarManagerModel."));
+    }
 
   }
 }

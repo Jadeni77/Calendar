@@ -4,6 +4,8 @@ import java.time.ZoneId;
 import java.time.zone.ZoneRulesException;
 import java.util.HashMap;
 import java.util.Map;
+
+import calendar.model.calendarclass.CalendarModel;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.NewCalendarModel;
 
@@ -11,7 +13,7 @@ import calendar.model.calendarclass.NewCalendarModel;
  * CalendarManager represents a manager for handling multiple calendars.
  * It allows creating, editing, and managing calendars,
  */
-public class CalendarManagerModel implements ICalendarManager {
+public class CalendarManagerModel extends CalendarModel implements ICalendarManager {
   private final Map<String, NewCalendarModel> calendars;
   private String currentCalendarName;
 
@@ -19,7 +21,6 @@ public class CalendarManagerModel implements ICalendarManager {
     this.calendars = new HashMap<>();
   }
 
-  @Override
   public void createCalendar(String name, String zoneId) {
     if (this.calendars.containsKey(name)) {
       throw new IllegalArgumentException("Calendar already exists");
@@ -35,7 +36,6 @@ public class CalendarManagerModel implements ICalendarManager {
     calendars.put(name, new NewCalendarModel(name, parseZone));
   }
 
-  @Override
   public void editCalendar(String nameOfCalendarToEdit, String property, String newValue) {
     NewCalendarModel targetCalendar = this.getTargetCalendar(nameOfCalendarToEdit);
 
@@ -69,7 +69,6 @@ public class CalendarManagerModel implements ICalendarManager {
     }
   }
 
-  @Override
   public void setCurrentCalendar(String name) {
     if (calendars.containsKey(name)) {
       currentCalendarName = name;
@@ -79,7 +78,6 @@ public class CalendarManagerModel implements ICalendarManager {
 
   }
 
-  @Override
   public ICalendar getCurrentActiveCalendar() {
     if (currentCalendarName == null || !calendars.containsKey(currentCalendarName)) {
       throw new IllegalStateException("No active calendar is currently selected.");
@@ -87,7 +85,6 @@ public class CalendarManagerModel implements ICalendarManager {
     return calendars.get(currentCalendarName);
   }
 
-  @Override
   public NewCalendarModel getTargetCalendar(String name) {
     NewCalendarModel targetCalendar = calendars.get(name);
     if (!calendars.containsKey(name)) {
