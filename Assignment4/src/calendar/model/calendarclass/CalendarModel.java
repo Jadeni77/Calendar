@@ -367,9 +367,7 @@ public class CalendarModel implements ICalendar {
       recurringEvent.add(builder.build());
     }
     this.addMultipleEvents(recurringEvent);
-
   }
-  //
 
   /**
    * Edits the given property of a single event with the given subject, start time, and end time,
