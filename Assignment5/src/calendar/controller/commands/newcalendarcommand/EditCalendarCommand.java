@@ -24,7 +24,7 @@ public class EditCalendarCommand implements CalendarCommand {
       try {
         manager.editCalendar(calendarName, timezone, value);
         view.displayMessage("Calendar '" + calendarName + "' edited successfully.");
-      } catch (Exception e) {
+      } catch (IllegalArgumentException e) {
         view.displayException(new IllegalArgumentException("Error editing calendar: "
                 + e.getMessage()));
       }

@@ -32,7 +32,7 @@ public class CreateCalendarCommand implements CalendarCommand {
       try {
         manager.createCalendar(calendarName, timezone);
         view.displayMessage("Calendar '" + calendarName + "' created successfully.");
-      } catch (Exception e) {
+      } catch (IllegalArgumentException e) {
         view.displayException(new IllegalArgumentException("Error creating calendar: "
                 + e.getMessage()));
       }
