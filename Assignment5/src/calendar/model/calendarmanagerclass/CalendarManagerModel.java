@@ -17,10 +17,14 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
   private final Map<String, NewCalendarModel> calendars;
   private String currentCalendarName;
 
+  /**
+   * Constructs a CalendarManagerModel with an empty calendar map.
+   */
   public CalendarManagerModel() {
     this.calendars = new HashMap<>();
   }
 
+  @Override
   public void createCalendar(String name, String zoneId) {
     if (this.calendars.containsKey(name)) {
       throw new IllegalArgumentException("Calendar already exists");
@@ -36,6 +40,7 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
     calendars.put(name, new NewCalendarModel(name, parseZone));
   }
 
+  @Override
   public void editCalendar(String nameOfCalendarToEdit, String property, String newValue) {
     NewCalendarModel targetCalendar = this.getTargetCalendar(nameOfCalendarToEdit);
 
@@ -69,6 +74,7 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
     }
   }
 
+  @Override
   public void setCurrentCalendar(String name) {
     if (calendars.containsKey(name)) {
       currentCalendarName = name;
@@ -78,6 +84,7 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
 
   }
 
+  @Override
   public ICalendar getCurrentActiveCalendar() {
     if (currentCalendarName == null || !calendars.containsKey(currentCalendarName)) {
       throw new IllegalStateException("No active calendar is currently selected.");
@@ -85,11 +92,27 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
     return calendars.get(currentCalendarName);
   }
 
+  @Override
   public NewCalendarModel getTargetCalendar(String name) {
     NewCalendarModel targetCalendar = calendars.get(name);
     if (!calendars.containsKey(name)) {
       throw new IllegalArgumentException("Calendar '" + name + "' not found.");
     }
     return targetCalendar;
+  }
+
+  @Override
+  public void copyEvent(String eventName, String startDateTime, String calendarName, String newDateTime) {
+
+  }
+
+  @Override
+  public void copyEventsOnDate(String date, String calendarName, String newDate) {
+
+  }
+
+  @Override
+  public void copyEventsBetweenDates(String startDate, String endDate, String calendarName, String newDate) {
+
   }
 }
