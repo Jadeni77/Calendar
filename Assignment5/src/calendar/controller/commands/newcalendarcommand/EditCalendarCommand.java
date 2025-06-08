@@ -16,7 +16,7 @@ import calendar.view.ICalendarView;
 public class EditCalendarCommand implements CalendarCommand {
   private final String arguments;
   private static final Pattern EDIT_CALENDAR = Pattern.compile(
-          "edit calendar --name \"?(?<name>[^\"]+)\"? --property " +
+          "--name \"?(?<name>[^\"]+)\"? --property " +
                   "(?<property>\\w+) (?<newValue>.+)");
 
   /**

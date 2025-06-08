@@ -16,7 +16,7 @@ import calendar.view.ICalendarView;
 public class CreateCalendarCommand implements CalendarCommand {
   private final String arguments;
   private static final Pattern CREATE_CALENDAR = Pattern.compile(
-          "create calendar --name \"?(?<name>[^\"]+)\"? --timezone (?<timezone>.+)");
+          "--name \"?(?<name>[^\"]+)\"? --timezone (?<timezone>.+)");
 
   /**
    * Constructs a CreateCalendarCommand with the given arguments.

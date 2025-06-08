@@ -11,14 +11,14 @@ import calendar.view.ICalendarView;
 public class CopyEventCommand implements CalendarCommand {
   private final String arguments;
   private static final Pattern COPY_EVENT = Pattern.compile(
-          "copy event \"?(?<eventName>[^\"]+)\"? on (?<startDateTime>.+)" +
+          "\"?(?<eventName>[^\"]+)\"? on (?<startDateTime>.+)" +
                   " --target \"?(?<calendarName>[^\"]+)\"? to (?<newDateTime>.+)"
   );
   private static final Pattern COPY_EVENTS_ON_DATE = Pattern.compile(
-          "copy events on (?<dateString>.+) --target \"?(?<calendarName>[^\"]+)\"? to (?<newDate>.+)"
+          "on (?<dateString>.+) --target \"?(?<calendarName>[^\"]+)\"? to (?<newDate>.+)"
   );
   private static final Pattern COPY_EVENTS_BETWEEN_DATES = Pattern.compile(
-          "copy events between (?<startDate>.+) and (?<endDate>.+)" +
+          "between (?<startDate>.+) and (?<endDate>.+)" +
                   " --target \"?(?<calendarName>[^\"]+)\"? to (?<newDate>.+)"
   );
 
