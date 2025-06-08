@@ -17,3 +17,6 @@ which is necessary for its functionality.
 
 MenuCommand:
 * Add the new Operations to the menu.
+
+CreateCommand:
+* shorten the regex in pattern.compile
