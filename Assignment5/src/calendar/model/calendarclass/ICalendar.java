@@ -11,6 +11,14 @@ import calendar.model.event.Event;
  * This interface defines the methods for managing a calendar system.
  */
 public interface ICalendar {
+
+  /**
+   * Adds a single event to the calendar.
+   *
+   * @param event the event to be added
+   */
+  void addEvent(Event event);
+
   /**
    * Retrieves an event based on its subject and start and end date-time.
    *
