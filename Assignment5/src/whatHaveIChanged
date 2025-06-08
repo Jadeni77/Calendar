@@ -1,0 +1,17 @@
+Controller:
+* Instead of printing Welcome and the entire menu, only print welcome and ask the user to
+type menu if they want to see the menu.
+* Change the knownCommand field from private to protected, so it can be accessed from
+the new extended subclass.
+
+CalendarModelTest:
+* Change the test from throwing NullPointerException to throwing IllegalArgumentException.
+
+ControllerTest:
+* Change the first two helper methods (for testing purposes)
+
+ICalendar and ICalendarModel:
+* Change the addEvent methods from private to public and add it to the interface. The reason for
+this change is because it allows the CopyEventCommand to access the addEvent method directly,
+which is necessary for its functionality.
+
