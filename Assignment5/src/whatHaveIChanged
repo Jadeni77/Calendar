@@ -20,3 +20,9 @@ MenuCommand:
 
 CreateCommand:
 * shorten the regex in pattern.compile
+
+Event:
+* Change the dtf field from hh to HH for mulitary time
+
+PrintCommand:
+* Add trim to the parse method to remove any leading or trailing whitespace from the input.
