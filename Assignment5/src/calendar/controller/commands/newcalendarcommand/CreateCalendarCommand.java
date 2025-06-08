@@ -39,7 +39,13 @@ public class CreateCalendarCommand implements CalendarCommand {
       if (model instanceof CalendarManagerModel) {
         CalendarManagerModel manager = (CalendarManagerModel) model;
         this.parseCreateCalendar(matcher, manager, view);
+      } else {
+        view.displayException(new IllegalArgumentException("Invalid model type. " +
+                "Expected CalendarManagerModel."));
       }
+    } else {
+      view.displayMessage("Invalid 'create calendar' command format. " +
+              "Please use 'create calendar --name \"<name>\" --timezone <timezone>'.");
     }
   }
 
