@@ -46,4 +46,36 @@ public interface ICalendarManager {
    *
    */
   NewCalendarModel getTargetCalendar(String name);
+
+  /**
+   * To copy an event from one calendar to another.
+   *
+   * @param eventName the name of the event to be copied
+   * @param startDateTime the start date and time of the event to be copied
+   * @param calendarName the name of the calendar that is being copied to
+   * @param newDateTime the new date and time for the copied event
+   */
+  void copyEvent(String eventName, String startDateTime, String calendarName, String newDateTime);
+
+  /**
+   * To copy all events on a specific date from one calendar to another.
+   *
+   * @param date the date of the events to be copied
+   * @param calendarName the name of the calendar that is being copied to
+   * @param newDate the new date for the copied events
+   */
+  void copyEventsOnDate(String date, String calendarName, String newDate);
+
+  /**
+   * To copy all events between two dates from one calendar to another.
+   *
+   * @param startDate the start date of the events to be copied
+   * @param endDate the end date of the events to be copied
+   * @param calendarName the name of the calendar that is being copied to
+   * @param newDate the new date for the copied events
+   */
+  void copyEventsBetweenDates(String startDate, String endDate, String calendarName,
+                              String newDate);
+
+
 }
