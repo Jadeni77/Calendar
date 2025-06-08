@@ -14,18 +14,18 @@ import calendar.view.ICalendarView;
 public class CreateCommand implements CalendarCommand {
   private final String arguments;
   private static final Pattern CREATE_SINGLE = Pattern.compile(
-          "event \"?(?<subject>[^\"]+)\"? from (?<start>.+) to (?<end>.+)");
+          "\"?(?<subject>[^\"]+)\"? from (?<start>.+) to (?<end>.+)");
 
   private static final Pattern CREATE_ALL_DAY = Pattern.compile(
-          "event \"?(?<subject>[^\"]+)\"? on (?<date>.+)");
+          "\"?(?<subject>[^\"]+)\"? on (?<date>.+)");
 
   private static final Pattern CREATE_RECURRING = Pattern.compile(
-          "event \"?(?<subject>[^\"]+)\"? from (?<start>.+) to " +
+          "\"?(?<subject>[^\"]+)\"? from (?<start>.+) to " +
                   "(?<end>.+) repeats (?<days>[A-Z]+) (for (?<count>\\d+) times|until " +
                   "(?<until>.+))");
 
   private static final Pattern CREATE_ALL_DAY_RECURRING = Pattern.compile(
-          "event \"?(?<subject>[^\"]+)\"? on (?<date>.+) repeats (?<days>[A-Z]+) " +
+          "\"?(?<subject>[^\"]+)\"? on (?<date>.+) repeats (?<days>[A-Z]+) " +
                   "(for (?<count>\\d+) times|until (?<until>.+))");
 
   /**
