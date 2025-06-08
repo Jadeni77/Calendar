@@ -82,17 +82,15 @@ public class NewCalendarController extends CalendarController {
 
         String fullEditArgs = type + " " + remainingArgs;
 
-        return new EditCommand(fullEditArgs);
-
-//        switch (type) {
-//          case "event":
-//            return new EditCommand(remainingArgs);
-//          case "calendar":
-//            return new EditCalendarCommand(remainingArgs);
-//          default:
-//            return new InvalidCommand("Unknown 'edit' type: '" + type + "'. " +
-//                    "Expected 'event' or 'calendar'.");
-//        }
+        switch (type) {
+          case "event":
+            return  new EditCommand(fullEditArgs);
+          case "calendar":
+            return new EditCalendarCommand(remainingArgs);
+          default:
+            return new InvalidCommand("Unknown 'edit' type: '" + type + "'. " +
+                    "Expected 'event' or 'calendar'.");
+        }
         //create event NewSeries on 2022-01-01 repeats T for 3 times
         //edit series name NewSeries from 2022-01-01T11:00 with Bye
         //create calendar --name helloworld --timezone Africa/Abidjan
