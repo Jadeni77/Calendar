@@ -31,6 +31,7 @@ public class UseCalendarCommand implements CalendarCommand {
   public void execute(ICalendar model, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {
       view.displayException(new IllegalArgumentException("Invalid arguments."));
+      return;
     }
     String trimmedArguments = arguments.trim();
     Matcher matcher = USE_CALENDAR.matcher(trimmedArguments);
