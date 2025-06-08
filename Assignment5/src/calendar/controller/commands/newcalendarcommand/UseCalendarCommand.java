@@ -16,7 +16,7 @@ import calendar.view.ICalendarView;
 public class UseCalendarCommand implements CalendarCommand {
   private final String arguments;
   private static final Pattern USE_CALENDAR = Pattern.compile(
-          "use calendar --name \"?(?<name>[^\"]+)\"?"
+          "calendar --name \"?(?<name>[^\"]+)\"?"
   );
 
   /**
