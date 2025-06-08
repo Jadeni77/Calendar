@@ -33,6 +33,16 @@ public class MenuCommand implements CalendarCommand {
     view.displayMessage("print events on <dateString>");
     view.displayMessage("print events from <dateStringTtimeString> to <dateStringTtimeString>");
     view.displayMessage("show status on <dateStringTtimeString>");
+
+    //new line ------------
+    view.displayMessage("create calendar --name <calName> --timezone area/location");
+    view.displayMessage("edit calendar --name <name> --property <property> <value>");
+    view.displayMessage("use calendar --name <name>");
+    view.displayMessage("copy event <eventName> on <datetime> --target <calendar> to <datetime>");
+    view.displayMessage("copy events on <date> --target <calendar> to <date>");
+    view.displayMessage("copy events between <start> and <end> --target <calendar> to <date>");
+
+    //------------------
     view.displayMessage("menu (Show this menu)");
     view.displayMessage("q or quit (Exit the program)");
   }
