@@ -64,7 +64,7 @@ public class PrintCommand implements CalendarCommand {
     String dateStr = matcher.group("date");
     LocalDate date;
     try {
-      date = LocalDate.parse(dateStr, model.getDateFormatter());
+      date = LocalDate.parse(dateStr.trim(), model.getDateFormatter());
     } catch (Exception e) {
       view.displayMessage("Invalid date format. Please use 'yyyy-MM-dd'.");
       return;
@@ -92,8 +92,8 @@ public class PrintCommand implements CalendarCommand {
     LocalDateTime end;
 
     try {
-      start = LocalDateTime.parse(startStr, model.getDateTimeFormatter());
-      end = LocalDateTime.parse(endStr, model.getDateTimeFormatter());
+      start = LocalDateTime.parse(startStr.trim(), model.getDateTimeFormatter());
+      end = LocalDateTime.parse(endStr.trim(), model.getDateTimeFormatter());
     } catch (Exception e) {
       view.displayMessage("Invalid date-time format. Please use 'yyyy-MM-dd'T'HH:mm'.");
       return;
