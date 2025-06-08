@@ -20,7 +20,7 @@ import calendar.view.ICalendarView;
  * interaction, delegating model activity and output to users.
  */
 public class CalendarController implements ICalendarController {
-  private final Map<String, Function<Scanner, CalendarCommand>> knownCommands;
+  protected final Map<String, Function<Scanner, CalendarCommand>> knownCommands;
   private final ICalendar model;
   private final ICalendarView view;
   private final Readable in;
