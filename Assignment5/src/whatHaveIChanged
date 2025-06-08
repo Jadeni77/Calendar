@@ -15,3 +15,5 @@ ICalendar and ICalendarModel:
 this change is because it allows the CopyEventCommand to access the addEvent method directly,
 which is necessary for its functionality.
 
+MenuCommand:
+* Add the new Operations to the menu.
