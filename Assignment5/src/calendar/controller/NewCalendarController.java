@@ -6,6 +6,7 @@ import java.util.function.Function;
 import calendar.controller.commands.CalendarCommand;
 import calendar.controller.commands.CreateCommand;
 import calendar.controller.commands.EditCommand;
+import calendar.controller.commands.PrintCommand;
 import calendar.controller.commands.newcalendarcommand.CopyEventCommand;
 import calendar.controller.commands.newcalendarcommand.CreateCalendarCommand;
 import calendar.controller.commands.newcalendarcommand.EditCalendarCommand;
@@ -23,7 +24,8 @@ import calendar.view.ICalendarView;
  * for handling new calendar-related commands.
  */
 public class NewCalendarController extends CalendarController {
-  private ICalendar activeCalendar;
+  private ICalendarManager manager;
+
   /**
    * Initializes a controller with the inputted model and view to which it will delegate
    * functionality and output, as well as the channel it will receive user input from.
@@ -34,12 +36,31 @@ public class NewCalendarController extends CalendarController {
    */
   public NewCalendarController(ICalendar model, ICalendarView view, Readable in) {
     super(model, view, in);
-    this.activeCalendar = null;
     knownCommands.put("create", createCommandFactory());
     knownCommands.put("edit", editCommandFactory());
     knownCommands.put("use", useCommandFactory());
     knownCommands.put("copy", copyCommandFactory());
+    knownCommands.put("print",  printCommandFactory());
 
+    if (!(model instanceof ICalendarManager)) {
+      throw new IllegalArgumentException("The provided model must implement ICalendarManager.");
+    }
+    this.manager = (ICalendarManager) model;
+  }
+
+  private Function<Scanner, CalendarCommand> printCommandFactory() {
+    return s -> {
+      if (manager.getCurrentActiveCalendar() == null) {
+        return new InvalidCommand("No calendar selected. Use 'use <calendar>' first.");
+      }
+
+      String fullPrintCommandArguments = s.nextLine().trim();
+      if (fullPrintCommandArguments.isEmpty()) {
+        return new InvalidCommand("Missing arguments for 'print' command. " +
+                "Please provide details for event, events on date, or events between dates.");
+      }
+      return new PrintCommand(fullPrintCommandArguments);
+    };
   }
 
   private Function<Scanner, CalendarCommand> createCommandFactory() {
@@ -53,7 +74,7 @@ public class NewCalendarController extends CalendarController {
 
       switch (type) {
         case "event":
-          if (activeCalendar == null) {
+          if (manager.getCurrentActiveCalendar() == null) {
             return new InvalidCommand("No calendar selected. Use 'use <calendar>' first.");
           }
           return new CreateCommand(remainingArgs);
@@ -79,7 +100,7 @@ public class NewCalendarController extends CalendarController {
 
         switch (type) {
           case "event":
-            if (activeCalendar == null) {
+            if (manager.getCurrentActiveCalendar() == null) {
               return new InvalidCommand("No calendar selected. Use 'use <calendar>' first.");
             }
             return new EditCommand(fullEditArgs);
@@ -98,23 +119,23 @@ public class NewCalendarController extends CalendarController {
       if (calendarName.isEmpty()) {
         return new InvalidCommand("Missing calendar name after 'use'.");
       }
-
-      ICalendar found = null;
-      //type cast --------------------------
-      if (model instanceof CalendarManagerModel) {
-        found = ((CalendarManagerModel) model).findCalendarByName(calendarName);
-        if (found == null) {
-          return new InvalidCommand("No calendar found with name: '" + calendarName + "'.");
-        }
-        this.activeCalendar = found;
-      }
+//
+//      ICalendar found;
+//      //type cast --------------------------
+//      if (model instanceof CalendarManagerModel) {
+//        found = ((CalendarManagerModel) model).findCalendarByName(calendarName);
+//        if (found == null) {
+//          return new InvalidCommand("No calendar found with name: '" + calendarName + "'.");
+//        }
+//        this.activeCalendar = found;
+//      }
       return new UseCalendarCommand(calendarName);
     };
     }
 
     private Function<Scanner, CalendarCommand> copyCommandFactory() {
     return s -> {
-      if (activeCalendar == null) {
+      if (manager.getCurrentActiveCalendar() == null) {
         return new InvalidCommand("No calendar selected. Use 'use <calendar>' first.");
       }
       String fullCopyCommandArguments = s.nextLine().trim();
