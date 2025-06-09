@@ -3,6 +3,9 @@ package calendar.model.calendarclass;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Map;
+
+import calendar.model.event.Event;
 
 /**
  * Represents a calendar model with a name and time zone.
@@ -57,7 +60,28 @@ public class NewCalendarModel extends CalendarModel {
    * @param timeZone the new time zone of the calendar
    */
   public void setTimeZone(ZoneId timeZone) {
+    ZoneId lastTimeZone = this.timeZone;
     this.timeZone = timeZone;
+    for (Map.Entry<String, Event> entry : this.events.entrySet()) {
+      Event e = entry.getValue();
+      // original localDateTimes
+      LocalDateTime originalStart = e.getStartDateTime();
+      LocalDateTime originalEnd = e.getEndDateTime();
+      // changing time zones with ZonedDateTime conversion
+      LocalDateTime newStartLDT = originalStart.atZone(lastTimeZone)
+              .withZoneSameInstant(timeZone)
+              .toLocalDateTime();
+      LocalDateTime newEndLDT = originalEnd.atZone(lastTimeZone)
+              .withZoneSameInstant(timeZone)
+              .toLocalDateTime();
+      // editing event to have new start and end
+      editSingleEvent("start", e.getSubject(), originalStart.format(dateTimeFormatter),
+              originalEnd.format(dateTimeFormatter),
+              newStartLDT.format(dateTimeFormatter));
+      editSingleEvent("end", e.getSubject(), newStartLDT.format(dateTimeFormatter),
+              originalEnd.format(dateTimeFormatter),
+              newEndLDT.format(dateTimeFormatter));
+    }
   }
 
   /**

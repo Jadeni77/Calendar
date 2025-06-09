@@ -11,9 +11,14 @@ ControllerTest:
 * Change the first two helper methods (for testing purposes)
 
 ICalendar and ICalendarModel:
-* Change the addEvent methods from private to public and add it to the interface. The reason for
-this change is because it allows the CopyEventCommand to access the addEvent method directly,
-which is necessary for its functionality.
+* Changed the fields in the CalendarModel class to 'protected' so that NewCalendarModel can access
+them if needed. All private methods stay private for now, including the addEvent() method.
+
+NewCalendarModel:
+* Implemented logic for setTimeZone method.
+
+NewCalendarModelTest:
+* Added tests for the setTimeZone method.
 
 MenuCommand:
 * Add the new Operations to the menu.

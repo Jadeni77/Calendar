@@ -29,10 +29,10 @@ import calendar.model.event.RecurringEventRule;
  * and supports recurring events through series IDs.
  */
 public class CalendarModel implements ICalendar {
-  private final Map<String, Event> events;
-  private final Map<String, Set<Event>> seriesEvents; //use set bc cannot have duplicate events
-  private final DateTimeFormatter dateFormatter;
-  private final DateTimeFormatter dateTimeFormatter;
+  protected final Map<String, Event> events;
+  protected final Map<String, Set<Event>> seriesEvents; //use set bc cannot have duplicate events
+  protected final DateTimeFormatter dateFormatter;
+  protected final DateTimeFormatter dateTimeFormatter;
 
   /**
    * Constructor for CalendarModel.
@@ -55,8 +55,12 @@ public class CalendarModel implements ICalendar {
     return this.dateFormatter;
   }
 
-  @Override
-  public void addEvent(Event event) {
+  /**
+   * Adds a single event to the calendar.
+   *
+   * @param event the event to be added
+   */
+  private void addEvent(Event event) {
     //generate a unique ID for the event based on its subject and time
     String id = this.eventKey(event);
 
