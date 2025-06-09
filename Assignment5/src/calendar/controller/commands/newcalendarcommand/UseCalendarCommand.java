@@ -61,7 +61,7 @@ public class UseCalendarCommand implements CalendarCommand {
     String calendarName = matcher.group("name");
 
     try {
-      manager.setCurrentCalendar(calendarName);
+      manager.setCurrentCalendar(calendarName.trim());
       view.displayMessage("Switched to calendar '" + calendarName + "'.");
     } catch (IllegalArgumentException e) {
       view.displayException(new IllegalArgumentException("Error switching to calendar: "

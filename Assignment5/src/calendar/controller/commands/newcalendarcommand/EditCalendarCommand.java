@@ -64,7 +64,7 @@ public class EditCalendarCommand implements CalendarCommand {
     String value = matcher.group("newValue").trim();
 
     try {
-      manager.editCalendar(calendarName, property, value);
+      manager.editCalendar(calendarName.trim(), property.trim(), value.trim());
       view.displayMessage("Calendar '" + calendarName + "' updated successfully.");
     } catch (IllegalArgumentException e) {
       view.displayException(new IllegalArgumentException("Error editing calendar: "

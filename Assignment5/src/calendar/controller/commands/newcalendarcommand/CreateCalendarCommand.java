@@ -61,7 +61,7 @@ public class CreateCalendarCommand implements CalendarCommand {
     String timezone = matcher.group("timezone");
 
     try {
-      manager.createCalendar(calendarName, timezone);
+      manager.createCalendar(calendarName.trim(), timezone.trim());
       view.displayMessage("Calendar '" + calendarName + "' created successfully.");
     } catch (IllegalArgumentException e) {
       view.displayException(new IllegalArgumentException("Error creating calendar: "
