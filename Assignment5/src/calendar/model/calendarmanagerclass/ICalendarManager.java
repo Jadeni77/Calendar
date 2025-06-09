@@ -9,13 +9,13 @@ import calendar.model.calendarclass.NewCalendarModel;
  */
 public interface ICalendarManager {
 
-
-  /**
-   * Find a calendar by its name.
-   * @param name the name of the calendar to find
-   * @return the calendar with the given name, or null if not found
-   */
-  ICalendar findCalendarByName(String name);
+//
+//  /**
+//   * Find a calendar by its name.
+//   * @param name the name of the calendar to find
+//   * @return the calendar with the given name, or null if not found
+//   */
+//  ICalendar findCalendarByName(String name);
 
   /**
    * Create a new Calendar with the given name and zoneId.

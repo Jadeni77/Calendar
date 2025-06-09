@@ -24,14 +24,15 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
     this.calendars = new HashMap<>();
   }
 
-  @Override
-  public ICalendar findCalendarByName(String name) {
-    if (calendars.containsKey(name)) {
-      return calendars.getOrDefault(name, null);
-    } else {
-      throw new IllegalArgumentException("Calendar '" + name + "' not found.");
-    }
-  }
+//  @Override
+//  public ICalendar findCalendarByName(String name) {
+//    return this.calendars.getOrDefault(name, null);
+////    if (calendars.containsKey(name)) {
+////      return calendars.getOrDefault(name, null);
+////    } else {
+////      throw new IllegalArgumentException("Calendar '" + name + "' not found.");
+////    }
+//  }
 
   @Override
   public void createCalendar(String name, String zoneId) {
