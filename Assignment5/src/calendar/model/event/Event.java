@@ -21,7 +21,7 @@ public class Event {
   private final EventStatus status;
   private final String seriesId; // For recurring events: the ID of the series they belong to
   private final boolean isAllDayEvent;
-  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH::mm");
+  private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
   /**
    * Constructor for creating a new event with all details.
