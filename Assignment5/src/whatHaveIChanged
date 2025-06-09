@@ -3,6 +3,7 @@ Controller:
 type menu if they want to see the menu.
 * Change the knownCommand field from private to protected, so it can be accessed from
 the new extended subclass.
+* Change the model field from private to protected, so it can be accessed from the new extended subclass.
 
 CalendarModelTest:
 * Change the test from throwing NullPointerException to throwing IllegalArgumentException.

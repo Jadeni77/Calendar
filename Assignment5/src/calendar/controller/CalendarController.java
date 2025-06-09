@@ -21,7 +21,7 @@ import calendar.view.ICalendarView;
  */
 public class CalendarController implements ICalendarController {
   protected final Map<String, Function<Scanner, CalendarCommand>> knownCommands;
-  private final ICalendar model;
+  protected final ICalendar model;
   private final ICalendarView view;
   private final Readable in;
 

@@ -25,6 +25,15 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
   }
 
   @Override
+  public ICalendar findCalendarByName(String name) {
+    if (calendars.containsKey(name)) {
+      return calendars.getOrDefault(name, null);
+    } else {
+      throw new IllegalArgumentException("Calendar '" + name + "' not found.");
+    }
+  }
+
+  @Override
   public void createCalendar(String name, String zoneId) {
     if (this.calendars.containsKey(name)) {
       throw new IllegalArgumentException("Calendar already exists");
