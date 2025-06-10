@@ -44,7 +44,7 @@ public interface ICalendarManager {
    * by the user. It represents the user's immediate working context.
    * @return the current calendar being in use
    */
-  ICalendar getCurrentActiveCalendar();
+  NewCalendarModel getCurrentActiveCalendar();
 
   /**
    * To retrieve any specific calendar that matches the given name, regardless
