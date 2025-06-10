@@ -9,6 +9,7 @@ the new extended subclass.
 Manager Controller:
 * Moved some logic from old controller to new one.
 * Added map of manager commands, and delegation to old controller.
+* Added error catching for when a calendar is not selected.
 
 CalendarManagerModel:
 * No longer extends CalendarModel.
@@ -28,6 +29,7 @@ them if needed. All private methods stay private for now, including the addEvent
 
 NewCalendarModel:
 * Implemented logic for setTimeZone method.
+* Added helper to ensure times of all events change properly.
 
 NewCalendarModelTest:
 * Added tests for the setTimeZone method.

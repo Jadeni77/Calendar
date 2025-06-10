@@ -91,10 +91,14 @@ public class CalendarManagerController implements ICalendarController {
         }
       }
       if (!matchedCommand) {
-        ICalendar selectedModel = manager.getCurrentActiveCalendar();
-        Reader newReader = new StringReader(userInput);
-        ICalendarController controller = new CalendarController(selectedModel, view, newReader);
-        controller.start();
+        try {
+          ICalendar selectedModel = manager.getCurrentActiveCalendar();
+          Reader newReader = new StringReader(userInput);
+          ICalendarController controller = new CalendarController(selectedModel, view, newReader);
+          controller.start();
+        } catch (IllegalStateException e) {
+          this.view.displayException(e);
+        }
       }
     }
     if (!quitEntered) {

@@ -75,14 +75,27 @@ public class NewCalendarModel extends CalendarModel {
               .withZoneSameInstant(timeZone)
               .toLocalDateTime();
       // editing event to have new start and end
-      editSingleEvent("start", e.getSubject(), originalStart.format(dateTimeFormatter),
-              originalEnd.format(dateTimeFormatter),
-              newStartLDT.format(dateTimeFormatter));
-      editSingleEvent("end", e.getSubject(), newStartLDT.format(dateTimeFormatter),
-              originalEnd.format(dateTimeFormatter),
-              newEndLDT.format(dateTimeFormatter));
+      handleDateChanging(e, originalStart, originalEnd, newStartLDT, newEndLDT);
     }
-    System.out.println("DEBUG: " + this.getEventsInRange(LocalDateTime.MIN, LocalDateTime.MAX));
+  }
+
+  private void handleDateChanging(Event e, LocalDateTime oldStart, LocalDateTime oldEnd,
+                                  LocalDateTime newStart, LocalDateTime newEnd) {
+    if (oldStart.isBefore(newStart)) {
+      editSingleEvent("end", e.getSubject(), oldStart.format(dateTimeFormatter),
+              oldEnd.format(dateTimeFormatter),
+              newEnd.format(dateTimeFormatter));
+      editSingleEvent("start", e.getSubject(), oldStart.format(dateTimeFormatter),
+              newEnd.format(dateTimeFormatter),
+              newStart.format(dateTimeFormatter));
+    } else if (newStart.isBefore(oldStart)) {
+      editSingleEvent("start", e.getSubject(), oldStart.format(dateTimeFormatter),
+              oldEnd.format(dateTimeFormatter),
+              newStart.format(dateTimeFormatter));
+      editSingleEvent("end", e.getSubject(), newStart.format(dateTimeFormatter),
+              oldEnd.format(dateTimeFormatter),
+              newEnd.format(dateTimeFormatter));
+    }
   }
 
   /**
