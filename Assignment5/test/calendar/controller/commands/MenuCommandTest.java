@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.io.StringWriter;
 
 import calendar.controller.commands.newcalendarcommand.MenuCommand;
-import calendar.model.calendarclass.MockModel;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;

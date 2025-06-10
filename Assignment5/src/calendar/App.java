@@ -4,10 +4,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import calendar.controller.CalendarController;
 import calendar.controller.CalendarManagerController;
-import calendar.model.calendarclass.CalendarModel;
-import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;

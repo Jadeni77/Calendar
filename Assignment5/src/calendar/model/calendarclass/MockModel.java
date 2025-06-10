@@ -37,7 +37,8 @@ public class MockModel implements ICalendar {
     return this.dateFormatter;
   }
 
-  private void addEvent(Event event) {
+  @Override
+  public void addEvent(Event event) {
 
   }
 

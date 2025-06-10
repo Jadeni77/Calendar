@@ -2,10 +2,6 @@ package calendar.controller.commands.newcalendarcommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import calendar.controller.commands.CalendarCommand;
-import calendar.model.calendarclass.ICalendar;
-import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 

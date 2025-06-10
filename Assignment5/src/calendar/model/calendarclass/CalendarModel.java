@@ -55,11 +55,7 @@ public class CalendarModel implements ICalendar {
     return this.dateFormatter;
   }
 
-  /**
-   * Adds a single event to the calendar.
-   *
-   * @param event the event to be added
-   */
+  @Override
   public void addEvent(Event event) {
     //generate a unique ID for the event based on its subject and time
     String id = this.eventKey(event);

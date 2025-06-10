@@ -12,6 +12,12 @@ import calendar.model.event.Event;
  */
 public interface ICalendar {
 
+  /**
+   * Adds a single event to the calendar.
+   *
+   * @param event the event to be added
+   */
+  void addEvent(Event event);
 
   /**
    * Retrieves an event based on its subject and start and end date-time.

@@ -2,13 +2,14 @@ package calendar.controller.commands.newcalendarcommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import calendar.controller.commands.CalendarCommand;
-import calendar.model.calendarclass.ICalendar;
-import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
+/**
+ * Represents a command to copy events from one calendar to another or to a different date.
+ * This command is part of the calendar application and allows users to copy events based on
+ * various criteria such as event name, date, or date range.
+ */
 public class CopyEventCommand implements CalendarManagerCommand {
   private final String arguments;
   private static final Pattern COPY_EVENT = Pattern.compile(
@@ -74,7 +75,8 @@ public class CopyEventCommand implements CalendarManagerCommand {
     String calendarName = matcher.group("calendarName");
     String newDateTime = matcher.group("newDateTime");
     try {
-      manager.copyEvent(eventName.trim(), startDateTime.trim(), calendarName.trim(), newDateTime.trim());
+      manager.copyEvent(eventName.trim(), startDateTime.trim(), calendarName.trim(),
+              newDateTime.trim());
       view.displayMessage("Event '" + eventName + "' copied successfully to " +
               "calendar '" + calendarName + "' at " + newDateTime + ".");
     } catch (IllegalArgumentException e) {
@@ -100,7 +102,8 @@ public class CopyEventCommand implements CalendarManagerCommand {
       view.displayMessage("Events on " + date + " copied successfully to " +
               "calendar '" + calendarName + "' at " + newDate + ".");
     } catch (IllegalArgumentException e) {
-      view.displayException(new IllegalArgumentException("Error copying events: " + e.getMessage()));
+      view.displayException(new IllegalArgumentException("Error copying events: " +
+              e.getMessage()));
     }
   }
 
@@ -124,7 +127,8 @@ public class CopyEventCommand implements CalendarManagerCommand {
       view.displayMessage("Events between " + startDate + " and " + endDate +
               " copied successfully to calendar '" + calendarName + "' at " + newDate + ".");
     } catch (IllegalArgumentException e) {
-      view.displayException(new IllegalArgumentException("Error copying events: " + e.getMessage()));
+      view.displayException(new IllegalArgumentException("Error copying events: " +
+              e.getMessage()));
     }
 
   }

@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import calendar.model.calendarclass.CalendarModel;
-import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.NewCalendarModel;
 import calendar.model.event.Event;
 
@@ -28,16 +26,6 @@ public class CalendarManagerModel implements ICalendarManager {
   public CalendarManagerModel() {
     this.calendars = new HashMap<>();
   }
-
-//  @Override
-//  public ICalendar findCalendarByName(String name) {
-//    return this.calendars.getOrDefault(name, null);
-////    if (calendars.containsKey(name)) {
-////      return calendars.getOrDefault(name, null);
-////    } else {
-////      throw new IllegalArgumentException("Calendar '" + name + "' not found.");
-////    }
-//  }
 
   @Override
   public void createCalendar(String name, String zoneId) {
@@ -141,8 +129,9 @@ public class CalendarManagerModel implements ICalendarManager {
   }
 
   /**
-   * Shifts an event to a new start time while maintaining its duration
-   * @param event the event to be shifted
+   * Shifts an event to a new start time while maintaining its duration.
+   *
+   * @param event        the event to be shifted
    * @param newStartTime the new start time for the event
    * @return a new Event object with updated start and end times
    */
@@ -162,7 +151,7 @@ public class CalendarManagerModel implements ICalendarManager {
             .seriesId(event.getSeriesId())
             .isAllDayEvent(event.getIsAllDayEvent())
             .build();
-}
+  }
 
   @Override
   public void copyEventsOnDate(String date, String calendarName, String newDate) {
@@ -206,6 +195,7 @@ public class CalendarManagerModel implements ICalendarManager {
 
   /**
    * Shifts an event by a specified number of days.
+   *
    * @param event the event to be shifted
    * @param shift the amount of days to shift the event
    * @return a new Event object with updated start and end times

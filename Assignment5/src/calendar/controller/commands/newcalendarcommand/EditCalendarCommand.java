@@ -1,12 +1,8 @@
 package calendar.controller.commands.newcalendarcommand;
 
-import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import calendar.controller.commands.CalendarCommand;
-import calendar.model.calendarclass.ICalendar;
-import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
@@ -48,7 +44,7 @@ public class EditCalendarCommand implements CalendarManagerCommand {
   }
 
   /**
-   * Parses the matcher to extract calendar name, property, and new value,
+   * Parses the matcher to extract calendar name, property, and new value.
    * @param matcher the matcher containing the calendar edit details
    * @param manager the calendar manager model to edit the calendar
    * @param view the view to display messages or exceptions

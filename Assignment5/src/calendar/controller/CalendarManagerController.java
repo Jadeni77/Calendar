@@ -119,20 +119,24 @@ public class CalendarManagerController implements ICalendarController {
       }
       String type = s.next().trim().toLowerCase();
       String remainingArgs = s.nextLine().trim();
-      System.out.println("DEBUG: createCommandFactory: Parsed type='" + type + "', remainingArgs='" + remainingArgs + "'"); // Add this
+      System.out.println("DEBUG: createCommandFactory: Parsed type='" + type + "', remainingArgs='"
+      + remainingArgs + "'"); // Add this
 
 
       switch (type) {
         case "event":
-          System.out.println("DEBUG: createCommandFactory: Dispatching to CreateEventCommand."); // Add this
+          System.out.println("DEBUG: createCommandFactory: Dispatching to CreateEventCommand.");
+          // Add this
 
           return new CreateCommand(remainingArgs);
         case "calendar":
-          System.out.println("DEBUG: createCommandFactory: Dispatching to CreateCalendarCommand."); // Add this
+          System.out.println("DEBUG: createCommandFactory: Dispatching to CreateCalendarCommand.");
+          // Add this
 
           return new CreateCalendarCommand(remainingArgs);
         default:
-          System.out.println("DEBUG: createCommandFactory: Unknown type '" + type + "'."); // Add this
+          System.out.println("DEBUG: createCommandFactory: Unknown type '" + type + "'.");
+          // Add this
 
           return new InvalidCommand("Unknown 'create' type: '" + type + "'. " +
                   "Expected 'event' or 'calendar'.");
