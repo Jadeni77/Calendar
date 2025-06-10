@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
@@ -13,10 +14,10 @@ import calendar.view.ICalendarView;
  * This command is part of the calendar application and allows users to switch
  * the current calendar context to the one specified by the user.
  */
-public class UseCalendarCommand implements CalendarCommand {
+public class UseCalendarCommand implements CalendarManagerCommand {
   private final String arguments;
   private static final Pattern USE_CALENDAR = Pattern.compile(
-          "calendar --name \"?(?<name>[^\"]+)\"?"
+          "--name \"?(?<name>[^\"]+)\"?"
   );
 
   /**
@@ -28,7 +29,7 @@ public class UseCalendarCommand implements CalendarCommand {
   }
 
   @Override
-  public void execute(ICalendar model, ICalendarView view) {
+  public void execute(ICalendarManager manager, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {
       view.displayException(new IllegalArgumentException("Invalid arguments."));
       return;
@@ -37,13 +38,7 @@ public class UseCalendarCommand implements CalendarCommand {
     Matcher matcher = USE_CALENDAR.matcher(trimmedArguments);
 
     if (matcher.matches()) {
-      if (model instanceof CalendarManagerModel) {
-        CalendarManagerModel manager = (CalendarManagerModel) model;
-        this.parseUseCalendar(matcher, manager, view);
-      } else {
-        view.displayException(new IllegalArgumentException("Invalid model type." +
-                " Expected CalendarManagerModel."));
-      }
+      this.parseUseCalendar(matcher, manager, view);
     } else {
       view.displayMessage("Invalid 'use calendar' command format. Please use 'use calendar " +
               "--name \"<name>\"'.");
@@ -56,7 +51,7 @@ public class UseCalendarCommand implements CalendarCommand {
    * @param manager the calendar manager model to switch calendars
    * @param view the view to display messages or exceptions
    */
-  private void parseUseCalendar(Matcher matcher, CalendarManagerModel manager,
+  private void parseUseCalendar(Matcher matcher, ICalendarManager manager,
                                 ICalendarView view) {
     String calendarName = matcher.group("name");
 

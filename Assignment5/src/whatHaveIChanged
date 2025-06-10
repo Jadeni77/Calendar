@@ -3,6 +3,14 @@ Controller:
 type menu if they want to see the menu.
 * Change the knownCommand field from private to protected, so it can be accessed from
 the new extended subclass.
+* Moved some logic from this controller to new one.
+
+Manager Controller:
+* Moved some logic from old controller to new one.
+* Added map of manager commands, and delegation to old controller.
+
+CalendarManagerModel:
+* No longer extends CalendarModel.
 
 CalendarModelTest:
 * Change the test from throwing NullPointerException to throwing IllegalArgumentException.
@@ -22,6 +30,10 @@ NewCalendarModelTest:
 
 MenuCommand:
 * Add the new Operations to the menu.
+* Changed to be a Manager command instead of a CalendarCommand.
+
+All other ManagerCommands;
+* Changed signature to account for new use of manager.
 
 CreateCommand:
 * shorten the regex in pattern.compile

@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
@@ -13,7 +14,7 @@ import calendar.view.ICalendarView;
  * This command is part of the calendar application and allows users to create a new calendar
  * instance with the provided parameters.
  */
-public class CreateCalendarCommand implements CalendarCommand {
+public class CreateCalendarCommand implements CalendarManagerCommand {
   private final String arguments;
   private static final Pattern CREATE_CALENDAR = Pattern.compile(
           "--name \"?(?<name>[^\"]+)\"? --timezone (?<timezone>.+)");
@@ -27,7 +28,7 @@ public class CreateCalendarCommand implements CalendarCommand {
   }
 
   @Override
-  public void execute(ICalendar model, ICalendarView view) {
+  public void execute(ICalendarManager manager, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {
       view.displayException(new IllegalArgumentException("Invalid arguments."));
       return;
@@ -36,13 +37,7 @@ public class CreateCalendarCommand implements CalendarCommand {
     Matcher matcher = CREATE_CALENDAR.matcher(trimmedArguments);
 
     if (matcher.matches()) {
-      if (model instanceof CalendarManagerModel) {
-        CalendarManagerModel manager = (CalendarManagerModel) model;
-        this.parseCreateCalendar(matcher, manager, view);
-      } else {
-        view.displayException(new IllegalArgumentException("Invalid model type. " +
-                "Expected CalendarManagerModel."));
-      }
+      this.parseCreateCalendar(matcher, manager, view);
     } else {
       view.displayMessage("Invalid 'create calendar' command format. " +
               "Please use 'create calendar --name \"<name>\" --timezone <timezone>'.");
@@ -55,7 +50,7 @@ public class CreateCalendarCommand implements CalendarCommand {
    * @param manager the calendar manager model to create the calendar
    * @param view the view to display messages or exceptions
    */
-  private void parseCreateCalendar(Matcher matcher, CalendarManagerModel manager,
+  private void parseCreateCalendar(Matcher matcher, ICalendarManager manager,
                                    ICalendarView view) {
     String calendarName = matcher.group("name");
     String timezone = matcher.group("timezone");
@@ -68,5 +63,4 @@ public class CreateCalendarCommand implements CalendarCommand {
               + e.getMessage()));
     }
   }
-
 }

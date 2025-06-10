@@ -1,11 +1,13 @@
 package calendar.controller.commands.newcalendarcommand;
 
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
@@ -13,7 +15,7 @@ import calendar.view.ICalendarView;
  * This command is part of the calendar application and allows users to switch
  * the current calendar context to the one specified by the user.
  */
-public class EditCalendarCommand implements CalendarCommand {
+public class EditCalendarCommand implements CalendarManagerCommand {
   private final String arguments;
   private static final Pattern EDIT_CALENDAR = Pattern.compile(
           "--name \"?(?<name>[^\"]+)\"? --property " +
@@ -28,7 +30,7 @@ public class EditCalendarCommand implements CalendarCommand {
   }
 
   @Override
-  public void execute(ICalendar model, ICalendarView view) {
+  public void execute(ICalendarManager manager, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {
       view.displayException(new IllegalArgumentException("Invalid arguments."));
       return;
@@ -37,13 +39,7 @@ public class EditCalendarCommand implements CalendarCommand {
     Matcher matcher = EDIT_CALENDAR.matcher(trimmedArguments);
 
     if (matcher.matches()) {
-      if (model instanceof CalendarManagerModel) {
-        CalendarManagerModel manager = (CalendarManagerModel) model;
-        this.parseEditCalendar(matcher, manager, view);
-      } else {
-        view.displayException(new IllegalArgumentException("Invalid model type." +
-                " Expected CalendarManagerModel."));
-      }
+      this.parseEditCalendar(matcher, manager, view);
     } else {
       view.displayMessage("Invalid 'edit calendar' command format. Please use 'edit calendar " +
               "--name \"<name>\" --property <property> <value>'.");
@@ -57,7 +53,7 @@ public class EditCalendarCommand implements CalendarCommand {
    * @param manager the calendar manager model to edit the calendar
    * @param view the view to display messages or exceptions
    */
-  private void parseEditCalendar(Matcher matcher, CalendarManagerModel manager,
+  private void parseEditCalendar(Matcher matcher, ICalendarManager manager,
                                  ICalendarView view) {
     String calendarName = matcher.group("name");
     String property = matcher.group("property");
@@ -71,7 +67,4 @@ public class EditCalendarCommand implements CalendarCommand {
               + e.getMessage()));
     }
   }
-
-
-
 }

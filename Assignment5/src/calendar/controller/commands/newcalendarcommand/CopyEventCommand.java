@@ -6,9 +6,10 @@ import java.util.regex.Pattern;
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
-public class CopyEventCommand implements CalendarCommand {
+public class CopyEventCommand implements CalendarManagerCommand {
   private final String arguments;
   private static final Pattern COPY_EVENT = Pattern.compile(
           "\"?(?<eventName>[^\"]+)\"? on (?<startDateTime>.+)" +
@@ -33,21 +34,13 @@ public class CopyEventCommand implements CalendarCommand {
   }
 
   @Override
-  public void execute(ICalendar model, ICalendarView view) {
+  public void execute(ICalendarManager manager, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {
       view.displayException(new IllegalArgumentException("Invalid arguments."));
       return;
     }
     String trimmedArguments = arguments.trim();
     Matcher matcher;
-    CalendarManagerModel manager = null;
-
-    if (model instanceof CalendarManagerModel) {
-      manager = (CalendarManagerModel) model;
-    } else {
-      view.displayException(new IllegalArgumentException("Invalid model type. " +
-              "Expected CalendarManagerModel."));
-    }
 
     if ((matcher = COPY_EVENT.matcher(trimmedArguments)).matches()) {
       parseCopyEvent(matcher, manager, view);
@@ -75,7 +68,7 @@ public class CopyEventCommand implements CalendarCommand {
    * @param manager the calendar manager model to copy the event
    * @param view    the view to display messages or exceptions
    */
-  private void parseCopyEvent(Matcher matcher, CalendarManagerModel manager, ICalendarView view) {
+  private void parseCopyEvent(Matcher matcher, ICalendarManager manager, ICalendarView view) {
     String eventName = matcher.group("eventName");
     String startDateTime = matcher.group("startDateTime");
     String calendarName = matcher.group("calendarName");
@@ -96,7 +89,7 @@ public class CopyEventCommand implements CalendarCommand {
    * @param manager the calendar manager model to copy the events
    * @param view   the view to display messages or exceptions
    */
-  private void parseCopyEventsOnDate(Matcher matcher, CalendarManagerModel manager,
+  private void parseCopyEventsOnDate(Matcher matcher, ICalendarManager manager,
                                      ICalendarView view) {
     String date = matcher.group("dateString");
     String calendarName = matcher.group("calendarName");
@@ -119,7 +112,7 @@ public class CopyEventCommand implements CalendarCommand {
    * @param manager the calendar manager model to copy the events
    * @param view  the view to display messages or exceptions
    */
-  private void parseCopyEventsBetweenDates(Matcher matcher, CalendarManagerModel manager,
+  private void parseCopyEventsBetweenDates(Matcher matcher, ICalendarManager manager,
                                            ICalendarView view) {
     String startDate = matcher.group("startDate");
     String endDate = matcher.group("endDate");

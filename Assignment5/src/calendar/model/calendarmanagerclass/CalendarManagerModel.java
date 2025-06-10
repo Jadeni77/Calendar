@@ -1,5 +1,6 @@
 package calendar.model.calendarmanagerclass;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.zone.ZoneRulesException;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ import calendar.model.calendarclass.NewCalendarModel;
  * CalendarManager represents a manager for handling multiple calendars.
  * It allows creating, editing, and managing calendars,
  */
-public class CalendarManagerModel extends CalendarModel implements ICalendarManager {
+public class CalendarManagerModel implements ICalendarManager {
   private final Map<String, NewCalendarModel> calendars;
   private String currentCalendarName;
 
@@ -43,6 +44,8 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
   @Override
   public void editCalendar(String nameOfCalendarToEdit, String property, String newValue) {
     NewCalendarModel targetCalendar = this.getTargetCalendar(nameOfCalendarToEdit);
+    System.out.println(targetCalendar.getName());
+    System.out.println(targetCalendar.getEventsInRange(LocalDateTime.MIN, LocalDateTime.MAX));
 
     switch (property) {
       case "name":
@@ -66,7 +69,9 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
                   + newValue + "'. " + "Please use IANA Time Zone Database format " +
                   "(e.g., 'America/New_York').");
         }
+        System.out.println("MANAGER REACHED");
         targetCalendar.setTimeZone(newZoneId);
+        System.out.println("DEBUG: " + targetCalendar.getEventsInRange(LocalDateTime.MIN, LocalDateTime.MAX));
         break;
       default:
         throw new IllegalArgumentException("Unsupported property '" + property
@@ -87,7 +92,8 @@ public class CalendarManagerModel extends CalendarModel implements ICalendarMana
   @Override
   public ICalendar getCurrentActiveCalendar() {
     if (currentCalendarName == null || !calendars.containsKey(currentCalendarName)) {
-      throw new IllegalStateException("No active calendar is currently selected.");
+      throw new IllegalStateException("No active calendar is currently selected. Please use" +
+              " the command 'use calendar --name <calendar name>' to select a calendar first.");
     }
     return calendars.get(currentCalendarName);
   }

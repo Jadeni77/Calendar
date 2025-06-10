@@ -1,0 +1,8 @@
+create calendar --name test1 --timezone America/Los_Angeles
+use calendar --name test1
+create event e1 from 2025-01-01T03:30 to 2025-01-01T05:30
+print events on 2025-01-01
+use calendar --name test1
+edit calendar --name test1 --property timezone America/New_York
+print events on 2025-01-01
+quit

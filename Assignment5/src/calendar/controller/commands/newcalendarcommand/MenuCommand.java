@@ -1,6 +1,8 @@
-package calendar.controller.commands;
+package calendar.controller.commands.newcalendarcommand;
 
+import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
@@ -8,10 +10,10 @@ import calendar.view.ICalendarView;
  * This command provides a menu of actions that users can perform, such as creating events,
  * editing events, printing events, and showing the status of the calendar.
  */
-public class MenuCommand implements CalendarCommand {
+public class MenuCommand implements CalendarManagerCommand {
 
   @Override
-  public void execute(ICalendar model, ICalendarView view) {
+  public void execute(ICalendarManager manager, ICalendarView view) {
     view.displayMessage("Available operations:");
     view.displayMessage("create event <eventSubject> from <dateStringTtimeString> to" +
             " <dateStringTtimeString>");

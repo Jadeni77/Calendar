@@ -8,7 +8,7 @@ import java.util.function.Function;
 import calendar.controller.commands.CalendarCommand;
 import calendar.controller.commands.CreateCommand;
 import calendar.controller.commands.EditCommand;
-import calendar.controller.commands.MenuCommand;
+import calendar.controller.commands.newcalendarcommand.MenuCommand;
 import calendar.controller.commands.PrintCommand;
 import calendar.controller.commands.ShowCommand;
 import calendar.model.calendarclass.ICalendar;
@@ -39,7 +39,6 @@ public class CalendarController implements ICalendarController {
     knownCommands.put("edit", s -> new EditCommand(s.nextLine()));
     knownCommands.put("print", s -> new PrintCommand(s.nextLine()));
     knownCommands.put("show", s -> new ShowCommand(s.nextLine()));
-    knownCommands.put("menu", s -> new MenuCommand());
     this.model = model;
     this.view = view;
     this.in = in;
@@ -54,47 +53,26 @@ public class CalendarController implements ICalendarController {
   public void start() {
     CalendarCommand c;
     Scanner s = new Scanner(in);
-    boolean quitEntered = false;
+    String userInput = s.nextLine();
 
-    view.displayMessage("Welcome to the Calendar Program!");
-    view.displayMessage("Enter 'menu' to see a list of commands.");
-
-    while (s.hasNext()) {
-      String userInput = s.nextLine().trim();
-
-      if (userInput.isEmpty()) {
-        continue;
-      }
-      if (userInput.equals("menu")) {
-        new MenuCommand().execute(this.model, this.view);
-        continue;
-      }
-      if (userInput.equals("quit") || userInput.equals("q")) {
-        view.displayMessage("Thank you for using the Calendar Program. Goodbye!");
-        return;
-      }
-      String firstWord = "";
-      boolean exceptionThrown = false;
-      try {
-        firstWord = userInput.substring(0, userInput.indexOf(" "));
-      } catch (StringIndexOutOfBoundsException e) {
-        exceptionThrown = true;
-        view.displayException(new IllegalArgumentException("Please enter a full command."));
-      }
-      Function<Scanner, CalendarCommand> command =
-              knownCommands.getOrDefault(firstWord, null);
-      if (command == null && !exceptionThrown) {
-        view.displayException(new IllegalArgumentException("Unknown command: " + firstWord));
-      } else if (!exceptionThrown) {
-        String arguments = userInput.substring(firstWord.length() + 1);
-        Scanner argsScanner = new Scanner(arguments);
-
-        c = command.apply(argsScanner);
-        c.execute(this.model, this.view);
-      }
+    String firstWord = "";
+    boolean exceptionThrown = false;
+    try {
+      firstWord = userInput.substring(0, userInput.indexOf(" "));
+    } catch (StringIndexOutOfBoundsException e) {
+      exceptionThrown = true;
+      view.displayException(new IllegalArgumentException("Please enter a full command."));
     }
-    if (!quitEntered) {
-      this.view.displayMessage("Error: the 'quit' command was never entered. Quitting now...");
+    Function<Scanner, CalendarCommand> command =
+            knownCommands.getOrDefault(firstWord, null);
+    if (command == null && !exceptionThrown) {
+      view.displayException(new IllegalArgumentException("Unknown command: " + firstWord));
+    } else if (!exceptionThrown) {
+      String arguments = userInput.substring(firstWord.length() + 1);
+      Scanner argsScanner = new Scanner(arguments);
+
+      c = command.apply(argsScanner);
+      c.execute(this.model, this.view);
     }
   }
 

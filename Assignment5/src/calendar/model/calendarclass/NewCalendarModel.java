@@ -82,6 +82,7 @@ public class NewCalendarModel extends CalendarModel {
               originalEnd.format(dateTimeFormatter),
               newEndLDT.format(dateTimeFormatter));
     }
+    System.out.println("DEBUG: " + this.getEventsInRange(LocalDateTime.MIN, LocalDateTime.MAX));
   }
 
   /**

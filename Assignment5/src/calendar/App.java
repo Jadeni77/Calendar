@@ -5,10 +5,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import calendar.controller.CalendarController;
-import calendar.controller.NewCalendarController;
+import calendar.controller.CalendarManagerController;
 import calendar.model.calendarclass.CalendarModel;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 import calendar.view.TextBasedView;
 
@@ -34,10 +35,10 @@ public class App {
 
       String mode = args[1].toLowerCase();
       StringBuilder log = new StringBuilder();
-      ICalendar model = new CalendarManagerModel();
+      ICalendarManager manager = new CalendarManagerModel();
       Reader input;
       ICalendarView view = null;
-      CalendarController controller = null;
+      CalendarManagerController controller = null;
 
       if ("interactive".equals(mode)) {
         view = new TextBasedView(System.out);
@@ -53,7 +54,7 @@ public class App {
         System.out.println("Invalid mode: " + mode);
         return;
       }
-      controller = new NewCalendarController(model, view, input);
+      controller = new CalendarManagerController(manager, view, input);
       controller.start();
       if ("headless".equals(mode)) {
         System.out.println("Log:\n" + log);
