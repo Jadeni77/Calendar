@@ -53,6 +53,7 @@ public class TextBasedView implements ICalendarView {
     }
   }
 
+
 //  public void newPrintEvents(List<Event> events, ZoneId displayZoneId) {
 //    DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm z");
 //

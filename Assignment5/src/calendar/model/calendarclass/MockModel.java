@@ -37,6 +37,10 @@ public class MockModel implements ICalendar {
     return this.dateFormatter;
   }
 
+  private void addEvent(Event event) {
+
+  }
+
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
    * @param subject       the subject of the event

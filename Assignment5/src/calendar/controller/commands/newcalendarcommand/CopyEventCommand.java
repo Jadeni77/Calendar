@@ -74,7 +74,7 @@ public class CopyEventCommand implements CalendarManagerCommand {
     String calendarName = matcher.group("calendarName");
     String newDateTime = matcher.group("newDateTime");
     try {
-      manager.copyEvent(eventName, startDateTime, calendarName, newDateTime);
+      manager.copyEvent(eventName.trim(), startDateTime.trim(), calendarName.trim(), newDateTime.trim());
       view.displayMessage("Event '" + eventName + "' copied successfully to " +
               "calendar '" + calendarName + "' at " + newDateTime + ".");
     } catch (IllegalArgumentException e) {
