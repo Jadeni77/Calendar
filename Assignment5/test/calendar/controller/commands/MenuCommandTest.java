@@ -7,6 +7,8 @@ import java.io.StringWriter;
 
 import calendar.controller.commands.newcalendarcommand.MenuCommand;
 import calendar.model.calendarclass.MockModel;
+import calendar.model.calendarmanagerclass.CalendarManagerModel;
+import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 import calendar.view.TextBasedView;
 
@@ -17,13 +19,13 @@ import static org.junit.Assert.assertTrue;
  * It checks if the command correctly displays the menu options to the user.
  */
 public class MenuCommandTest {
-  private MockModel model;
+  private ICalendarManager manager;
   private ICalendarView view;
   private StringWriter log;
 
   @Before
   public void setUp() {
-    this.model = new MockModel();
+    this.manager = new CalendarManagerModel();
     this.log = new StringWriter();
     this.view = new TextBasedView(log);
   }
@@ -31,7 +33,7 @@ public class MenuCommandTest {
   @Test
   public void testMenuDisplay() {
     MenuCommand cmd = new MenuCommand();
-    cmd.execute(model, view);
+    cmd.execute(manager, view);
     assertTrue(log.toString().contains("create event"));
     assertTrue(log.toString().contains("edit event"));
     assertTrue(log.toString().contains("print events"));
