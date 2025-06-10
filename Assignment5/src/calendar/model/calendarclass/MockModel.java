@@ -39,7 +39,10 @@ public class MockModel implements ICalendar {
 
   @Override
   public void addEvent(Event event) {
-
+    log.append("Event Added: ")
+            .append(event.getSubject()).append(", ")
+            .append(event.getStartDateTime().format(dateTimeFormatter)).append(", ")
+            .append(event.getEndDateTime().format(dateTimeFormatter)).append("\n");
   }
 
   /**
