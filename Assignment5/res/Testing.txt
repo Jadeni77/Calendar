@@ -1,0 +1,7 @@
+create calendar --name Hello --timezone 	EET
+use calendar --name Hello
+create event Bye on 2025-06-10 repeats T for 3 times
+print events on 2025-06-10
+edit calendar --name Hello --property timezone America/New_York
+print events on 2025-06-10
+quit

@@ -3,6 +3,7 @@ package calendar.model.calendarclass;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Map;
 
 import calendar.model.event.Event;
@@ -62,11 +63,12 @@ public class NewCalendarModel extends CalendarModel {
   public void setTimeZone(ZoneId timeZone) {
     ZoneId lastTimeZone = this.timeZone;
     this.timeZone = timeZone;
-    for (Map.Entry<String, Event> entry : this.events.entrySet()) {
+    for (Map.Entry<String, Event> entry : new ArrayList<>(this.events.entrySet())) {
       Event e = entry.getValue();
       // original localDateTimes
       LocalDateTime originalStart = e.getStartDateTime();
       LocalDateTime originalEnd = e.getEndDateTime();
+
       // changing time zones with ZonedDateTime conversion
       LocalDateTime newStartLDT = originalStart.atZone(lastTimeZone)
               .withZoneSameInstant(timeZone)
