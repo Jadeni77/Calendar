@@ -11,6 +11,9 @@ CalendarModelTest:
 ControllerTest:
 * Change the first two helper methods (for testing purposes)
 
+CalendarModel:
+* Change the addEvent method access modifier from private to public, so copy events can have access to it.
+
 ICalendar and ICalendarModel:
 * Changed the fields in the CalendarModel class to 'protected' so that NewCalendarModel can access
 them if needed. All private methods stay private for now, including the addEvent() method.

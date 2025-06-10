@@ -60,7 +60,7 @@ public class CalendarModel implements ICalendar {
    *
    * @param event the event to be added
    */
-  private void addEvent(Event event) {
+  public void addEvent(Event event) {
     //generate a unique ID for the event based on its subject and time
     String id = this.eventKey(event);
 
