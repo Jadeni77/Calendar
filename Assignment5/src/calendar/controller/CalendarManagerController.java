@@ -1,5 +1,7 @@
 package calendar.controller;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -90,7 +92,8 @@ public class CalendarManagerController implements ICalendarController {
       }
       if (!matchedCommand) {
         ICalendar selectedModel = manager.getCurrentActiveCalendar();
-        ICalendarController controller = new CalendarController(selectedModel, view, in);
+        Reader newReader = new StringReader(userInput);
+        ICalendarController controller = new CalendarController(selectedModel, view, newReader);
         controller.start();
       }
     }
