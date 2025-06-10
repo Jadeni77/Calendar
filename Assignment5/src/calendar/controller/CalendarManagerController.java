@@ -16,7 +16,7 @@ import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
- * TODO change, makes no sense
+ * TODO change (maybe??)
  * Represents a controller for managing calendar commands, specifically for creating, editing,
  * using, and copying events and calendars.
  * This controller extends the base CalendarController to provide additional functionality
