@@ -28,9 +28,11 @@ public class NewCalendarModelTest {
     LocalDateTime start = LocalDateTime.of(2025, 1, 1, 4, 30);
     LocalDateTime end = LocalDateTime.of(2025, 1, 1, 7, 30);
     c.createSingleEvent("meeting", start.toString(), end.toString());
-    assertEquals(1, c.getEventsOnDate(LocalDate.of(2025, 1, 1)).size());
+    assertEquals(1, c.getEventsOnDate(LocalDate.of(2025, 1, 1))
+            .size());
     c.setTimeZone(ZoneId.of("America/Los_Angeles"));
-    assertEquals(1, c.getEventsOnDate(LocalDate.of(2025, 1, 1)).size());
+    assertEquals(1, c.getEventsOnDate(LocalDate.of(2025, 1, 1))
+            .size());
     Event event = c.getEventsOnDate(LocalDate.of(2025, 1, 1)).get(0);
     assertEquals(start.minusHours(3), event.getStartDateTime());
     assertEquals(end.minusHours(3), event.getEndDateTime());
