@@ -30,12 +30,15 @@ public class MenuCommandTest {
 
   @Test
   public void testMenuDisplay() {
-    MenuCommand cmd = new MenuCommand();
+    CalendarManagerCommand cmd = new MenuCommand();
     cmd.execute(manager, view);
     assertTrue(log.toString().contains("create event"));
     assertTrue(log.toString().contains("edit event"));
     assertTrue(log.toString().contains("print events"));
     assertTrue(log.toString().contains("show status"));
+    assertTrue(log.toString().contains("create calendar"));
+    assertTrue(log.toString().contains("use calendar"));
+    assertTrue(log.toString().contains("edit calendar"));
     assertTrue(log.toString().contains("menu (Show this menu)"));
     assertTrue(log.toString().contains("q or quit (Exit the program)"));
   }
