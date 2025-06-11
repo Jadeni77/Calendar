@@ -588,7 +588,7 @@ public class CalendarModel implements ICalendar {
               throw new IllegalStateException("A series event cannot be edited"
                       + " to span multiple days.");
             }
-            editEventHelper(event, property, adjustedStart.format(dateTimeFormatter));
+            editTimesHelper(event, property, adjustedStart.format(dateTimeFormatter));
           }
           break;
         case "end":
@@ -600,7 +600,7 @@ public class CalendarModel implements ICalendar {
               throw new IllegalStateException("A series event cannot be edited to"
                       + " span multiple days.");
             }
-            editEventHelper(event, property, adjustedEnd.format(dateTimeFormatter));
+            editTimesHelper(event, property, adjustedEnd.format(dateTimeFormatter));
           }
           break;
         default:
@@ -614,5 +614,34 @@ public class CalendarModel implements ICalendar {
   private List<Event> eventsFromDateForward (List<Event> events, LocalDateTime dateTime) {
     events.removeIf(event -> event.getStartDateTime().isBefore(dateTime));
     return events;
+  }
+
+  private void editTimesHelper(Event event, String property, String newValue) {
+    Event.EventBuilder newEventBuilder = new Event.EventBuilder()
+            .subject(event.getSubject())
+            .startDateTime(event.getStartDateTime())
+            .endDateTime(event.getEndDateTime())
+            .description(event.getDescription())
+            .location(event.getLocation())
+            .status(event.getStatus())
+            .seriesId(event.getSeriesId())
+            .isAllDayEvent(event.getIsAllDayEvent());
+    try {
+      switch (property) {
+        case "start":
+          LocalDateTime newStart = LocalDateTime.parse(newValue, dateTimeFormatter);
+          newEventBuilder.startDateTime(newStart);
+          break;
+        case "end":
+          LocalDateTime newEnd = LocalDateTime.parse(newValue, dateTimeFormatter);
+          newEventBuilder.endDateTime(newEnd);
+          break;
+      }
+      Event newEvent = newEventBuilder.build();
+      updateEvent(event, newEvent);
+    } catch (DateTimeParseException e) {
+      throw new IllegalArgumentException("Invalid value for property '" + property + "': "
+              + newValue + ". " + "Please ensure the value is correct.");
+    }
   }
 }

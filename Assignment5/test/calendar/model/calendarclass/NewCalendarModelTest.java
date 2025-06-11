@@ -6,10 +6,12 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 import calendar.model.event.Event;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
@@ -92,7 +94,7 @@ public class NewCalendarModelTest extends AbstractCalendarModelTest {
    * days throws an error.
    */
   @Test
-  public void testSetTimeZoneSeriesSpan() {
+  public void testSetTimeZoneSeriesSpanInvalid() {
     try {
       c2.setTimeZone(ZoneId.of("Asia/Dili"));
       fail("Should have thrown an exception.");
@@ -100,5 +102,21 @@ public class NewCalendarModelTest extends AbstractCalendarModelTest {
       assertEquals("A series event cannot be edited to span multiple days.",
               e.getMessage());
     }
+  }
+
+  /**
+   * Tests that changing a calendar's timezone to where it doesn't make a series event span
+   * multiple days works properly.
+   */
+  @Test
+  public void testSetTimeZoneSeriesSpanValid() {
+    c2.setTimeZone(ZoneId.of("America/New_York"));
+    String seriesId = c2.getEventsOnDate(LocalDate.of(2025, 1, 1))
+            .get(0).getSeriesId();
+    List<Event> events = c2.getEventsBySeriesId(seriesId);
+    assertEquals(3, events.size());
+    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 1)).get(0)));
+    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 3)).get(0)));
+    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 6)).get(0)));
   }
 }
