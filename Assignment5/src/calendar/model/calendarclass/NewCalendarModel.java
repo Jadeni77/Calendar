@@ -3,6 +3,7 @@ package calendar.model.calendarclass;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Map;
 
 import calendar.model.event.Event;
@@ -62,8 +63,8 @@ public class NewCalendarModel extends CalendarModel {
   public void setTimeZone(ZoneId timeZone) {
     ZoneId lastTimeZone = this.timeZone;
     this.timeZone = timeZone;
-    for (Map.Entry<String, Event> entry : this.events.entrySet()) {
-      Event e = entry.getValue();
+    for (String key : new ArrayList<>(this.events.keySet())) {
+      Event e = this.events.get(key);
       // original localDateTimes
       LocalDateTime originalStart = e.getStartDateTime();
       LocalDateTime originalEnd = e.getEndDateTime();
@@ -104,7 +105,7 @@ public class NewCalendarModel extends CalendarModel {
    * @param local the given LocalDateTime to convert
    * @return the ZonedDateTime in the calendar's time zone
    */
-  public ZonedDateTime toCalendarTime(LocalDateTime local) {
+  private ZonedDateTime toCalendarTime(LocalDateTime local) {
     return ZonedDateTime.of(local, timeZone);
   }
 
@@ -114,7 +115,7 @@ public class NewCalendarModel extends CalendarModel {
    * @param zone the given ZonedDateTime to convert
    * @return the LocalDateTime in the calendar's time zone
    */
-  public LocalDateTime fromCalendarTime(ZonedDateTime zone) {
+  private LocalDateTime fromCalendarTime(ZonedDateTime zone) {
     return zone.withZoneSameInstant(timeZone).toLocalDateTime();
   }
 }

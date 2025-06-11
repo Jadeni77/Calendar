@@ -1,4 +1,4 @@
-package calendar.controller.commands.newcalendarcommand;
+package calendar.controller.commands.calendarmanagercommand;
 
 import calendar.controller.commands.CalendarCommand;
 import calendar.model.calendarclass.ICalendar;
@@ -20,6 +20,12 @@ public class InvalidCommand implements CalendarCommand {
     this.errorMessage = errorMessage;
   }
 
+  /**
+   * Displays the InvalidCommand's error message, which represents an error resulting from
+   * an invalid command input.
+   * @param model the calendar model to apply this command to
+   * @param view  the calendar view to apply this command to
+   */
   @Override
   public void execute(ICalendar model, ICalendarView view) {
     view.displayException(new IllegalArgumentException(errorMessage));

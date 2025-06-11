@@ -1,7 +1,5 @@
-package calendar.controller.commands.newcalendarcommand;
+package calendar.controller.commands.calendarmanagercommand;
 
-import calendar.controller.commands.CalendarCommand;
-import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
@@ -12,6 +10,12 @@ import calendar.view.ICalendarView;
  */
 public class MenuCommand implements CalendarManagerCommand {
 
+  /**
+   * Displays the program's menu detailing all possible commands the user can input along
+   * with their syntax.
+   * @param manager the calendar manager to apply this command to
+   * @param view  the calendar view to apply this command to
+   */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
     view.displayMessage("Available operations:");

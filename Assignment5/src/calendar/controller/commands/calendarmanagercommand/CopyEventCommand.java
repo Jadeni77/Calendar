@@ -1,25 +1,26 @@
-package calendar.controller.commands.newcalendarcommand;
+package calendar.controller.commands.calendarmanagercommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import calendar.controller.commands.CalendarCommand;
-import calendar.model.calendarclass.ICalendar;
-import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
+/**
+ * This class represents a command class to copy events from one calendar to another.
+ * This command can copy single events, or multiple events on a given date or date range.
+ */
 public class CopyEventCommand implements CalendarManagerCommand {
   private final String arguments;
   private static final Pattern COPY_EVENT = Pattern.compile(
-          "\"?(?<eventName>[^\"]+)\"? on (?<startDateTime>.+)" +
+          "event \"?(?<eventName>[^\"]+)\"? on (?<startDateTime>.+)" +
                   " --target \"?(?<calendarName>[^\"]+)\"? to (?<newDateTime>.+)"
   );
   private static final Pattern COPY_EVENTS_ON_DATE = Pattern.compile(
-          "on (?<dateString>.+) --target \"?(?<calendarName>[^\"]+)\"? to (?<newDate>.+)"
+          "events on (?<dateString>.+) --target \"?(?<calendarName>[^\"]+)\"? to (?<newDate>.+)"
   );
   private static final Pattern COPY_EVENTS_BETWEEN_DATES = Pattern.compile(
-          "between (?<startDate>.+) and (?<endDate>.+)" +
+          "events between (?<startDate>.+) and (?<endDate>.+)" +
                   " --target \"?(?<calendarName>[^\"]+)\"? to (?<newDate>.+)"
   );
 
@@ -33,6 +34,14 @@ public class CopyEventCommand implements CalendarManagerCommand {
     this.arguments = arguments;
   }
 
+  /**
+   * Matches the inputted command with the existing command patterns for correct syntax. If a
+   * match is found, the method calls the corresponding command from the match and displays
+   * necessary information from the view when applicable. Otherwise, displays a message informing
+   * the user of incorrect command syntax.
+   * @param manager the calendar manager to apply this command to
+   * @param view  the calendar view to apply this command to
+   */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {

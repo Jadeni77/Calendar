@@ -28,16 +28,17 @@ public class CalendarManagerModel implements ICalendarManager {
   public CalendarManagerModel() {
     this.calendars = new HashMap<>();
   }
-
-//  @Override
-//  public ICalendar findCalendarByName(String name) {
-//    return this.calendars.getOrDefault(name, null);
-////    if (calendars.containsKey(name)) {
-////      return calendars.getOrDefault(name, null);
-////    } else {
-////      throw new IllegalArgumentException("Calendar '" + name + "' not found.");
-////    }
-//  }
+/*
+  @Override
+  public ICalendar findCalendarByName(String name) {
+    return this.calendars.getOrDefault(name, null);
+    if (calendars.containsKey(name)) {
+      return calendars.getOrDefault(name, null);
+    } else {
+      throw new IllegalArgumentException("Calendar '" + name + "' not found.");
+    }
+  }
+ */
 
   @Override
   public void createCalendar(String name, String zoneId) {
@@ -99,6 +100,13 @@ public class CalendarManagerModel implements ICalendarManager {
 
   }
 
+  /**
+   * To retrieve the calendar that is currently  "active" or being "focused on"
+   * by the user. It represents the user's immediate working context.
+   * If there is no current active calendar, or it is not in the manager's list of calendars,
+   * this method will throw an exception prompting the user to select a calendar before proceeding.
+   * @return the current calendar being in use
+   */
   @Override
   public NewCalendarModel getCurrentActiveCalendar() {
     if (currentCalendarName == null || !calendars.containsKey(currentCalendarName)) {

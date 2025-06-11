@@ -7,22 +7,19 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import calendar.controller.commands.newcalendarcommand.MenuCommand;
-import calendar.controller.commands.newcalendarcommand.CalendarManagerCommand;
-import calendar.controller.commands.newcalendarcommand.CopyEventCommand;
-import calendar.controller.commands.newcalendarcommand.CreateCalendarCommand;
-import calendar.controller.commands.newcalendarcommand.EditCalendarCommand;
-import calendar.controller.commands.newcalendarcommand.UseCalendarCommand;
+import calendar.controller.commands.calendarmanagercommand.MenuCommand;
+import calendar.controller.commands.calendarmanagercommand.CalendarManagerCommand;
+import calendar.controller.commands.calendarmanagercommand.CopyEventCommand;
+import calendar.controller.commands.calendarmanagercommand.CreateCalendarCommand;
+import calendar.controller.commands.calendarmanagercommand.EditCalendarCommand;
+import calendar.controller.commands.calendarmanagercommand.UseCalendarCommand;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
- * TODO change (maybe??)
  * Represents a controller for managing calendar commands, specifically for creating, editing,
  * using, and copying events and calendars.
- * This controller extends the base CalendarController to provide additional functionality
- * for handling new calendar-related commands.
  */
 public class CalendarManagerController implements ICalendarController {
   protected final Map<String, Function<Scanner, CalendarManagerCommand>> knownCommands;
@@ -31,8 +28,7 @@ public class CalendarManagerController implements ICalendarController {
   protected final Readable in;
 
   /**
-   * TODO change this description
-   * Initializes a controller with the inputted model and view to which it will delegate
+   * Initializes a controller with the inputted manager and view to which it will delegate
    * functionality and output, as well as the channel it will receive user input from.
    *
    * @param manager the manager to be processed
@@ -51,6 +47,15 @@ public class CalendarManagerController implements ICalendarController {
     knownCommands.put("menu", s -> new MenuCommand());
   }
 
+  /**
+   * Starts the controller, which gives it control over the application. This method continuously
+   * takes in commands until the quit command is entered or the end of the file is reached, in
+   * which case the application will be terminated. This method handles operations related to
+   * individual calendars such as creation, editing, use, and copying events from one to another,
+   * in addition to the menu command. If a command does not match one of these, it will be
+   * delegated to the CalendarController with the selected calendar (from the 'use' command). If
+   * there is no selected calendar, an error will be displayed.
+   */
   @Override
   public void start() {
     Scanner scanner = new Scanner(in);
@@ -105,88 +110,4 @@ public class CalendarManagerController implements ICalendarController {
       this.view.displayMessage("Error: the 'quit' command was never entered. Quitting now...");
     }
   }
-
-  /*
-  private Function<Scanner, CalendarCommand> createCommandFactory() {
-    return s -> {
-      System.out.println("DEBUG: Inside createCommandFactory lambda.");
-      // s.hasNext() checks if there is a next token in the scanner input
-      if (!s.hasNext()) {
-        System.out.println("DEBUG: createCommandFactory: No arguments found."); // Add this
-
-        return new InvalidCommand("Missing type after 'create'." +
-                "Expected 'event' or 'calendar'.");
-      }
-      String type = s.next().trim().toLowerCase();
-      String remainingArgs = s.nextLine().trim();
-      System.out.println("DEBUG: createCommandFactory: Parsed type='" + type + "', remainingArgs='" + remainingArgs + "'"); // Add this
-
-
-      switch (type) {
-        case "event":
-          System.out.println("DEBUG: createCommandFactory: Dispatching to CreateEventCommand."); // Add this
-
-          return new CreateCommand(remainingArgs);
-        case "calendar":
-          System.out.println("DEBUG: createCommandFactory: Dispatching to CreateCalendarCommand."); // Add this
-
-          return new CreateCalendarCommand(remainingArgs);
-        default:
-          System.out.println("DEBUG: createCommandFactory: Unknown type '" + type + "'."); // Add this
-
-          return new InvalidCommand("Unknown 'create' type: '" + type + "'. " +
-                  "Expected 'event' or 'calendar'.");
-      }
-    };
-  }
-
-  private Function<Scanner, CalendarCommand> editCommandFactory() {
-    return s -> {
-      if (!s.hasNext()) {
-        return new InvalidCommand("Missing type after 'edit'." +
-                "Expected 'event' or 'calendar'.");
-      }
-      String type = s.next().trim().toLowerCase();
-      String remainingArgs = s.nextLine().trim();
-
-      String fullEditArgs = type + " " + remainingArgs;
-
-      switch (type) {
-        case "event":
-          return  new EditCommand(fullEditArgs);
-        case "calendar":
-          return new EditCalendarCommand(remainingArgs);
-        default:
-          return new InvalidCommand("Unknown 'edit' type: '" + type + "'. " +
-                  "Expected 'event' or 'calendar'.");
-      }
-      //create event NewSeries on 2022-01-01 repeats T for 3 times
-      //edit series name NewSeries from 2022-01-01T11:00 with Bye
-      //create calendar --name helloworld --timezone Africa/Abidjan
-      //se calendar --name ByeWorld
-    };
-  }
-
-  private Function<Scanner, CalendarCommand> useCommandFactory() {
-    return s -> {
-      String calendarName = s.nextLine().trim();
-      if (calendarName.isEmpty()) {
-        return new InvalidCommand("Missing calendar name after 'use'.");
-      }
-      return new UseCalendarCommand(calendarName);
-    };
-  }
-
-  private Function<Scanner, CalendarCommand> copyCommandFactory() {
-    return s -> {
-      String fullCopyCommandArguments = s.nextLine().trim();
-      if (fullCopyCommandArguments.isEmpty()) {
-        return new InvalidCommand("Missing arguments for 'copy' command. " +
-                "Please provide details for event, events on date, or events between dates.");
-      }
-      return new CopyEventCommand(fullCopyCommandArguments);
-    };
-  }
-  */
-
 }
