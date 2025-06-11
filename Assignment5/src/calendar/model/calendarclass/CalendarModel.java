@@ -55,6 +55,12 @@ public class CalendarModel implements ICalendar {
     return this.dateFormatter;
   }
 
+  /**
+   * Adds a single event to the calendar. Does not allow identical events to be added, and adds
+   * series events to the calendar's list of series events.
+   *
+   * @param event the event to be added
+   */
   @Override
   public void addEvent(Event event) {
     //generate a unique ID for the event based on its subject and time

@@ -44,10 +44,9 @@ public class CalendarController implements ICalendarController {
   }
 
   /**
-   * Starts the controller, which gives it control over the application. This method continues to
-   * process user inputted user commands until the user inputs an exit command, in which case the
-   * application will be terminated. This handles commands such as creating, editing, and viewing
-   * events.
+   * Starts the controller, which allows it to process user-inputted commands related to events
+   * within a calendar, specifically creating, editing, and viewing events. If the inputted command
+   * is not valid, an error will be displayed.
    */
   public void start() {
     CalendarCommand c;

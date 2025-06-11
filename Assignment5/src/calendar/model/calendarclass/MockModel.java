@@ -37,12 +37,13 @@ public class MockModel implements ICalendar {
     return this.dateFormatter;
   }
 
+  /**
+   * Logs the input of the given event to this Model's log StringBuilder.
+   * @param event the event intended to be added.
+   */
   @Override
   public void addEvent(Event event) {
-    log.append("Event Added: ")
-            .append(event.getSubject()).append(", ")
-            .append(event.getStartDateTime().format(dateTimeFormatter)).append(", ")
-            .append(event.getEndDateTime().format(dateTimeFormatter)).append("\n");
+    log.append("Event added: ").append(event.toString()).append("\n");
   }
 
   /**

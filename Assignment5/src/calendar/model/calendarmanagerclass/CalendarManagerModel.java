@@ -126,6 +126,13 @@ public class CalendarManagerModel implements ICalendarManager {
 
   }
 
+  /**
+   * To retrieve the calendar that is currently  "active" or being "focused on"
+   * by the user. It represents the user's immediate working context.
+   * If there is no current active calendar, or it is not in the manager's list of calendars,
+   * this method will throw an exception prompting the user to select a calendar before proceeding.
+   * @return the current calendar being in use
+   */
   @Override
   public NewCalendarModel getCurrentActiveCalendar() {
     if (currentCalendarName == null || !calendars.containsKey(currentCalendarName)) {

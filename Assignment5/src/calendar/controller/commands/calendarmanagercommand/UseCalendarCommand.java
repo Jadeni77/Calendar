@@ -1,7 +1,8 @@
-package calendar.controller.commands.newcalendarcommand;
+package calendar.controller.commands.calendarmanagercommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
@@ -24,6 +25,14 @@ public class UseCalendarCommand implements CalendarManagerCommand {
     this.arguments = arguments;
   }
 
+  /**
+   * Matches the inputted command with the existing command patterns for correct syntax. If a
+   * match is found, the method calls the corresponding command from the match and displays
+   * necessary information from the view when applicable. Otherwise, displays a message informing
+   * the user of incorrect command syntax.
+   * @param manager the calendar manager to apply this command to
+   * @param view  the calendar view to apply this command to
+   */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {

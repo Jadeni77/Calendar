@@ -45,7 +45,6 @@ public class CreateCommand implements CalendarCommand {
   @Override
   public void execute(ICalendar model, ICalendarView view) {
     if (arguments == null || arguments.isBlank()) {
-      // could be something else
       view.displayMessage("Invalid command. Please provide valid event details.");
       return;
     }

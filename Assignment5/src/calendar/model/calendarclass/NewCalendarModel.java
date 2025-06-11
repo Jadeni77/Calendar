@@ -2,6 +2,7 @@ package calendar.model.calendarclass;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -62,8 +63,8 @@ public class NewCalendarModel extends CalendarModel {
   public void setTimeZone(ZoneId timeZone) {
     ZoneId lastTimeZone = this.timeZone;
     this.timeZone = timeZone;
-    for (Map.Entry<String, Event> entry : new ArrayList<>(this.events.entrySet())) {
-      Event e = entry.getValue();
+    for (String key : new ArrayList<>(this.events.keySet())) {
+      Event e = this.events.get(key);
       // original localDateTimes
       LocalDateTime originalStart = e.getStartDateTime();
       LocalDateTime originalEnd = e.getEndDateTime();
