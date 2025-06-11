@@ -30,18 +30,19 @@ public class CreateCommandTest {
 
   @Test
   public void testCreateSingleEvent() {
-    CreateCommand cmd = new CreateCommand("event Meeting from " +
+    CreateCommand cmd = new CreateCommand("Meeting from " +
             "2023-10-01T10:00 to 2023-10-01T11:30");
     cmd.execute(model, view);
     assertEquals("Single Event Created: Meeting, 2023-10-01T10:00, " +
             "2023-10-01T11:30\n", model.log.toString());
+
     assertEquals("Event created with subject 'Meeting', " +
             "start 2023-10-01T10:00, and end 2023-10-01T11:30.\n", log.toString());
   }
 
   @Test
   public void testCreateAllDayEvent() {
-    CreateCommand cmd = new CreateCommand("event Meeting on 2023-10-01");
+    CreateCommand cmd = new CreateCommand("Meeting on 2023-10-01");
     cmd.execute(model, view);
     assertEquals("Single All-Day Event Created: Meeting, " +
             "2023-10-01\n", model.log.toString());
@@ -51,7 +52,7 @@ public class CreateCommandTest {
 
   @Test
   public void testCreateRecurringEventWithCount() {
-    CreateCommand cmd = new CreateCommand("event Meeting from 2023-10-01T10:00 " +
+    CreateCommand cmd = new CreateCommand("Meeting from 2023-10-01T10:00 " +
             "to 2023-10-01T11:30 repeats MWF for 5 times");
     cmd.execute(model, view);
     assertEquals("Recurring Event Created: Meeting, 2023-10-01T10:00, " +
@@ -60,7 +61,7 @@ public class CreateCommandTest {
 
   @Test
   public void testCreateRecurringEventWithUntil() {
-    CreateCommand cmd = new CreateCommand("event Meeting from 2023-10-01T10:00 to " +
+    CreateCommand cmd = new CreateCommand("Meeting from 2023-10-01T10:00 to " +
             "2023-10-01T11:30 repeats MWF until 2023-10-31");
     cmd.execute(model, view);
     assertEquals("Recurring Event Created: Meeting, 2023-10-01T10:00, " +
@@ -69,7 +70,7 @@ public class CreateCommandTest {
 
   @Test
   public void testCreateRecurringAllDayWithCount() {
-    CreateCommand cmd = new CreateCommand("event Meeting on 2023-10-01 repeats MWF " +
+    CreateCommand cmd = new CreateCommand("Meeting on 2023-10-01 repeats MWF " +
             "for 5 times");
     cmd.execute(model, view);
     assertEquals("Recurring Event Created: Meeting, on 2023-10-01, on days MWF, " +
@@ -78,7 +79,7 @@ public class CreateCommandTest {
 
   @Test
   public void testCreateRecurringAllDayWithUntil() {
-    CreateCommand cmd = new CreateCommand("event Meeting on 2023-10-01 repeats MWF until" +
+    CreateCommand cmd = new CreateCommand("Meeting on 2023-10-01 repeats MWF until" +
             " 2023-10-31");
     cmd.execute(model, view);
     assertEquals("Recurring Event Created: Meeting, on 2023-10-01, on days MWF, " +
@@ -87,7 +88,7 @@ public class CreateCommandTest {
 
   @Test
   public void testSubjectThatIsMoreThanOneWord() {
-    CreateCommand cmd = new CreateCommand("event \"Team Meeting\" from 2023-10-01T10:00 " +
+    CreateCommand cmd = new CreateCommand("\"Team Meeting\" from 2023-10-01T10:00 " +
             "to 2023-10-01T11:30");
     cmd.execute(model, view);
     assertEquals("Single Event Created: Team Meeting, 2023-10-01T10:00, " +

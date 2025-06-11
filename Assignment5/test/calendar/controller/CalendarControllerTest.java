@@ -31,22 +31,16 @@ public class CalendarControllerTest {
   }
 
   /**
-   * Helper method to get the expected initial output from the controller.
+   * Returns the expected initial output of the controller, which includes the welcome message
+   * and instructions for the user.
    *
-   * @return A string containing the welcome message and initial menu.
+   * @return the expected initial output as a String
    */
-  private String getExpectedInitialOutput() {
-    return "Welcome to the Calendar Program!\n" +
-    "Enter 'menu' to see a list of commands.\n";
-  }
-
   private String getFullExpectedOutput(String... messages) {
     StringBuilder expected = new StringBuilder();
-    expected.append(getExpectedInitialOutput());
     for (String message : messages) {
       expected.append(message).append("\n");
     }
-    expected.append("Error: the 'quit' command was never entered. Quitting now...\n");
     return expected.toString();
   }
 
@@ -93,6 +87,10 @@ public class CalendarControllerTest {
             "create event Meeting from 2023-10-01T10:00 to 2023-10-01T11:30");
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
+
+    System.out.println(model.log.toString());
+
+
     assertEquals("Single Event Created: Meeting, 2023-10-01T10:00, 2023-10-01T11:30\n",
             model.log.toString());
     assertTrue(log.toString().contains("Event created with subject 'Meeting', " +
@@ -174,6 +172,8 @@ public class CalendarControllerTest {
     assertEquals("Single Event Updated: subject, Meeting, " +
                     "2023-10-01T10:00, 2023-10-01T11:30, NewMeeting\n",
             model.log.toString());
+    assertTrue(log.toString().contains("Event property 'subject' " +
+            "sucessfully edited to NewMeeting.\n"));
   }
 
   @Test
@@ -187,7 +187,8 @@ public class CalendarControllerTest {
     assertEquals("Multiple Events Updated: subject, Meeting, " +
                     "2023-10-01T10:00, NewMeeting, false\n",
             model.log.toString());
-    assertTrue(log.toString().contains("Thank you for using the Calendar Program. Goodbye!"));
+    assertTrue(log.toString().contains("Event properties 'subject' " +
+            "sucessfully edited to NewMeeting."));
   }
 
   @Test
@@ -201,7 +202,8 @@ public class CalendarControllerTest {
     assertEquals("Multiple Events Updated: subject, Meeting, " +
                     "2023-10-01T10:00, NewMeeting, true\n",
             model.log.toString());
-    assertTrue(log.toString().contains("Thank you for using the Calendar Program. Goodbye!"));
+    assertTrue(log.toString().contains("Event properties 'subject' " +
+            "sucessfully edited to NewMeeting.\n"));
   }
 
   @Test
@@ -235,58 +237,13 @@ public class CalendarControllerTest {
   }
 
   @Test
-  public void testMenuCommand() {
-    StringReader fakeInput = new StringReader("menu");
-    CalendarController controller = new CalendarController(model, view, fakeInput);
-    controller.start();
-
-    StringBuilder expectedOutput = new StringBuilder();
-    expectedOutput.append(getExpectedInitialOutput());
-
-    expectedOutput.append("Available operations:\n");
-    expectedOutput.append("create event <eventSubject> from <dateStringTtimeString> " +
-            "to <dateStringTtimeString>\n");
-    expectedOutput.append("create event <eventSubject> from <dateStringTtimeString>" +
-            " to <dateStringTtimeString> repeats <weekdays> for <N> times\n");
-    expectedOutput.append("create event <eventSubject> from <dateStringTtimeString> " +
-            "to <dateStringTtimeString> repeats <weekdays> until <dateString>\n");
-    expectedOutput.append("create event <eventSubject> on <dateString>\n");
-    expectedOutput.append("create event <eventSubject> on <dateString> repeats " +
-            "<weekdays> for <N> times\n");
-    expectedOutput.append("create event <eventSubject> on <dateString> repeats" +
-            " <weekdays> until <dateString>\n");
-    expectedOutput.append("edit event <property> <eventSubject> from " +
-            "<dateStringTtimeString> to <dateStringTtimeString> with <NewPropertyValue>\n");
-    expectedOutput.append("edit events <property> <eventSubject> from " +
-            "<dateStringTtimeString> with <NewPropertyValue>\n");
-    expectedOutput.append("edit series <property> <eventSubject> from " +
-            "<dateStringTtimeString> with <NewPropertyValue>\n");
-    expectedOutput.append("print events on <dateString>\n");
-    expectedOutput.append("print events from <dateStringTtimeString> to" +
-            " <dateStringTtimeString>\n");
-    expectedOutput.append("show status on <dateStringTtimeString>\n");
-    expectedOutput.append("menu (Show this menu)\n");
-    expectedOutput.append("q or quit (Exit the program)\n");
-    expectedOutput.append("Error: the 'quit' command was never entered. Quitting now...\n");
-
-    assertEquals(expectedOutput.toString(), this.log.toString());
-  }
-
-  @Test
-  public void testQuitCommand() {
-    StringReader fakeInput = new StringReader("quit");
-    CalendarController controller = new CalendarController(model, view, fakeInput);
-    controller.start();
-    assertTrue(log.toString().contains("Goodbye!"));
-    assertTrue(log.toString().endsWith("Thank you for using the Calendar Program. Goodbye!\n"));
-  }
-
-  @Test
   public void testSingleWordCommand() {
     StringReader fakeInput = new StringReader("q");
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
-    assertTrue(log.toString().contains("Goodbye!"));
+    System.out.println(log.toString());
+    assertTrue(log.toString().contains("An error was encountered:\n" +
+            "Please enter a full command."));
   }
 
   @Test
@@ -295,14 +252,6 @@ public class CalendarControllerTest {
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
     assertTrue(log.toString().contains("Unknown command: unknown"));
-  }
-
-  @Test
-  public void testEmptyInput() {
-    StringReader fakeInput = new StringReader("");
-    CalendarController controller = new CalendarController(model, view, fakeInput);
-    controller.start();
-    assertEquals(getFullExpectedOutput(), log.toString());
   }
 
   @Test

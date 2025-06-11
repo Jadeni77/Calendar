@@ -7,8 +7,9 @@ import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 
 /**
- * This class represents a command class to copy events from one calendar to another.
- * This command can copy single events, or multiple events on a given date or date range.
+ * Represents a command to copy events from one calendar to another or to a different date.
+ * This command is part of the calendar application and allows users to copy events based on
+ * various criteria such as event name, date, or date range.
  */
 public class CopyEventCommand implements CalendarManagerCommand {
   private final String arguments;
@@ -83,7 +84,8 @@ public class CopyEventCommand implements CalendarManagerCommand {
     String calendarName = matcher.group("calendarName");
     String newDateTime = matcher.group("newDateTime");
     try {
-      manager.copyEvent(eventName.trim(), startDateTime.trim(), calendarName.trim(), newDateTime.trim());
+      manager.copyEvent(eventName.trim(), startDateTime.trim(), calendarName.trim(),
+              newDateTime.trim());
       view.displayMessage("Event '" + eventName + "' copied successfully to " +
               "calendar '" + calendarName + "' at " + newDateTime + ".");
     } catch (IllegalArgumentException e) {
@@ -109,7 +111,8 @@ public class CopyEventCommand implements CalendarManagerCommand {
       view.displayMessage("Events on " + date + " copied successfully to " +
               "calendar '" + calendarName + "' at " + newDate + ".");
     } catch (IllegalArgumentException e) {
-      view.displayException(new IllegalArgumentException("Error copying events: " + e.getMessage()));
+      view.displayException(new IllegalArgumentException("Error copying events: " +
+              e.getMessage()));
     }
   }
 
@@ -133,7 +136,8 @@ public class CopyEventCommand implements CalendarManagerCommand {
       view.displayMessage("Events between " + startDate + " and " + endDate +
               " copied successfully to calendar '" + calendarName + "' at " + newDate + ".");
     } catch (IllegalArgumentException e) {
-      view.displayException(new IllegalArgumentException("Error copying events: " + e.getMessage()));
+      view.displayException(new IllegalArgumentException("Error copying events: " +
+              e.getMessage()));
     }
 
   }

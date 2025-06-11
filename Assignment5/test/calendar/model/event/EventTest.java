@@ -85,6 +85,6 @@ public class EventTest {
    */
   @Test
   public void testToString() {
-    assertEquals("Hi - Starts: 2023-10-01T10::00, Ends: 2023-10-01T12::00", event.toString());
+    assertEquals("Hi - Starts: 2023-10-01T10:00, Ends: 2023-10-01T12:00", event.toString());
   }
 }

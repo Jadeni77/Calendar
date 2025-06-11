@@ -79,7 +79,7 @@ public class CalendarViewTest {
   public void testPrintEventNoLocation() {
     eventList.add(e1);
     view.printEvents(eventList);
-    assertEquals("\u2022Subject 1 - Starts: 2023-10-01T10::00, Ends: 2023-10-01T08::00\n",
+    assertEquals("\u2022Subject 1 - Starts: 2023-10-01T10:00, Ends: 2023-10-01T20:00\n",
             sb.toString());
   }
 
@@ -90,7 +90,7 @@ public class CalendarViewTest {
   public void testPrintEventWithLocation() {
     eventList.add(e2);
     view.printEvents(eventList);
-    assertEquals("\u2022blahblahblah - Starts: 2025-06-04T02::15, Ends: 2025-06-04T05::30"
+    assertEquals("\u2022blahblahblah - Starts: 2025-06-04T14:15, Ends: 2025-06-04T17:30"
             + ", Location: PHYSICAL\n", sb.toString());
   }
 
@@ -103,11 +103,11 @@ public class CalendarViewTest {
     eventList.add(e2);
     eventList.add(e3);
     view.printEvents(eventList);
-    assertEquals("\u2022Subject 1 - Starts: 2023-10-01T10::00, Ends: 2023-10-01T08::00\n"
-            + "\u2022blahblahblah - Starts: 2025-06-04T02::15, Ends: " +
-            "2025-06-04T05::30, Location: PHYSICAL\n"
-            + "\u2022Sub. 3 - Starts: 2025-04-17T08::00, Ends: " +
-            "2025-04-17T05::00\n", sb.toString());
+    assertEquals("\u2022Subject 1 - Starts: 2023-10-01T10:00, Ends: 2023-10-01T20:00\n"
+            + "\u2022blahblahblah - Starts: 2025-06-04T14:15, Ends: " +
+            "2025-06-04T17:30, Location: PHYSICAL\n"
+            + "\u2022Sub. 3 - Starts: 2025-04-17T08:00, Ends: " +
+            "2025-04-17T17:00\n", sb.toString());
   }
 
   /**

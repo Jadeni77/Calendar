@@ -68,6 +68,7 @@ public class NewCalendarModel extends CalendarModel {
       // original localDateTimes
       LocalDateTime originalStart = e.getStartDateTime();
       LocalDateTime originalEnd = e.getEndDateTime();
+
       // changing time zones with ZonedDateTime conversion
       LocalDateTime newStartLDT = originalStart.atZone(lastTimeZone)
               .withZoneSameInstant(timeZone)
@@ -80,6 +81,15 @@ public class NewCalendarModel extends CalendarModel {
     }
   }
 
+  /**
+   * Converts a LocalDateTime to a ZonedDateTime in the context of this calendar's time zone. And
+   * modify the event's start and end times accordingly by using the editSingleEvent method.
+   * @param e the event to edit
+   * @param oldStart the old start date and time of the event
+   * @param oldEnd the old end date and time of the event
+   * @param newStart the new start date and time of the event
+   * @param newEnd the new end date and time of the event
+   */
   private void handleDateChanging(Event e, LocalDateTime oldStart, LocalDateTime oldEnd,
                                   LocalDateTime newStart, LocalDateTime newEnd) {
     if (oldStart.isBefore(newStart)) {
@@ -97,25 +107,5 @@ public class NewCalendarModel extends CalendarModel {
               oldEnd.format(dateTimeFormatter),
               newEnd.format(dateTimeFormatter));
     }
-  }
-
-  /**
-   * Convert a given LocalDateTime to a ZonedDateTime in the calendar's time zone.
-   *
-   * @param local the given LocalDateTime to convert
-   * @return the ZonedDateTime in the calendar's time zone
-   */
-  private ZonedDateTime toCalendarTime(LocalDateTime local) {
-    return ZonedDateTime.of(local, timeZone);
-  }
-
-  /**
-   * Convert a given ZonedDateTime to a LocalDateTime in the calendar's time zone.
-   *
-   * @param zone the given ZonedDateTime to convert
-   * @return the LocalDateTime in the calendar's time zone
-   */
-  private LocalDateTime fromCalendarTime(ZonedDateTime zone) {
-    return zone.withZoneSameInstant(timeZone).toLocalDateTime();
   }
 }

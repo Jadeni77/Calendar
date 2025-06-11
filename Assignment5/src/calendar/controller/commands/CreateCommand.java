@@ -1,6 +1,5 @@
 package calendar.controller.commands;
 
-import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -114,26 +113,40 @@ public class CreateCommand implements CalendarCommand {
       start = matcher.group("start");
       end = matcher.group("end");
     }
-
-    Integer count = null;
-    String until = null;
-
     try {
-      if (matcher.group("count") != null) {
-        count = Integer.parseInt(matcher.group("count"));
-        model.createRecurringEvent(subject, start, end, days, count);
-        view.displayMessage("Events created with subject '" + subject + "', with first start " +
-                "and end at " + start + " and " + end + ", on days " + days + " for "
-                + count + " times.");
-      } else if (matcher.group("until") != null) {
-        until = matcher.group("until");
-        model.createRecurringEvent(subject, start, end, days, until);
-        view.displayMessage("Events created with subject '" + subject + "', with first start " +
-                "and end at " + start + " and " + end + ", on days " + days
-                + " until " + until + ".");
-      }
+      this.parseCreateRecurHelper(matcher, model, view, subject, days, start, end);
     } catch (IllegalArgumentException e) {
       view.displayException(e);
+    }
+  }
+
+  /**
+   * Helper method to parse the matcher for a recurring event creation command.
+   * @param matcher the matcher containing the parsed command details
+   * @param model the calendar model to create the events in
+   * @param view the calendar view to display messages
+   * @param subject the subject of the event
+   * @param days the days of the week on which the event occurs
+   * @param start the start date and time of the event
+   * @param end the end date and time of the event
+   */
+  private void parseCreateRecurHelper(Matcher matcher, ICalendar model, ICalendarView view,
+                                    String subject, String days, String start, String end) {
+    int count;
+    String until;
+
+    if (matcher.group("count") != null) {
+      count = Integer.parseInt(matcher.group("count"));
+      model.createRecurringEvent(subject, start, end, days, count);
+      view.displayMessage("Events created with subject '" + subject + "', with first start " +
+              "and end at " + start + " and " + end + ", on days " + days + " for "
+              + count + " times.");
+    } else if (matcher.group("until") != null) {
+      until = matcher.group("until");
+      model.createRecurringEvent(subject, start, end, days, until);
+      view.displayMessage("Events created with subject '" + subject + "', with first start " +
+              "and end at " + start + " and " + end + ", on days " + days
+              + " until " + until + ".");
     }
   }
 
@@ -151,8 +164,8 @@ public class CreateCommand implements CalendarCommand {
     String onDate = matcher.group("date");
     String days = matcher.group("days");
 
-    Integer count = null;
-    String until = null;
+    int count;
+    String until;
 
     if (matcher.group("count") != null) {
       count = Integer.parseInt(matcher.group("count"));

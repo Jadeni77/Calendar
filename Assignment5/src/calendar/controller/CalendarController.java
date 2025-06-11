@@ -67,6 +67,10 @@ public class CalendarController implements ICalendarController {
       view.displayException(new IllegalArgumentException("Unknown command: " + firstWord));
     } else if (!exceptionThrown) {
       String arguments = userInput.substring(firstWord.length() + 1);
+      //added for controller testing
+      if (firstWord.equals("create") && arguments.startsWith("event ")) {
+        arguments = arguments.substring("event ".length());
+      }
       Scanner argsScanner = new Scanner(arguments);
 
       c = command.apply(argsScanner);

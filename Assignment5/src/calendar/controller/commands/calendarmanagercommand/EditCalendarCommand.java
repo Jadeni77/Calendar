@@ -52,7 +52,7 @@ public class EditCalendarCommand implements CalendarManagerCommand {
   }
 
   /**
-   * Parses the matcher to extract calendar name, property, and new value,
+   * Parses the matcher to extract calendar name, property, and new value.
    * @param matcher the matcher containing the calendar edit details
    * @param manager the calendar manager model to edit the calendar
    * @param view the view to display messages or exceptions
