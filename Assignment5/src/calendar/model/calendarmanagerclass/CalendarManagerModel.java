@@ -1,5 +1,6 @@
 package calendar.model.calendarmanagerclass;
 
+import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class CalendarManagerModel implements ICalendarManager {
     ZoneId parseZone;
     try {
       parseZone = ZoneId.of(zoneId);
-    } catch (ZoneRulesException e) {
+    } catch (DateTimeException e) {
       throw new IllegalArgumentException("Invalid or unsupported timezone ID: '" + zoneId + "'. " +
               "Please use IANA Time Zone Database format (e.g., 'America/New_York').");
     }
