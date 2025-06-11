@@ -20,8 +20,6 @@ public class EditCalendarCommandTest {
   private ICalendarManager manager;
   private ICalendarView view;
   private StringWriter log;
-  private CalendarManagerCommand createCalendar;
-  private CalendarManagerCommand useCalendar;
 
   @Before
   public void setUp() {
@@ -29,11 +27,11 @@ public class EditCalendarCommandTest {
     this.log = new StringWriter();
     this.view = new TextBasedView(log);
 
-    this.createCalendar = new CreateCalendarCommand("--name Old Name " +
+    CalendarManagerCommand createCalendar = new CreateCalendarCommand("--name Old Name " +
             "--timezone America/New_York");
     createCalendar.execute(manager, view);
 
-    this.useCalendar = new UseCalendarCommand("--name \"Old Name\"");
+    CalendarManagerCommand useCalendar = new UseCalendarCommand("--name Old Name");
     useCalendar.execute(manager, view);
   }
 
