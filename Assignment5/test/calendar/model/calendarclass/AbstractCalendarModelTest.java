@@ -544,8 +544,8 @@ public abstract class AbstractCalendarModelTest {
     assertNull(cm2.getEvent("Work", ldt5, ldt6));
     assertNull(cm2.getEvent("Work", ldt7, ldt8));
     cm2.editMultipleEvents("end", "123", "2025-06-12T08:00",
-            "2025-06-13T10:00", false);
-    LocalDateTime newTime = LocalDateTime.parse("2025-06-13T10:00", dateTimeFormatter);
+            "2025-06-12T14:00", false);
+    LocalDateTime newTime = LocalDateTime.parse("2025-06-12T14:00", dateTimeFormatter);
     assertEquals("Work", cm2.getEvent("Work", ldt1, ldt2).getSubject());
     assertEquals("Work", cm2.getEvent("Work", ldt3, ldt4).getSubject());
     assertEquals("123", cm2.getEvent("123", ldt5, ldt6).getSubject());
@@ -588,12 +588,11 @@ public abstract class AbstractCalendarModelTest {
     assertNull(cm2.getEvent("Work", ldt5, ldt6));
     assertNull(cm2.getEvent("Work", ldt7, ldt8));
     cm2.editMultipleEvents("end", "123", "2025-06-09T08:00",
-            "2025-06-13T10:00", true);
-    LocalDateTime newTime = LocalDateTime.parse("2025-06-13T10:00", dateTimeFormatter);
-    assertEquals("123", cm2.getEvent("123", ldt1, newTime).getSubject());
-    assertEquals("123", cm2.getEvent("123", ldt3, newTime).getSubject());
-    assertEquals("123", cm2.getEvent("123", ldt5, newTime).getSubject());
-    assertEquals("123", cm2.getEvent("123", ldt7, newTime).getSubject());
+            "2025-06-09T11:00", true);
+    assertEquals("123", cm2.getEvent("123", ldt1, ldt2.minusHours(6)).getSubject());
+    assertEquals("123", cm2.getEvent("123", ldt3, ldt4.minusHours(6)).getSubject());
+    assertEquals("123", cm2.getEvent("123", ldt5, ldt6.minusHours(6)).getSubject());
+    assertEquals("123", cm2.getEvent("123", ldt7, ldt8.minusHours(6)).getSubject());
 
   }
 

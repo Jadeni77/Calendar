@@ -94,17 +94,11 @@ public class NewCalendarModelTest extends AbstractCalendarModelTest {
   @Test
   public void testSetTimeZoneSeriesSpan() {
     try {
-      c2.setTimeZone(ZoneId.of("Pacific/Honolulu"));
+      c2.setTimeZone(ZoneId.of("Asia/Dili"));
       fail("Should have thrown an exception.");
     } catch (Exception e) {
       assertEquals("A series event cannot be edited to span multiple days.",
               e.getMessage());
     }
   }
-
-  // TODO other tests specific to new model
-
-
-
-  // TODO abstract tests for old model
 }

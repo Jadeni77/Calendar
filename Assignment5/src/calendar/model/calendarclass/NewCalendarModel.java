@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import calendar.model.event.Event;
 
@@ -63,8 +65,8 @@ public class NewCalendarModel extends CalendarModel {
   public void setTimeZone(ZoneId timeZone) {
     ZoneId lastTimeZone = this.timeZone;
     this.timeZone = timeZone;
-    for (String key : new ArrayList<>(this.events.keySet())) {
-      Event e = this.events.get(key);
+    List<Event> events = filterSeriesIds(new ArrayList<>(this.events.values()));
+    for (Event e : events) {
       // original localDateTimes
       LocalDateTime originalStart = e.getStartDateTime();
       LocalDateTime originalEnd = e.getEndDateTime();
@@ -93,19 +95,30 @@ public class NewCalendarModel extends CalendarModel {
   private void handleDateChanging(Event e, LocalDateTime oldStart, LocalDateTime oldEnd,
                                   LocalDateTime newStart, LocalDateTime newEnd) {
     if (oldStart.isBefore(newStart)) {
-      editSingleEvent("end", e.getSubject(), oldStart.format(dateTimeFormatter),
-              oldEnd.format(dateTimeFormatter),
-              newEnd.format(dateTimeFormatter));
-      editSingleEvent("start", e.getSubject(), oldStart.format(dateTimeFormatter),
-              newEnd.format(dateTimeFormatter),
-              newStart.format(dateTimeFormatter));
+      editMultipleEvents("end", e.getSubject(), oldStart.format(dateTimeFormatter),
+              newEnd.format(dateTimeFormatter), true);
+      editMultipleEvents("start", e.getSubject(), oldStart.format(dateTimeFormatter),
+              newStart.format(dateTimeFormatter), true);
     } else if (newStart.isBefore(oldStart)) {
-      editSingleEvent("start", e.getSubject(), oldStart.format(dateTimeFormatter),
-              oldEnd.format(dateTimeFormatter),
-              newStart.format(dateTimeFormatter));
-      editSingleEvent("end", e.getSubject(), newStart.format(dateTimeFormatter),
-              oldEnd.format(dateTimeFormatter),
-              newEnd.format(dateTimeFormatter));
+      editMultipleEvents("start", e.getSubject(), oldStart.format(dateTimeFormatter),
+              newStart.format(dateTimeFormatter), true);
+      editMultipleEvents("end", e.getSubject(), newStart.format(dateTimeFormatter),
+              newEnd.format(dateTimeFormatter), true);
     }
+  }
+
+  private List<Event> filterSeriesIds(List<Event> events) {
+    ArrayList<String> ids = new ArrayList<>();
+    for (Event e : new ArrayList<>(events)) {
+      if (e.getSeriesId() != null) {
+        if (!ids.contains(e.getSeriesId())) {
+          ids.add(e.getSeriesId());
+        }
+        else {
+          events.remove(e);
+        }
+      }
+    }
+    return events;
   }
 }
