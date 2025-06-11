@@ -106,6 +106,3 @@ public class EditCommand implements CalendarCommand {
     }
   }
 }
-
-//create event <eventSubject> from
-// <dateStringTtimeString> to <dateStringTtimeString> repeats <weekdays> until <dateString>

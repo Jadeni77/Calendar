@@ -42,7 +42,6 @@ public class PrintCommand implements CalendarCommand {
       view.displayMessage("Invalid command. Please provide a date or range.");
       return;
     }
-
     Matcher matcher;
     if ((matcher = PRINT_EVENTS_ON.matcher(arguments)).matches()) {
       parsePrintEventsOnDate(matcher, model, view);
@@ -69,7 +68,6 @@ public class PrintCommand implements CalendarCommand {
       view.displayMessage("Invalid date format. Please use 'yyyy-MM-dd'.");
       return;
     }
-
     List<Event> events = model.getEventsOnDate(date);
     if (events.isEmpty()) {
       view.displayMessage("No events found on " + date);

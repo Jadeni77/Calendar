@@ -204,6 +204,21 @@ public class CalendarModel implements ICalendar {
     this.addEvent(event);
   }
 
+  @Override
+  public void createAllDayEvent(String eventSubject, String onDate) {
+    LocalDate date = LocalDate.parse(onDate, dateFormatter);
+    LocalDateTime start = date.atTime(8, 0);
+    LocalDateTime end = date.atTime(17, 0);
+
+    Event event = new Event.EventBuilder()
+            .subject(eventSubject)
+            .startDateTime(start)
+            .endDateTime(end)
+            .isAllDayEvent(true)
+            .build();
+    this.addEvent(event);
+  }
+
   /**
    * Creates a recurring event using the provided fields that repeats on specified days for\
    * a certain number of times. Throws an exception if the given start time and end time are
@@ -281,6 +296,22 @@ public class CalendarModel implements ICalendar {
     List<LocalDate> occurrenceDates = rule.generateOccurrenceDate(start.toLocalDate());
     String seriesId = UUID.randomUUID().toString();
 
+    this.recurHelper(start, end, recurringEvent, eventSubject, seriesId, occurrenceDates);
+
+    this.addMultipleEvents(recurringEvent);
+  }
+
+  /**
+   * Helper method for creating recurring events.
+   * @param start the start time of the event
+   * @param end the end time of the event
+   * @param recurringEvent the list to store the created recurring events
+   * @param eventSubject the subject of the event
+   * @param seriesId the unique identifier for the series of events
+   * @param occurrenceDates the list of dates on which the event occurs
+   */
+  private void recurHelper(LocalDateTime start, LocalDateTime end, List<Event> recurringEvent,
+                    String eventSubject, String seriesId, List<LocalDate> occurrenceDates) {
     for (LocalDate date : occurrenceDates) {
       Event.EventBuilder builder = new Event.EventBuilder()
               .subject(eventSubject)
@@ -293,22 +324,6 @@ public class CalendarModel implements ICalendar {
       builder.startDateTime(currentStart).endDateTime(currentEnd).isAllDayEvent(false);
       recurringEvent.add(builder.build());
     }
-    this.addMultipleEvents(recurringEvent);
-  }
-
-  @Override
-  public void createAllDayEvent(String eventSubject, String onDate) {
-    LocalDate date = LocalDate.parse(onDate, dateFormatter);
-    LocalDateTime start = date.atTime(8, 0);
-    LocalDateTime end = date.atTime(17, 0);
-
-    Event event = new Event.EventBuilder()
-            .subject(eventSubject)
-            .startDateTime(start)
-            .endDateTime(end)
-            .isAllDayEvent(true)
-            .build();
-    this.addEvent(event);
   }
 
   @Override
@@ -326,16 +341,8 @@ public class CalendarModel implements ICalendar {
     List<Event> recurringEvent = new ArrayList<>();
     String seriesId = UUID.randomUUID().toString();
 
-    for (LocalDate d : occurrenceDates) {
-      Event.EventBuilder builder = new Event.EventBuilder()
-              .subject(eventSubject)
-              .status(EventStatus.PUBLIC)
-              .seriesId(seriesId);
+    this.recurringEventHelper(occurrenceDates, eventSubject, seriesId, recurringEvent);
 
-      builder.startDateTime(d.atStartOfDay()).isAllDayEvent(true);
-
-      recurringEvent.add(builder.build());
-    }
     this.addMultipleEvents(recurringEvent);
   }
 
@@ -352,6 +359,23 @@ public class CalendarModel implements ICalendar {
     List<Event> recurringEvent = new ArrayList<>();
     String seriesId = UUID.randomUUID().toString();
 
+    this.recurringEventHelper(occurrenceDates, eventSubject, seriesId, recurringEvent);
+
+    this.addMultipleEvents(recurringEvent);
+  }
+
+  /**
+   * Helper method for creating recurring all-day events.
+   * It takes a list of occurrence dates, the event subject, series ID, and a list to store
+   * the created recurring events.
+   *
+   * @param occurrenceDates the list of dates on which the event occurs
+   * @param eventSubject    the subject of the event
+   * @param seriesId        the unique identifier for the series of events
+   * @param recurringEvent  the list to store the created recurring events
+   */
+  private void recurringEventHelper(List<LocalDate> occurrenceDates, String eventSubject,
+                                    String seriesId, List<Event> recurringEvent) {
     for (LocalDate dates : occurrenceDates) {
       Event.EventBuilder builder = new Event.EventBuilder()
               .subject(eventSubject)
@@ -362,7 +386,6 @@ public class CalendarModel implements ICalendar {
 
       recurringEvent.add(builder.build());
     }
-    this.addMultipleEvents(recurringEvent);
   }
 
   /**
@@ -379,8 +402,8 @@ public class CalendarModel implements ICalendar {
   @Override
   public void editSingleEvent(String property, String eventSubject, String startDateTime,
                               String endDateTime, String newValue) {
-    LocalDateTime startTime = null;
-    LocalDateTime endTime = null;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
 
     try {
       startTime = LocalDateTime.parse(startDateTime, dateTimeFormatter);
@@ -396,7 +419,6 @@ public class CalendarModel implements ICalendar {
               "starting at " + startTime.format(dateFormatter) + " " +
               "and ending at " + endTime.format(dateFormatter) + ".");
     }
-
     editEventHelper(targetEvent, property, newValue);
   }
 
@@ -414,7 +436,7 @@ public class CalendarModel implements ICalendar {
   @Override
   public void editMultipleEvents(String property, String eventSubject,
                                  String startDateTime, String newValue, boolean editSeries) {
-    LocalDateTime startTime = null;
+    LocalDateTime startTime;
 
     try {
       startTime = LocalDateTime.parse(startDateTime, dateTimeFormatter);
@@ -422,14 +444,9 @@ public class CalendarModel implements ICalendar {
       throw new IllegalArgumentException("Invalid date format. Please use 'yyyy-MM-ddTHH:mm'.");
     }
     List<Event> targetEvents = findEventsBySubjectAndStart(eventSubject, startTime);
-    if (targetEvents.isEmpty()) {
-      throw new IllegalArgumentException("No events found with subject '" + eventSubject + "' "
-              + "starting at " + startTime.format(dateTimeFormatter) + ".");
-    } else if (targetEvents.size() > 1) {
-      throw new IllegalArgumentException("Multiple events found with subject '" + eventSubject
-              + "' and start time at " + startTime.format(dateTimeFormatter) + ". More than one"
-              + " event cannot be edited at once.");
-    }
+
+    this.targetEventEmpty(targetEvents, eventSubject, startTime);
+
     Event targetEvent = targetEvents.get(0);
 
     String seriesId = null;
@@ -448,6 +465,24 @@ public class CalendarModel implements ICalendar {
           editEventHelper(seriesEvent, property, newValue);
         }
       }
+    }
+  }
+
+  /**
+   * Helper method for editEvent that checks if the targetEvents list is empty or has
+   * @param targetEvents the list of events to check
+   * @param eventSubject the subject of the event to check
+   * @param startTime the start time of the event to check
+   */
+  private void targetEventEmpty(List<Event> targetEvents, String eventSubject,
+                                LocalDateTime startTime) {
+    if (targetEvents.isEmpty()) {
+      throw new IllegalArgumentException("No events found with subject '" + eventSubject + "' "
+              + "starting at " + startTime.format(dateTimeFormatter) + ".");
+    } else if (targetEvents.size() > 1) {
+      throw new IllegalArgumentException("Multiple events found with subject '" + eventSubject
+              + "' and start time at " + startTime.format(dateTimeFormatter) + ". More than one"
+              + " event cannot be edited at once.");
     }
   }
 

@@ -49,32 +49,71 @@ public class CalendarManagerModel implements ICalendarManager {
 
     switch (property) {
       case "name":
-        if (calendars.containsKey(newValue)) {
-          throw new IllegalArgumentException("New Calendar name already exists");
-        }
-        calendars.remove(nameOfCalendarToEdit);
-        targetCalendar.setName(newValue);
-        calendars.put(newValue, targetCalendar);
-
-        if (nameOfCalendarToEdit.equals(currentCalendarName)) {
-          currentCalendarName = newValue; // Update current calendar name if it was changed
-        }
+        editNameHelp(nameOfCalendarToEdit, targetCalendar, newValue);
+//        if (calendars.containsKey(newValue)) {
+//          throw new IllegalArgumentException("New Calendar name already exists");
+//        }
+//        calendars.remove(nameOfCalendarToEdit);
+//        targetCalendar.setName(newValue);
+//        calendars.put(newValue, targetCalendar);
+//
+//        if (nameOfCalendarToEdit.equals(currentCalendarName)) {
+//          currentCalendarName = newValue; // Update current calendar name if it was changed
+//        }
         break;
       case "timezone":
-        ZoneId newZoneId;
-        try {
-          newZoneId = ZoneId.of(newValue);
-        } catch (ZoneRulesException e) {
-          throw new IllegalArgumentException("Invalid or unsupported timezone ID: '"
-                  + newValue + "'. " + "Please use IANA Time Zone Database format " +
-                  "(e.g., 'America/New_York').");
-        }
-        targetCalendar.setTimeZone(newZoneId);
+        editTimeZoneHelp(targetCalendar, newValue);
+//        ZoneId newZoneId;
+//        try {
+//          newZoneId = ZoneId.of(newValue);
+//        } catch (ZoneRulesException e) {
+//          throw new IllegalArgumentException("Invalid or unsupported timezone ID: '"
+//                  + newValue + "'. " + "Please use IANA Time Zone Database format " +
+//                  "(e.g., 'America/New_York').");
+//        }
+//        targetCalendar.setTimeZone(newZoneId);
         break;
       default:
         throw new IllegalArgumentException("Unsupported property '" + property
                 + "' for calendar editing. " + "Valid properties are: 'name', 'timezone'.");
     }
+  }
+
+  /**
+   * Helper method to edit the calendar's name.
+   * @param nameOfCalendarToEdit the name of the calendar to edit
+   * @param targetCalendar the calendar model to edit
+   * @param newValue the new name for the calendar
+   */
+  private void editNameHelp(String nameOfCalendarToEdit, NewCalendarModel
+          targetCalendar, String newValue) {
+    if (calendars.containsKey(newValue)) {
+      throw new IllegalArgumentException("New Calendar name already exists");
+    }
+    calendars.remove(nameOfCalendarToEdit);
+    targetCalendar.setName(newValue);
+    calendars.put(newValue, targetCalendar);
+
+    if (nameOfCalendarToEdit.equals(currentCalendarName)) {
+      currentCalendarName = newValue; // Update current calendar name if it was changed
+    }
+  }
+
+  /**
+   * Helper method to edit the calendar's time zone.
+   * @param targetCalendar the calendar model to edit
+   * @param newValue the new time zone ID for the calendar
+   */
+  private void editTimeZoneHelp(NewCalendarModel targetCalendar, String newValue) {
+    ZoneId newZoneId;
+    try {
+      newZoneId = ZoneId.of(newValue);
+    } catch (ZoneRulesException e) {
+      throw new IllegalArgumentException("Invalid or unsupported timezone ID: '"
+              + newValue + "'. " + "Please use IANA Time Zone Database format " +
+              "(e.g., 'America/New_York').");
+    }
+    targetCalendar.setTimeZone(newZoneId);
   }
 
   @Override
@@ -141,16 +180,19 @@ public class CalendarManagerModel implements ICalendarManager {
     Duration duration = Duration.between(event.getStartDateTime(), event.getEndDateTime());
     LocalDateTime newEndTime = newStartTime.plus(duration);
 
-    return new Event.EventBuilder()
-            .subject(event.getSubject())
-            .startDateTime(newStartTime)
-            .endDateTime(newEndTime)
-            .description(event.getDescription())
-            .location(event.getLocation())
-            .status(event.getStatus())
-            .seriesId(event.getSeriesId())
-            .isAllDayEvent(event.getIsAllDayEvent())
-            .build();
+    return this.shiftHelp(event, newStartTime, newEndTime);
+
+
+//    return new Event.EventBuilder()
+//            .subject(event.getSubject())
+//            .startDateTime(newStartTime)
+//            .endDateTime(newEndTime)
+//            .description(event.getDescription())
+//            .location(event.getLocation())
+//            .status(event.getStatus())
+//            .seriesId(event.getSeriesId())
+//            .isAllDayEvent(event.getIsAllDayEvent())
+//            .build();
   }
 
   @Override
@@ -204,6 +246,30 @@ public class CalendarManagerModel implements ICalendarManager {
     LocalDateTime newStartTime = event.getStartDateTime().plusDays(shift);
     LocalDateTime newEndTime = event.getEndDateTime().plusDays(shift);
 
+    return this.shiftHelp(event, newStartTime, newEndTime);
+
+//    return new Event.EventBuilder()
+//            .subject(event.getSubject())
+//            .startDateTime(newStartTime)
+//            .endDateTime(newEndTime)
+//            .description(event.getDescription())
+//            .location(event.getLocation())
+//            .status(event.getStatus())
+//            .seriesId(event.getSeriesId())
+//            .isAllDayEvent(event.getIsAllDayEvent())
+//            .build();
+
+
+  }
+
+  /**
+   * Helper method to create a new Event with updated start and end times.
+   * @param event the original event to shift
+   * @param newStartTime the new start time for the event
+   * @param newEndTime the new end time for the event
+   * @return a new Event object with updated start and end times
+   */
+  private Event shiftHelp(Event event, LocalDateTime newStartTime, LocalDateTime newEndTime) {
     return new Event.EventBuilder()
             .subject(event.getSubject())
             .startDateTime(newStartTime)
