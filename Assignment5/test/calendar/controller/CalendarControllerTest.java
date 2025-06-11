@@ -88,8 +88,6 @@ public class CalendarControllerTest {
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
 
-    System.out.println(model.log.toString());
-
 
     assertEquals("Single Event Created: Meeting, 2023-10-01T10:00, 2023-10-01T11:30\n",
             model.log.toString());
@@ -241,7 +239,6 @@ public class CalendarControllerTest {
     StringReader fakeInput = new StringReader("q");
     CalendarController controller = new CalendarController(model, view, fakeInput);
     controller.start();
-    System.out.println(log.toString());
     assertTrue(log.toString().contains("An error was encountered:\n" +
             "Please enter a full command."));
   }
