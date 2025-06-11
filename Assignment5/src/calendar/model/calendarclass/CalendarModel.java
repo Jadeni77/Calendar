@@ -450,7 +450,6 @@ public class CalendarModel implements ICalendar {
       throw new IllegalArgumentException("Invalid date format. Please use 'yyyy-MM-ddTHH:mm'.");
     }
     List<Event> targetEvents = findEventsBySubjectAndStart(eventSubject, startTime);
-
     this.targetEventEmpty(targetEvents, eventSubject, startTime);
 
     Event targetEvent = targetEvents.get(0);
@@ -463,12 +462,25 @@ public class CalendarModel implements ICalendar {
       editEventHelper(targetEvent, property, newValue);
     } else {
       List<Event> seriesEvents = getEventsBySeriesId(seriesId);
-      for (Event seriesEvent : seriesEvents) {
-        if (editSeries) {
-          editEventHelper(seriesEvent, property, newValue);
-        } else if (seriesEvent.getStartDateTime().isEqual(targetEvent.getStartDateTime())
-                || seriesEvent.getStartDateTime().isAfter(targetEvent.getStartDateTime())) {
-          editEventHelper(seriesEvent, property, newValue);
+      if (!editSeries) {
+        seriesEvents = eventsFromDateForward(seriesEvents, startTime);
+      }
+      for (int i = 0; i < seriesEvents.size(); i++) {
+        if (seriesEvents.get(i).getStartDateTime().equals(startTime)) {
+          Event exactMatch = seriesEvents.remove(i);
+          seriesEvents.add(0, exactMatch);
+          break;
+        }
+      }
+      boolean processedAlready = processChangeTime(seriesEvents, property, newValue);
+      if (!processedAlready) {
+        for (Event seriesEvent : seriesEvents) {
+          if (editSeries) {
+            editEventHelper(seriesEvent, property, newValue);
+          } else if (seriesEvent.getStartDateTime().isEqual(targetEvent.getStartDateTime())
+                  || seriesEvent.getStartDateTime().isAfter(targetEvent.getStartDateTime())) {
+            editEventHelper(seriesEvent, property, newValue);
+          }
         }
       }
     }
@@ -560,5 +572,47 @@ public class CalendarModel implements ICalendar {
       weekdays.add(day);
     }
     return weekdays;
+  }
+
+  private boolean processChangeTime(List<Event> events, String property, String newValue) {
+    LocalDateTime newTime;
+    Duration shift;
+    if (events.size() > 1) {
+      switch (property) {
+        case "start":
+          newTime = LocalDateTime.parse(newValue, dateTimeFormatter);
+          shift = Duration.between(events.get(0).getStartDateTime(), newTime);
+          for (Event event : events) {
+            LocalDateTime adjustedStart = event.getStartDateTime().plus(shift);
+            if (event.getEndDateTime().getDayOfWeek() != adjustedStart.getDayOfWeek()) {
+              throw new IllegalStateException("A series event cannot be edited"
+                      + " to span multiple days.");
+            }
+            editEventHelper(event, property, adjustedStart.format(dateTimeFormatter));
+          }
+          break;
+        case "end":
+          newTime = LocalDateTime.parse(newValue, dateTimeFormatter);
+          shift = Duration.between(events.get(0).getEndDateTime(), newTime);
+          for (Event event : events) {
+            LocalDateTime adjustedEnd = event.getEndDateTime().plus(shift);
+            if (event.getStartDateTime().getDayOfWeek() != adjustedEnd.getDayOfWeek()) {
+              throw new IllegalStateException("A series event cannot be edited to"
+                      + " span multiple days.");
+            }
+            editEventHelper(event, property, adjustedEnd.format(dateTimeFormatter));
+          }
+          break;
+        default:
+          return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private List<Event> eventsFromDateForward (List<Event> events, LocalDateTime dateTime) {
+    events.removeIf(event -> event.getStartDateTime().isBefore(dateTime));
+    return events;
   }
 }
