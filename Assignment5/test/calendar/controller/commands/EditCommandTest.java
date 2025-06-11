@@ -23,9 +23,10 @@ public class EditCommandTest {
 
   @Before
   public void setUp() {
-    model = new MockModel();
-    log = new StringWriter();
-    view = new TextBasedView(log);
+    StringBuilder modelLog = new StringBuilder();
+    this.model = new MockModel(modelLog);
+    this.log = new StringWriter();
+    this.view = new TextBasedView(log);
   }
 
   @Test

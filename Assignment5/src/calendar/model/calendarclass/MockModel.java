@@ -14,15 +14,15 @@ import calendar.model.event.Event;
  */
 public class MockModel implements ICalendar {
   public StringBuilder log;
-  private final DateTimeFormatter dateFormatter;
-  private final DateTimeFormatter dateTimeFormatter;
+  protected final DateTimeFormatter dateFormatter;
+  protected final DateTimeFormatter dateTimeFormatter;
 
   /**
    * Constructor for MockModel.
    * Initializes the events and seriesEvents to empty maps.
    */
-  public MockModel() {
-    this.log = new StringBuilder();
+  public MockModel(StringBuilder modelLog) {
+    this.log = modelLog;
     this.dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     this.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
   }

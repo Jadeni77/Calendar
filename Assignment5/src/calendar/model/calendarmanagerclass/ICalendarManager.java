@@ -1,5 +1,6 @@
 package calendar.model.calendarmanagerclass;
 
+import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.NewCalendarModel;
 
 /**
@@ -40,7 +41,7 @@ public interface ICalendarManager {
    *
    * @return the current calendar being in use
    */
-  NewCalendarModel getCurrentActiveCalendar();
+  ICalendar getCurrentActiveCalendar();
 
   /**
    * To retrieve any specific calendar that matches the given name, regardless
@@ -49,7 +50,7 @@ public interface ICalendarManager {
    * @param name the given name of a Calendar
    * @return the target calendar with the given name.
    */
-  NewCalendarModel getTargetCalendar(String name);
+  ICalendar getTargetCalendar(String name);
 
   /**
    * Copies an event from one calendar to another on the given target date/time.

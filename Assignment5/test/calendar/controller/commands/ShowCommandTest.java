@@ -24,7 +24,8 @@ public class ShowCommandTest {
 
   @Before
   public void setUp() {
-    this.model = new MockModel();
+    StringBuilder modelLog = new StringBuilder();
+    this.model = new MockModel(modelLog);
     this.log = new StringWriter();
     this.view = new TextBasedView(log);
   }

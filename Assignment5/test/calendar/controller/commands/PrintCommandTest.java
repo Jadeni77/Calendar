@@ -24,7 +24,8 @@ public class PrintCommandTest {
 
   @Before
   public void setUp() {
-    model = new MockModel();
+    StringBuilder modelLog = new StringBuilder();
+    this.model = new MockModel(modelLog);
     log = new StringWriter();
     view = new TextBasedView(log);
   }
