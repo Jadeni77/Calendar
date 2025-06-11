@@ -65,7 +65,8 @@ public class EditCalendarCommand implements CalendarManagerCommand {
 
     try {
       manager.editCalendar(calendarName.trim(), property.trim(), value.trim());
-      view.displayMessage("Calendar '" + calendarName + "' updated successfully.");
+      view.displayMessage("Calendar '" + calendarName + "' updated successfully." +
+              " Property '" + property + "' set to '" + value + "'.");
     } catch (IllegalArgumentException e) {
       view.displayException(new IllegalArgumentException("Error editing calendar: "
               + e.getMessage()));
