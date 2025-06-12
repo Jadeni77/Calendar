@@ -1,10 +1,11 @@
 package calendar.model.calendarmanagerclass;
 
 import java.time.DateTimeException;
-import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.zone.ZoneRulesException;
 import java.util.HashMap;
 import java.util.List;
@@ -51,28 +52,9 @@ public class CalendarManagerModel implements ICalendarManager {
     switch (property) {
       case "name":
         editNameHelp(nameOfCalendarToEdit, targetCalendar, newValue);
-//        if (calendars.containsKey(newValue)) {
-//          throw new IllegalArgumentException("New Calendar name already exists");
-//        }
-//        calendars.remove(nameOfCalendarToEdit);
-//        targetCalendar.setName(newValue);
-//        calendars.put(newValue, targetCalendar);
-//
-//        if (nameOfCalendarToEdit.equals(currentCalendarName)) {
-//          currentCalendarName = newValue; // Update current calendar name if it was changed
-//        }
         break;
       case "timezone":
         editTimeZoneHelp(targetCalendar, newValue);
-//        ZoneId newZoneId;
-//        try {
-//          newZoneId = ZoneId.of(newValue);
-//        } catch (ZoneRulesException e) {
-//          throw new IllegalArgumentException("Invalid or unsupported timezone ID: '"
-//                  + newValue + "'. " + "Please use IANA Time Zone Database format " +
-//                  "(e.g., 'America/New_York').");
-//        }
-//        targetCalendar.setTimeZone(newZoneId);
         break;
       default:
         throw new IllegalArgumentException("Unsupported property '" + property
@@ -166,41 +148,23 @@ public class CalendarManagerModel implements ICalendarManager {
       throw new IllegalArgumentException("Event '" + eventName + "' not found on " +
               sourceStartTime + " in calendar '" + sourceCalendar.getName() + "'.");
     }
-    Event originalEvent = events.get(0); // Assuming we copy the first found event
-    LocalDateTime newStartTime = LocalDateTime.parse(newDateTime,
-            targetCalendar.getDateTimeFormatter());
+    Event originalEvent = events.get(0);
 
-    Event newEvent = shiftEvent(originalEvent, newStartTime);
+    // Convert source start/end to Instant
+    ZonedDateTime sourceStartZdt = originalEvent.getStartDateTime()
+            .atZone(sourceCalendar.getTimeZone());
+    ZonedDateTime sourceEndZdt = originalEvent.getEndDateTime()
+            .atZone(sourceCalendar.getTimeZone());
+    Instant startInstant = sourceStartZdt.toInstant();
+    Instant endInstant = sourceEndZdt.toInstant();
+
+    // Convert instants to target calendar's timezone
+    ZonedDateTime newStartZdt = ZonedDateTime.ofInstant(startInstant, targetCalendar.getTimeZone());
+    ZonedDateTime newEndZdt = ZonedDateTime.ofInstant(endInstant, targetCalendar.getTimeZone());
+
+    Event newEvent = shiftHelp(originalEvent, newStartZdt, newEndZdt);
 
     targetCalendar.addEvent(newEvent);
-  }
-
-  /**
-   * Shifts an event to a new start time while maintaining its duration.
-   *
-   * @param event        the event to be shifted
-   * @param newStartTime the new start time for the event
-   * @return a new Event object with updated start and end times
-   */
-  private Event shiftEvent(Event event, LocalDateTime newStartTime) {
-    // Duration calculates the time difference between the start and end times of the event.
-    // It is used to maintain the same length of the event when shifting its start time.
-    Duration duration = Duration.between(event.getStartDateTime(), event.getEndDateTime());
-    LocalDateTime newEndTime = newStartTime.plus(duration);
-
-    return this.shiftHelp(event, newStartTime, newEndTime);
-
-
-//    return new Event.EventBuilder()
-//            .subject(event.getSubject())
-//            .startDateTime(newStartTime)
-//            .endDateTime(newEndTime)
-//            .description(event.getDescription())
-//            .location(event.getLocation())
-//            .status(event.getStatus())
-//            .seriesId(event.getSeriesId())
-//            .isAllDayEvent(event.getIsAllDayEvent())
-//            .build();
   }
 
   @Override
@@ -210,14 +174,34 @@ public class CalendarManagerModel implements ICalendarManager {
 
     LocalDate originalDate = LocalDate.parse(date, sourceCalendar.getDateFormatter());
     LocalDate newStartDate = LocalDate.parse(newDate, targetCalendar.getDateFormatter());
-    // toEpochDay calculates the number of days since the epoch (1970-01-01) for both dates
-    // and finds the difference in days between the two dates.
-    // This difference is used to shift the events from the original date to the new date.
-    long shift = newStartDate.toEpochDay() - originalDate.toEpochDay();
+
     List<Event> eventsOnDate = sourceCalendar.getEventsOnDate(originalDate);
 
     for (Event event : eventsOnDate) {
-      Event newEvent = shiftEventByDays(event, shift);
+      ZonedDateTime sourceStartZdt = event.getStartDateTime().atZone(sourceCalendar.getTimeZone());
+      ZonedDateTime sourceEndZdt = event.getEndDateTime().atZone(sourceCalendar.getTimeZone());
+
+      // Calculate the time-of-day offset from the original date
+      int startHour = sourceStartZdt.getHour();
+      int startMinute = sourceStartZdt.getMinute();
+      int endHour = sourceEndZdt.getHour();
+      int endMinute = sourceEndZdt.getMinute();
+
+      // Set new start/end in target timezone with the new date and same time-of-day
+      ZonedDateTime newStartZdt = ZonedDateTime.of(newStartDate.getYear(),
+              newStartDate.getMonthValue(), newStartDate.getDayOfMonth(),
+              startHour, startMinute, 0, 0, targetCalendar.getTimeZone());
+      ZonedDateTime newEndZdt = ZonedDateTime.of(newStartDate.getYear(),
+              newStartDate.getMonthValue(), newStartDate.getDayOfMonth(),
+              endHour, endMinute, 0, 0, targetCalendar.getTimeZone());
+
+      // Adjust duration if event crosses midnight
+      if (sourceEndZdt.toLocalDate().isAfter(sourceStartZdt.toLocalDate())) {
+        newEndZdt = newEndZdt.plusDays(
+                sourceEndZdt.toLocalDate().toEpochDay() - sourceStartZdt.toLocalDate().toEpochDay()
+        );
+      }
+      Event newEvent = this.shiftHelp(event, newStartZdt, newEndZdt);
       targetCalendar.addEvent(newEvent);
     }
 
@@ -238,50 +222,35 @@ public class CalendarManagerModel implements ICalendarManager {
             originalEndDate.atTime(23, 59, 59));
 
     for (Event event : eventsInRange) {
-      Event newEvent = shiftEventByDays(event, shift);
+      // Get original start/end as ZonedDateTime in source timezone
+      ZonedDateTime sourceStartZdt = event.getStartDateTime().atZone(sourceCalendar.getTimeZone());
+      ZonedDateTime sourceEndZdt = event.getEndDateTime().atZone(sourceCalendar.getTimeZone());
+
+      // Shift the date by the calculated number of days
+      ZonedDateTime shiftedStartZdt = sourceStartZdt.plusDays(shift);
+      ZonedDateTime shiftedEndZdt = sourceEndZdt.plusDays(shift);
+
+      // Convert to target timezone, preserving the same instant
+      ZonedDateTime newStartZdt = shiftedStartZdt.withZoneSameInstant(targetCalendar.getTimeZone());
+      ZonedDateTime newEndZdt = shiftedEndZdt.withZoneSameInstant(targetCalendar.getTimeZone());
+
+      Event newEvent = this.shiftHelp(event, newStartZdt, newEndZdt);
       targetCalendar.addEvent(newEvent);
     }
   }
 
   /**
-   * Shifts an event by a specified number of days.
-   *
-   * @param event the event to be shifted
-   * @param shift the amount of days to shift the event
-   * @return a new Event object with updated start and end times
-   */
-  private Event shiftEventByDays(Event event, long shift) {
-    LocalDateTime newStartTime = event.getStartDateTime().plusDays(shift);
-    LocalDateTime newEndTime = event.getEndDateTime().plusDays(shift);
-
-    return this.shiftHelp(event, newStartTime, newEndTime);
-
-//    return new Event.EventBuilder()
-//            .subject(event.getSubject())
-//            .startDateTime(newStartTime)
-//            .endDateTime(newEndTime)
-//            .description(event.getDescription())
-//            .location(event.getLocation())
-//            .status(event.getStatus())
-//            .seriesId(event.getSeriesId())
-//            .isAllDayEvent(event.getIsAllDayEvent())
-//            .build();
-
-
-  }
-
-  /**
    * Helper method to create a new Event with updated start and end times.
    * @param event the original event to shift
-   * @param newStartTime the new start time for the event
-   * @param newEndTime the new end time for the event
+   * @param newStartZdt the new start time for the event
+   * @param newEndZdt the new end time for the event
    * @return a new Event object with updated start and end times
    */
-  private Event shiftHelp(Event event, LocalDateTime newStartTime, LocalDateTime newEndTime) {
+  private Event shiftHelp(Event event, ZonedDateTime newStartZdt, ZonedDateTime newEndZdt) {
     return new Event.EventBuilder()
             .subject(event.getSubject())
-            .startDateTime(newStartTime)
-            .endDateTime(newEndTime)
+            .startDateTime(newStartZdt.toLocalDateTime())
+            .endDateTime(newEndZdt.toLocalDateTime())
             .description(event.getDescription())
             .location(event.getLocation())
             .status(event.getStatus())

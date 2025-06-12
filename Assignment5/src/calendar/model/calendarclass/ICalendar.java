@@ -8,7 +8,9 @@ import java.util.List;
 import calendar.model.event.Event;
 
 /**
- * This interface defines the methods for managing a calendar system.
+ * This interface defines the methods for a calendar model, allowing for the management of events,
+ * including adding, retrieving, and editing events, as well as creating single and
+ * recurring events.
  */
 public interface ICalendar {
 

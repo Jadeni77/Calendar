@@ -60,7 +60,7 @@ public class EditCalendarCommand implements CalendarManagerCommand {
   private void parseEditCalendar(Matcher matcher, ICalendarManager manager,
                                  ICalendarView view) {
     String calendarName = matcher.group("name");
-    String property = matcher.group("property");
+    String property = matcher.group("property").trim();
     String value = matcher.group("newValue").trim();
 
     try {
