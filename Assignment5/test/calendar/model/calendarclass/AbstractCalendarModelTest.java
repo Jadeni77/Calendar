@@ -209,6 +209,24 @@ public abstract class AbstractCalendarModelTest {
   }
 
   /**
+   * Tests that the createEvent() method does not allow an event to be created when its start date
+   * is after its end date.
+   */
+  @Test
+  public void testCreateStartAfterEnd() {
+    String subject = "Meeting";
+    String start = "2023-10-02T10:00";
+    String end = "2023-10-01T11:00";
+
+    try {
+      calendarModel.createSingleEvent(subject, start, end);
+    } catch (IllegalArgumentException e) {
+      assertEquals("End date and time cannot be before start date and time",
+              e.getMessage());
+    }
+  }
+
+  /**
    * Tests that two events with the same subject, start, and end time cannot be created, and upon
    * the attempt to create a second, identical object, an exception is thrown.
    */
