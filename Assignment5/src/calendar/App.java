@@ -34,8 +34,8 @@ public class App {
       StringBuilder log = new StringBuilder();
       ICalendarManager manager = new CalendarManagerModel();
       Reader input;
-      ICalendarView view = null;
-      CalendarManagerController controller = null;
+      ICalendarView view;
+      CalendarManagerController controller;
 
       if ("interactive".equals(mode)) {
         view = new TextBasedView(System.out);
