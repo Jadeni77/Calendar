@@ -1,7 +1,5 @@
 package calendar.controller.commands.calendarmanagercommand;
 
-import calendar.controller.commands.CalendarCommand;
-import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.ICalendarView;
 

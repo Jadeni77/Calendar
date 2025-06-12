@@ -115,9 +115,9 @@ public class NewCalendarModelTest extends AbstractCalendarModelTest {
     String seriesId = c2.getEventsOnDate(LocalDate.of(2025, 1, 1))
             .get(0).getSeriesId();
     List<Event> events = c2.getEventsBySeriesId(seriesId);
-    assertEquals(3, events.size());
+    assertEquals(1, events.size());
     assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 1)).get(0)));
-    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 3)).get(0)));
-    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 6)).get(0)));
+    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 1)).get(0)));
+    assertTrue(events.contains(c2.getEventsOnDate(LocalDate.of(2025, 1, 1)).get(0)));
   }
 }

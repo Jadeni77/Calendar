@@ -489,6 +489,7 @@ public class CalendarModel implements ICalendar {
 
   /**
    * Helper method for editEvent that checks if the targetEvents list is empty or has
+   * more than one event.
    *
    * @param targetEvents the list of events to check
    * @param eventSubject the subject of the event to check
@@ -629,15 +630,16 @@ public class CalendarModel implements ICalendar {
             .seriesId(event.getSeriesId())
             .isAllDayEvent(event.getIsAllDayEvent());
     try {
-      switch (property) {
-        case "start":
-          LocalDateTime newStart = LocalDateTime.parse(newValue, dateTimeFormatter);
-          newEventBuilder.startDateTime(newStart);
-          break;
-        case "end":
-          LocalDateTime newEnd = LocalDateTime.parse(newValue, dateTimeFormatter);
-          newEventBuilder.endDateTime(newEnd);
-          break;
+      if (property.equals("start")) {
+        LocalDateTime newStart = LocalDateTime.parse(newValue, dateTimeFormatter);
+        newEventBuilder.startDateTime(newStart);
+      } else if (property.equals("end")) {
+        LocalDateTime newEnd = LocalDateTime.parse(newValue, dateTimeFormatter);
+        newEventBuilder.endDateTime(newEnd).seriesId(UUID.randomUUID().toString());
+      } else {
+        throw new IllegalArgumentException("Invalid property '" + property + "'. " +
+                "Valid properties are: start, end.");
+
       }
       Event newEvent = newEventBuilder.build();
       updateEvent(event, newEvent);

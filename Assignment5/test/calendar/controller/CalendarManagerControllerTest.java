@@ -44,7 +44,7 @@ public class CalendarManagerControllerTest extends AbstractControllerTest {
   }
 
   /**
-   * Creates a new NewCalendarMockModel object
+   * Creates a new NewCalendarMockModel object.
    *
    * @return a new NewCalendarMockModel object
    */

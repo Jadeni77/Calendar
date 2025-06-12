@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.io.StringReader;
 
 import calendar.model.calendarclass.ICalendar;
-import calendar.model.calendarclass.MockModel;
 import calendar.view.ICalendarView;
 import calendar.view.TextBasedView;
 
@@ -46,7 +45,7 @@ public abstract class AbstractControllerTest {
   public abstract ICalendarController createController(ICalendarView view, Readable in);
 
   /**
-   * Creates a new instance of an ICalendar
+   * Creates a new instance of an ICalendar.
    *
    * @return a new ICalendar
    */

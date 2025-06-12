@@ -1,7 +1,6 @@
 package calendar.model.calendarmanagerclass;
 
 import calendar.model.calendarclass.ICalendar;
-import calendar.model.calendarclass.NewCalendarModel;
 
 /**
  * This interface defines the operations for managing calendars within the application.
@@ -74,7 +73,7 @@ public interface ICalendarManager {
 
   /**
    * Copies all events between two dates from one calendar to another, starting on the given
-   * target date
+   * target date.
    *
    * @param startDate    the start date of the events to be copied
    * @param endDate      the end date of the events to be copied

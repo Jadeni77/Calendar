@@ -1,23 +1,13 @@
 package calendar.model.calendarmanagerclass;
 
-import java.time.DateTimeException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.zone.ZoneRulesException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.NewCalendarMockModel;
-import calendar.model.calendarclass.NewCalendarModel;
-import calendar.model.event.Event;
+
 
 /**
  * This class represents a mock CalendarManagerModel, which logs the data inputted from each
- * function to a
+ * function to a StringBuilder in order to verify that data has been received correctly.
  */
 public class CalendarManagerMockModel implements ICalendarManager {
   public StringBuilder log;

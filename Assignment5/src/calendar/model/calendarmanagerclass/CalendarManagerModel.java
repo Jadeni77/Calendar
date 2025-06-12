@@ -206,7 +206,8 @@ public class CalendarManagerModel implements ICalendarManager {
   }
 
   /**
-   * Helper method to shift the date of events from the source calendar and add them to the target calendar.
+   * Helper method to shift the date of events from the source calendar and add them to the
+   * target calendar.
    *
    * @param sourceCalendar the calendar from which events are copied
    * @param targetCalendar the calendar to which events are added

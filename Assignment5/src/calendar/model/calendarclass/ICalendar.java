@@ -176,9 +176,7 @@ public interface ICalendar {
 
   /**
    * Returns the date-time formatter for the implementation of a Calendar object.
-   *
    * @return a DateTimeFormatter which contains the formatting of a date-time for a Calendar
-   * implementation.
    */
   DateTimeFormatter getDateTimeFormatter();
 }
