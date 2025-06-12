@@ -149,26 +149,29 @@ public class CalendarManagerModelTest {
     cmm.setCurrentCalendar("test1");
     NewCalendarModel test1 = cmm.getTargetCalendar("test1");
     NewCalendarModel test2 = cmm.getTargetCalendar("test2");
-    assertTrue(test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).isEmpty());
-    test1.createSingleEvent("event1", "2025-06-11T03:30", "2025-06-11T05:30");
-    cmm.copyEvent("event1", "2025-06-11T03:30", "test2", "2025-06-11T03:30");
-    assertEquals(1, test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).size());
-    Event copiedEvent = test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).get(0);
+    assertTrue(test2.getEventsOnDate(LocalDate.of(2025, 6, 10)).isEmpty());
+    test1.createSingleEvent("event1", "2025-06-11T00:30", "2025-06-11T05:30");
+    cmm.copyEvent("event1", "2025-06-11T00:30", "test2", "2025-06-11T03:30");
+    // 2025-06-11T03:30 in NY is 2025-06-10T00:30 in LA (same instant)
+    assertEquals(1, test2.getEventsOnDate(LocalDate.of(2025, 6, 10)).size());
+    Event copiedEvent = test2.getEventsOnDate(LocalDate.of(2025, 6, 10)).get(0);
     assertEquals("event1", copiedEvent.getSubject());
-    assertEquals(LocalDateTime.parse("2025-06-11T03:30", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-10T21:30", dateTimeFormatter),
             copiedEvent.getStartDateTime());
-    assertEquals(LocalDateTime.parse("2025-06-11T05:30", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-11T02:30", dateTimeFormatter),
             copiedEvent.getEndDateTime());
+
     test1.createSingleEvent("event2", "2025-06-11T04:30", "2025-06-11T05:30");
     cmm.copyEvent("event2", "2025-06-11T04:30", "test2", "2025-06-12T07:30");
-    assertEquals(1, test2.getEventsOnDate(LocalDate.of(2025, 6, 12)).size());
-    Event copiedEvent2 = test2.getEventsOnDate(LocalDate.of(2025, 6, 12)).get(0);
+    assertEquals(2, test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).size());
+    Event copiedEvent2 = test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).get(1);
     assertEquals("event2", copiedEvent2.getSubject());
-    assertEquals(LocalDateTime.parse("2025-06-12T07:30", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-11T01:30", dateTimeFormatter),
             copiedEvent2.getStartDateTime());
-    assertEquals(LocalDateTime.parse("2025-06-12T08:30", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-11T02:30", dateTimeFormatter),
             copiedEvent2.getEndDateTime());
   }
+
 
   /**
    * Tests that the copyEventsOnDate() method properly copies all the events that occur on a
@@ -218,14 +221,14 @@ public class CalendarManagerModelTest {
     Event copiedEvent = copiedEvents.get(0);
     Event copiedEvent2 = copiedEvents.get(1);
     assertEquals("work", copiedEvent.getSubject());
-    assertEquals(LocalDateTime.parse("2025-06-12T13:00", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-12T10:00", dateTimeFormatter),
             copiedEvent.getStartDateTime());
-    assertEquals(LocalDateTime.parse("2025-06-12T15:00", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-12T12:00", dateTimeFormatter),
             copiedEvent.getEndDateTime());
     assertEquals("work", copiedEvent2.getSubject());
-    assertEquals(LocalDateTime.parse("2025-06-13T13:00", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-13T10:00", dateTimeFormatter),
             copiedEvent2.getStartDateTime());
-    assertEquals(LocalDateTime.parse("2025-06-13T15:00", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-13T12:00", dateTimeFormatter),
             copiedEvent2.getEndDateTime());
   }
 }
