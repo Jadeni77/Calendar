@@ -56,7 +56,7 @@ public abstract class AbstractControllerTest {
    *
    * @return the expected initial output as a String
    */
-  private String getFullExpectedOutput(String... messages) {
+  protected String getFullExpectedOutput(String... messages) {
     StringBuilder expected = new StringBuilder();
     for (String message : messages) {
       expected.append(message).append("\n");
