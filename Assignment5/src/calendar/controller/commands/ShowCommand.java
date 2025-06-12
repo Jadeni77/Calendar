@@ -18,6 +18,7 @@ public class ShowCommand implements CalendarCommand {
 
   /**
    * Constructs a ShowCommand with the given arguments.
+   *
    * @param s the command arguments, which should specify a date and time
    */
   public ShowCommand(String s) {

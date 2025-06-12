@@ -55,6 +55,7 @@ public class CalendarManagerMockModel implements ICalendarManager {
    * by the user. It represents the user's immediate working context.
    * If there is no current active calendar, or it is not in the manager's list of calendars,
    * this method will throw an exception prompting the user to select a calendar before proceeding.
+   *
    * @return the current calendar being in use
    */
   @Override

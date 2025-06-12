@@ -21,8 +21,9 @@ public class CalendarControllerTest extends AbstractControllerTest {
 
   /**
    * Creates a new CalendarController object using the given fields.
+   *
    * @param view the view to be used in the CalendarController
-   * @param in the input to be read from in the CalendarController
+   * @param in   the input to be read from in the CalendarController
    * @return a new CalendarController object
    */
   @Override
@@ -32,6 +33,7 @@ public class CalendarControllerTest extends AbstractControllerTest {
 
   /**
    * Creates a new MockModel object
+   *
    * @return a new MockModel object
    */
   @Override

@@ -38,14 +38,16 @@ public abstract class AbstractControllerTest {
 
   /**
    * Creates a new instance of the ICalendarController class using the given fields.
+   *
    * @param view the view to be used in the ICalendarController
-   * @param in the input to be read from in the ICalendarController
+   * @param in   the input to be read from in the ICalendarController
    * @return a new instance of ICalendarController
    */
   public abstract ICalendarController createController(ICalendarView view, Readable in);
 
   /**
    * Creates a new instance of an ICalendar
+   *
    * @return a new ICalendar
    */
   public abstract ICalendar createCalendar(StringBuilder modelLog);

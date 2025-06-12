@@ -25,10 +25,10 @@ public class EventTest {
   public void setUp() {
     this.event = new Event.EventBuilder()
             .subject("Hi").startDateTime(LocalDateTime.of(2023, 10, 1, 10, 0))
-        .endDateTime(LocalDateTime.of(2023, 10, 1, 12, 0))
-        .description("This is a test event.")
-        .status(EventStatus.PRIVATE)
-        .build();
+            .endDateTime(LocalDateTime.of(2023, 10, 1, 12, 0))
+            .description("This is a test event.")
+            .status(EventStatus.PRIVATE)
+            .build();
   }
 
   /**

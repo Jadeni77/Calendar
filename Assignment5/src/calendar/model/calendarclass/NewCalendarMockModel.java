@@ -18,6 +18,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @return a dummy String value
    */
   public String getName() {
@@ -27,6 +28,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @param name the name intended to be changed to
    */
   public void setName(String name) {
@@ -35,6 +37,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @return a dummy value
    */
   public ZoneId getTimeZone() {
@@ -44,6 +47,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @param timeZone the time zone intended to be set to
    */
   public void setTimeZone(ZoneId timeZone) {

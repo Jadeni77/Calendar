@@ -25,12 +25,12 @@ public class RecurringEventRuleTest {
   @Before
   public void setUp() {
     rule = new RecurringEventRule("MTR", 4, null,
-            LocalTime.of(9,0), LocalTime.of(11,0), false);
+            LocalTime.of(9, 0), LocalTime.of(11, 0), false);
     rule2 = new RecurringEventRule("MWF", 1, null,
-            LocalTime.of(9,0), LocalTime.of(11,0), false);
+            LocalTime.of(9, 0), LocalTime.of(11, 0), false);
     rule3 = new RecurringEventRule("MTR", 4,
             LocalDate.of(2025, 6, 10),
-            LocalTime.of(9,0), LocalTime.of(11,0), false);
+            LocalTime.of(9, 0), LocalTime.of(11, 0), false);
 
   }
 

@@ -32,6 +32,7 @@ public class CalendarModelTest extends AbstractCalendarModelTest {
 
   /**
    * Constructs a new CalendarModel object.
+   *
    * @return an CalendarModel object
    */
   @Override

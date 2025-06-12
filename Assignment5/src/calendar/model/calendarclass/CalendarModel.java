@@ -309,15 +309,16 @@ public class CalendarModel implements ICalendar {
 
   /**
    * Helper method for creating recurring events.
-   * @param start the start time of the event
-   * @param end the end time of the event
-   * @param recurringEvent the list to store the created recurring events
-   * @param eventSubject the subject of the event
-   * @param seriesId the unique identifier for the series of events
+   *
+   * @param start           the start time of the event
+   * @param end             the end time of the event
+   * @param recurringEvent  the list to store the created recurring events
+   * @param eventSubject    the subject of the event
+   * @param seriesId        the unique identifier for the series of events
    * @param occurrenceDates the list of dates on which the event occurs
    */
   private void recurHelper(LocalDateTime start, LocalDateTime end, List<Event> recurringEvent,
-                    String eventSubject, String seriesId, List<LocalDate> occurrenceDates) {
+                           String eventSubject, String seriesId, List<LocalDate> occurrenceDates) {
     for (LocalDate date : occurrenceDates) {
       Event.EventBuilder builder = new Event.EventBuilder()
               .subject(eventSubject)
@@ -488,9 +489,10 @@ public class CalendarModel implements ICalendar {
 
   /**
    * Helper method for editEvent that checks if the targetEvents list is empty or has
+   *
    * @param targetEvents the list of events to check
    * @param eventSubject the subject of the event to check
-   * @param startTime the start time of the event to check
+   * @param startTime    the start time of the event to check
    */
   private void targetEventEmpty(List<Event> targetEvents, String eventSubject,
                                 LocalDateTime startTime) {
@@ -611,7 +613,7 @@ public class CalendarModel implements ICalendar {
     return false;
   }
 
-  private List<Event> eventsFromDateForward (List<Event> events, LocalDateTime dateTime) {
+  private List<Event> eventsFromDateForward(List<Event> events, LocalDateTime dateTime) {
     events.removeIf(event -> event.getStartDateTime().isBefore(dateTime));
     return events;
   }

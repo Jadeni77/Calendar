@@ -19,6 +19,7 @@ public class EditCalendarCommand implements CalendarManagerCommand {
 
   /**
    * Constructs an EditCalendarCommand with the given arguments.
+   *
    * @param arguments the command arguments, which specify the calendar name,
    */
   public EditCalendarCommand(String arguments) {
@@ -30,8 +31,9 @@ public class EditCalendarCommand implements CalendarManagerCommand {
    * match is found, the method calls the corresponding command from the match and displays
    * necessary information from the view when applicable. Otherwise, displays a message informing
    * the user of incorrect command syntax.
+   *
    * @param manager the calendar manager to apply this command to
-   * @param view  the calendar view to apply this command to
+   * @param view    the calendar view to apply this command to
    */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
@@ -53,9 +55,10 @@ public class EditCalendarCommand implements CalendarManagerCommand {
 
   /**
    * Parses the matcher to extract calendar name, property, and new value.
+   *
    * @param matcher the matcher containing the calendar edit details
    * @param manager the calendar manager model to edit the calendar
-   * @param view the view to display messages or exceptions
+   * @param view    the view to display messages or exceptions
    */
   private void parseEditCalendar(Matcher matcher, ICalendarManager manager,
                                  ICalendarView view) {

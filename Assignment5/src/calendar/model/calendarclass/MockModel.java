@@ -39,6 +39,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @param event the event intended to be added.
    */
   @Override
@@ -48,6 +49,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param subject       the subject of the event
    * @param startDateTime the start date and time of the event
    * @param endDateTime   the end date and time of the event
@@ -62,6 +64,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param dateTime the date to check for events
    * @return a dummy List of Events
    */
@@ -74,6 +77,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param startDateTime the start date and time of the range
    * @param endDateTime   the end date and time of the range
    * @return a dummy List of Events
@@ -87,6 +91,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param time the date and time to check
    * @return a dummy boolean
    */
@@ -98,6 +103,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param seriesId the ID of the series
    * @return a dummy List of Events
    */
@@ -109,6 +115,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param subject the subject of the event
    * @param date    the date to search for events
    * @return a dummy List of Events
@@ -122,6 +129,7 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param eventSubject  the subject of the event to be created
    * @param startDateTime the start date as a formatted String
    * @param endDateTime   the end date as a formatted String
@@ -133,11 +141,12 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
-   * @param eventSubject the subject of the event
+   *
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time and date of the event
-   * @param endDateTime the ending time and date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param repeats how many times the event repeats
+   * @param endDateTime   the ending time and date of the event
+   * @param weekdays      the days of the week on which the event occurs
+   * @param repeats       how many times the event repeats
    */
   @Override
   public void createRecurringEvent(String eventSubject, String startDateTime, String endDateTime,
@@ -149,11 +158,12 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
-   * @param eventSubject the subject of the event
+   *
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time and date of the event
-   * @param endDateTime the ending time and date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param untilDate the day the event cannot occur past
+   * @param endDateTime   the ending time and date of the event
+   * @param weekdays      the days of the week on which the event occurs
+   * @param untilDate     the day the event cannot occur past
    */
   public void createRecurringEvent(String eventSubject, String startDateTime, String endDateTime,
                                    String weekdays, String untilDate) {
@@ -164,8 +174,9 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param eventSubject the subject of the event
-   * @param onDate the date of the event
+   * @param onDate       the date of the event
    */
   @Override
   public void createAllDayEvent(String eventSubject, String onDate) {
@@ -175,10 +186,11 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param eventSubject the subject of the event
-   * @param onDate the date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param untilDate the day the event cannot occur past
+   * @param onDate       the date of the event
+   * @param weekdays     the days of the week on which the event occurs
+   * @param untilDate    the day the event cannot occur past
    */
   @Override
   public void createRecurringAllDayEvent(String eventSubject, String onDate, String weekdays,
@@ -190,10 +202,11 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
+   *
    * @param eventSubject the subject of the event
-   * @param onDate the date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param repeats how many times the event repeats
+   * @param onDate       the date of the event
+   * @param weekdays     the days of the week on which the event occurs
+   * @param repeats      how many times the event repeats
    */
   @Override
   public void createRecurringAllDayEvent(String eventSubject, String onDate, String weekdays,
@@ -205,11 +218,12 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
-   * @param property the property of the event to be edited
-   * @param eventSubject the subject of the event
+   *
+   * @param property      the property of the event to be edited
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time of the event
-   * @param endDateTime the end time of the event
-   * @param newValue the new value replacing the current one for the given property
+   * @param endDateTime   the end time of the event
+   * @param newValue      the new value replacing the current one for the given property
    */
   @Override
   public void editSingleEvent(String property, String eventSubject, String startDateTime,
@@ -221,11 +235,12 @@ public class MockModel implements ICalendar {
 
   /**
    * Logs the inputted data for this method into this Model's log StringBuilder.
-   * @param property the property of the event to be edited
-   * @param eventSubject the subject of the event
+   *
+   * @param property      the property of the event to be edited
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time of the event
-   * @param newValue the new value replacing the current one for the given property
-   * @param editSeries whether this method should aim to edit a series
+   * @param newValue      the new value replacing the current one for the given property
+   * @param editSeries    whether this method should aim to edit a series
    */
   @Override
   public void editMultipleEvents(String property, String eventSubject, String startDateTime,

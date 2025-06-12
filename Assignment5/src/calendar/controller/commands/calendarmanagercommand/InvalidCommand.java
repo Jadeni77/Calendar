@@ -24,6 +24,7 @@ public class InvalidCommand implements CalendarManagerCommand {
   /**
    * Displays the InvalidCommand's error message, which represents an error resulting from
    * an invalid command input.
+   *
    * @param model the calendar model to apply this command to
    * @param view  the calendar view to apply this command to
    */

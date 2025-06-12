@@ -122,16 +122,17 @@ public class CreateCommand implements CalendarCommand {
 
   /**
    * Helper method to parse the matcher for a recurring event creation command.
+   *
    * @param matcher the matcher containing the parsed command details
-   * @param model the calendar model to create the events in
-   * @param view the calendar view to display messages
+   * @param model   the calendar model to create the events in
+   * @param view    the calendar view to display messages
    * @param subject the subject of the event
-   * @param days the days of the week on which the event occurs
-   * @param start the start date and time of the event
-   * @param end the end date and time of the event
+   * @param days    the days of the week on which the event occurs
+   * @param start   the start date and time of the event
+   * @param end     the end date and time of the event
    */
   private void parseCreateRecurHelper(Matcher matcher, ICalendar model, ICalendarView view,
-                                    String subject, String days, String start, String end) {
+                                      String subject, String days, String start, String end) {
     int count;
     String until;
 

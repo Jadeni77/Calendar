@@ -52,7 +52,7 @@ public class UseCalendarCommandTest {
     CalendarManagerCommand cmd = new UseCalendarCommand(null);
     cmd.execute(manager, view);
     String expected = "An error was encountered:\n" +
-    "Invalid arguments.\n";
+            "Invalid arguments.\n";
     assertTrue(log.toString().contains(expected));
   }
 
