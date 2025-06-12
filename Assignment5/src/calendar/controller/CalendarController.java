@@ -77,6 +77,4 @@ public class CalendarController implements ICalendarController {
       c.execute(this.model, this.view);
     }
   }
-
-
 }

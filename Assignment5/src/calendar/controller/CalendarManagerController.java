@@ -2,6 +2,7 @@ package calendar.controller;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -113,7 +114,7 @@ public class CalendarManagerController implements ICalendarController {
         Reader newReader = new StringReader(userInput);
         ICalendarController controller = new CalendarController(selectedModel, view, newReader);
         controller.start();
-      } catch (IllegalStateException e) {
+      } catch (IllegalStateException | DateTimeParseException | IllegalArgumentException e) {
         this.view.displayException(e);
       }
     }
