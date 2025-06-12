@@ -114,7 +114,6 @@ public class CopyEventCommandTest {
 
     String expected = "An error was encountered:\n" +
             "Error copying event: Calendar 'NonExistent Calendar' not found.";
-    System.out.println(log.toString());
     assertTrue(log.toString().contains(expected));
 
   }

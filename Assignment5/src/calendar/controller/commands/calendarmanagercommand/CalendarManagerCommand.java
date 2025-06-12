@@ -5,7 +5,7 @@ import calendar.view.ICalendarView;
 
 /**
  * Represents a command that can be executed by a calendar manager.
- * Each command represents a specific action to be carried out on an {@code ICalendarManager}, and
+ * Each command represents a specific action to be carried out on an ICalendarManager, and
  * has a specific effect on the manager, both determined by each implementation.
  */
 public interface CalendarManagerCommand {
