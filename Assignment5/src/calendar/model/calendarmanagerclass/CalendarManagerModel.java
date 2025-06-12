@@ -177,34 +177,10 @@ public class CalendarManagerModel implements ICalendarManager {
 
     List<Event> eventsOnDate = sourceCalendar.getEventsOnDate(originalDate);
 
-    for (Event event : eventsOnDate) {
-      ZonedDateTime sourceStartZdt = event.getStartDateTime().atZone(sourceCalendar.getTimeZone());
-      ZonedDateTime sourceEndZdt = event.getEndDateTime().atZone(sourceCalendar.getTimeZone());
+    // Calculate the number of days to shift the event's date
+    long dayShift = ChronoUnit.DAYS.between(originalDate, newStartDate);
 
-      // Calculate the time-of-day offset from the original date
-      int startHour = sourceStartZdt.getHour();
-      int startMinute = sourceStartZdt.getMinute();
-      int endHour = sourceEndZdt.getHour();
-      int endMinute = sourceEndZdt.getMinute();
-
-      // Set new start/end in target timezone with the new date and same time-of-day
-      ZonedDateTime newStartZdt = ZonedDateTime.of(newStartDate.getYear(),
-              newStartDate.getMonthValue(), newStartDate.getDayOfMonth(),
-              startHour, startMinute, 0, 0, targetCalendar.getTimeZone());
-      ZonedDateTime newEndZdt = ZonedDateTime.of(newStartDate.getYear(),
-              newStartDate.getMonthValue(), newStartDate.getDayOfMonth(),
-              endHour, endMinute, 0, 0, targetCalendar.getTimeZone());
-
-      // Adjust duration if event crosses midnight
-      if (sourceEndZdt.toLocalDate().isAfter(sourceStartZdt.toLocalDate())) {
-        newEndZdt = newEndZdt.plusDays(
-                sourceEndZdt.toLocalDate().toEpochDay() - sourceStartZdt.toLocalDate().toEpochDay()
-        );
-      }
-      Event newEvent = this.shiftHelp(event, newStartZdt, newEndZdt);
-      targetCalendar.addEvent(newEvent);
-    }
-
+    this.shiftDateAndAddToTargetCalendar(sourceCalendar, targetCalendar, eventsOnDate, dayShift);
   }
 
   @Override
@@ -221,16 +197,29 @@ public class CalendarManagerModel implements ICalendarManager {
             originalStartDate.atStartOfDay(),
             originalEndDate.atTime(23, 59, 59));
 
-    for (Event event : eventsInRange) {
-      // Get original start/end as ZonedDateTime in source timezone
+    this.shiftDateAndAddToTargetCalendar(sourceCalendar, targetCalendar, eventsInRange, shift);
+  }
+
+  /**
+   * Helper method to shift the date of events from the source calendar and add them to the target calendar.
+   * @param sourceCalendar the calendar from which events are copied
+   * @param targetCalendar the calendar to which events are added
+   * @param eventsOnDate the list of events on the specified date in the source calendar
+   * @param dayShift the number of days to shift the event's date
+   */
+  private void shiftDateAndAddToTargetCalendar(NewCalendarModel sourceCalendar,
+                                               NewCalendarModel targetCalendar,
+                                               List<Event> eventsOnDate, long dayShift) {
+    for (Event event : eventsOnDate) {
+      // get the original event's ZonedDateTime in its source calendar's timezone
       ZonedDateTime sourceStartZdt = event.getStartDateTime().atZone(sourceCalendar.getTimeZone());
       ZonedDateTime sourceEndZdt = event.getEndDateTime().atZone(sourceCalendar.getTimeZone());
 
-      // Shift the date by the calculated number of days
-      ZonedDateTime shiftedStartZdt = sourceStartZdt.plusDays(shift);
-      ZonedDateTime shiftedEndZdt = sourceEndZdt.plusDays(shift);
+      // shift the event's date by 'dayShift' while staying in the source timezone
+      ZonedDateTime shiftedStartZdt = sourceStartZdt.plusDays(dayShift);
+      ZonedDateTime shiftedEndZdt = sourceEndZdt.plusDays(dayShift);
 
-      // Convert to target timezone, preserving the same instant
+      // convert the shifted ZonedDateTime to the target calendar's timezone, preserving the INSTANT
       ZonedDateTime newStartZdt = shiftedStartZdt.withZoneSameInstant(targetCalendar.getTimeZone());
       ZonedDateTime newEndZdt = shiftedEndZdt.withZoneSameInstant(targetCalendar.getTimeZone());
 

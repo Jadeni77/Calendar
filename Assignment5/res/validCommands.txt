@@ -1,5 +1,65 @@
-create event Meeting from 2025-06-07T11:30 to 2025-06-07T12:30
-create event Skiing on 2025-11-17
-edit event location Skiing from 2025-11-17T08:00 to 2025-11-17T17:00 with physical
-print events on 2025-11-17
+menu
+
+create calendar --name Personal --timezone America/New_York
+
+use calendar --name Personal
+
+create calendar --name Work --timezone Europe/London
+
+create event "Project Alpha Kickoff" from 2024-06-15T10:00 to 2024-06-15T12:00
+
+create event "Team Offsite" on 2024-06-20
+
+create event "Weekly Standup" from 2024-06-18T09:00 to 2024-06-18T09:30 repeats TWF for 4 times
+
+create event "Daily Walk" on 2024-07-01 repeats MF until 2024-07-15
+
+create event "Review Session" from 2024-06-15T14:00 to 2024-06-15T15:00
+
+print events on 2024-06-15
+
+print events on 2024-06-20
+
+print events on 2024-06-18
+
+print events on 2024-07-01
+
+print events from 2024-06-15T09:00 to 2024-06-15T16:00
+
+print events from 2024-06-17T08:00 to 2024-06-20T08:00
+
+edit event subject "Project Alpha Kickoff" from 2024-06-15T10:00 to 2024-06-15T12:00 with "Project Alpha Launch"
+
+print events on 2024-06-15
+
+edit series subject "Weekly Standup" from 2024-06-18T09:00 with "Daily Huddle"
+
+print events on 2024-06-18
+
+show status on 2024-06-15T11:00
+
+show status on 2024-06-15T16:00
+
+copy event "Review Session" on 2024-06-15T14:00 --target Work to 2024-06-21T10:00
+
+copy events on 2024-06-20 --target Work to 2024-06-25
+
+copy events between 2024-06-18 and 2024-06-20 --target Work to 2024-07-01
+
+use calendar --name Work
+
+print events on 2024-06-21
+
+print events on 2024-06-25
+
+print events on 2024-07-01
+
+edit calendar --name Work --property name Company Calendar
+
+use calendar --name Company Calendar
+
+edit calendar --name Company Calendar --property timezone Asia/Tokyo
+
+print events on 2024-06-25
+
 quit
