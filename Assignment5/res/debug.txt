@@ -1,6 +1,0 @@
-create calendar --name test1 --timezone America/Los_Angeles
-use calendar --name test1
-create e1 from 2025-06-04T03:30 to 2025-06-04T05:30 repeats MWF for 3 times
-edit series start e1 from 2025-06-04T03:30 with 2025-06-01T03:30
-print events on 2025-06-02
-quit

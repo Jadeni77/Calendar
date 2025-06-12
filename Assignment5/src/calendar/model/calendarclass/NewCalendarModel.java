@@ -2,11 +2,8 @@ package calendar.model.calendarclass;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import calendar.model.event.Event;
 

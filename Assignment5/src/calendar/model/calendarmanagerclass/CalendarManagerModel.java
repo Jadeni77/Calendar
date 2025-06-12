@@ -52,28 +52,9 @@ public class CalendarManagerModel implements ICalendarManager {
     switch (property) {
       case "name":
         editNameHelp(nameOfCalendarToEdit, targetCalendar, newValue);
-//        if (calendars.containsKey(newValue)) {
-//          throw new IllegalArgumentException("New Calendar name already exists");
-//        }
-//        calendars.remove(nameOfCalendarToEdit);
-//        targetCalendar.setName(newValue);
-//        calendars.put(newValue, targetCalendar);
-//
-//        if (nameOfCalendarToEdit.equals(currentCalendarName)) {
-//          currentCalendarName = newValue; // Update current calendar name if it was changed
-//        }
         break;
       case "timezone":
         editTimeZoneHelp(targetCalendar, newValue);
-//        ZoneId newZoneId;
-//        try {
-//          newZoneId = ZoneId.of(newValue);
-//        } catch (ZoneRulesException e) {
-//          throw new IllegalArgumentException("Invalid or unsupported timezone ID: '"
-//                  + newValue + "'. " + "Please use IANA Time Zone Database format " +
-//                  "(e.g., 'America/New_York').");
-//        }
-//        targetCalendar.setTimeZone(newZoneId);
         break;
       default:
         throw new IllegalArgumentException("Unsupported property '" + property
@@ -184,30 +165,6 @@ public class CalendarManagerModel implements ICalendarManager {
     Event newEvent = shiftHelp(originalEvent, newStartZdt, newEndZdt);
 
     targetCalendar.addEvent(newEvent);
-  }
-
-  /**
-   * Shifts an event to a new start time while maintaining its duration.
-   *
-   * @param event        the event to be shifted
-   * @param newStartTime the new start time for the event
-   * @return a new Event object with updated start and end times
-   */
-  private Event shiftEvent(Event event, ZonedDateTime newStartTime, ZonedDateTime newEndTime) {
-
-    return this.shiftHelp(event, newStartTime, newEndTime);
-
-
-//    return new Event.EventBuilder()
-//            .subject(event.getSubject())
-//            .startDateTime(newStartTime)
-//            .endDateTime(newEndTime)
-//            .description(event.getDescription())
-//            .location(event.getLocation())
-//            .status(event.getStatus())
-//            .seriesId(event.getSeriesId())
-//            .isAllDayEvent(event.getIsAllDayEvent())
-//            .build();
   }
 
   @Override
