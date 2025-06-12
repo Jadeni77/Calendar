@@ -113,7 +113,7 @@ public class CalendarManagerController implements ICalendarController {
         Reader newReader = new StringReader(userInput);
         ICalendarController controller = new CalendarController(selectedModel, view, newReader);
         controller.start();
-      } catch (IllegalStateException e) {
+      } catch (Exception e) {
         this.view.displayException(e);
       }
     }
