@@ -172,7 +172,6 @@ public class CalendarManagerModelTest {
             copiedEvent2.getEndDateTime());
   }
 
-
   /**
    * Tests that the copyEventsOnDate() method properly copies all the events that occur on a
    * given date from one calendar to another to the given target date.
