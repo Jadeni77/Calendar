@@ -168,6 +168,7 @@ public class CalendarManagerModel implements ICalendarManager {
     targetCalendar.addEvent(newEvent);
   }
 
+
   @Override
   public void copyEventsOnDate(String date, String calendarName, String newDate) {
     NewCalendarModel sourceCalendar = this.getCurrentActiveCalendar();
