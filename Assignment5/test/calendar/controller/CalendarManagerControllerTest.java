@@ -33,8 +33,9 @@ public class CalendarManagerControllerTest extends AbstractControllerTest {
 
   /**
    * Creates a new CalendarManagerController object using the given fields.
+   *
    * @param view the view to be used in the CalendarManagerController
-   * @param in the input to be read from in the CalendarManagerController
+   * @param in   the input to be read from in the CalendarManagerController
    * @return a new CalendarManagerController object
    */
   @Override
@@ -43,7 +44,8 @@ public class CalendarManagerControllerTest extends AbstractControllerTest {
   }
 
   /**
-   * Creates a new NewCalendarMockModel object
+   * Creates a new NewCalendarMockModel object.
+   *
    * @return a new NewCalendarMockModel object
    */
   @Override
@@ -154,10 +156,10 @@ public class CalendarManagerControllerTest extends AbstractControllerTest {
   public void testCopyEvent() {
     StringReader fakeInput = new StringReader(
             "create calendar --name test1 --timezone America/New_York\n"
-            + "use calendar --name test1\n"
-            + "create event meeting on 2023-10-01\n"
-            + "copy event meeting on 2023-10-01T08:00 --target test1 to 2023-10-02T08:00\n"
-            + "quit");
+                    + "use calendar --name test1\n"
+                    + "create event meeting on 2023-10-01\n"
+                    + "copy event meeting on 2023-10-01T08:00 --target test1 to 2023-10-02T08:00\n"
+                    + "quit");
     ICalendarController controller = createController(view, fakeInput);
     controller.start();
     String expected = getFullExpectedOutput(

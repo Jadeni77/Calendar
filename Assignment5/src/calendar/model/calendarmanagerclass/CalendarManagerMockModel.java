@@ -1,23 +1,13 @@
 package calendar.model.calendarmanagerclass;
 
-import java.time.DateTimeException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.zone.ZoneRulesException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.NewCalendarMockModel;
-import calendar.model.calendarclass.NewCalendarModel;
-import calendar.model.event.Event;
+
 
 /**
  * This class represents a mock CalendarManagerModel, which logs the data inputted from each
- * function to a
+ * function to a StringBuilder in order to verify that data has been received correctly.
  */
 public class CalendarManagerMockModel implements ICalendarManager {
   public StringBuilder log;
@@ -55,6 +45,7 @@ public class CalendarManagerMockModel implements ICalendarManager {
    * by the user. It represents the user's immediate working context.
    * If there is no current active calendar, or it is not in the manager's list of calendars,
    * this method will throw an exception prompting the user to select a calendar before proceeding.
+   *
    * @return the current calendar being in use
    */
   @Override

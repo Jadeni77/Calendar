@@ -19,6 +19,7 @@ public class UseCalendarCommand implements CalendarManagerCommand {
 
   /**
    * Constructs a UseCalendarCommand with the given arguments.
+   *
    * @param arguments the command arguments, which specify the calendar name to switch to
    */
   public UseCalendarCommand(String arguments) {
@@ -30,8 +31,9 @@ public class UseCalendarCommand implements CalendarManagerCommand {
    * match is found, the method calls the corresponding command from the match and displays
    * necessary information from the view when applicable. Otherwise, displays a message informing
    * the user of incorrect command syntax.
+   *
    * @param manager the calendar manager to apply this command to
-   * @param view  the calendar view to apply this command to
+   * @param view    the calendar view to apply this command to
    */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
@@ -52,9 +54,10 @@ public class UseCalendarCommand implements CalendarManagerCommand {
 
   /**
    * Parses the matcher to extract the calendar name and switches to that calendar.
+   *
    * @param matcher the matcher containing the calendar name
    * @param manager the calendar manager model to switch calendars
-   * @param view the view to display messages or exceptions
+   * @param view    the view to display messages or exceptions
    */
   private void parseUseCalendar(Matcher matcher, ICalendarManager manager,
                                 ICalendarView view) {

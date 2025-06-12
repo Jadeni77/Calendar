@@ -83,11 +83,12 @@ public class NewCalendarModel extends CalendarModel {
   /**
    * Converts a LocalDateTime to a ZonedDateTime in the context of this calendar's time zone. And
    * modify the event's start and end times accordingly by using the editSingleEvent method.
-   * @param e the event to edit
+   *
+   * @param e        the event to edit
    * @param oldStart the old start date and time of the event
-   * @param oldEnd the old end date and time of the event
+   * @param oldEnd   the old end date and time of the event
    * @param newStart the new start date and time of the event
-   * @param newEnd the new end date and time of the event
+   * @param newEnd   the new end date and time of the event
    */
   private void handleDateChanging(Event e, LocalDateTime oldStart, LocalDateTime oldEnd,
                                   LocalDateTime newStart, LocalDateTime newEnd) {
@@ -110,8 +111,7 @@ public class NewCalendarModel extends CalendarModel {
       if (e.getSeriesId() != null) {
         if (!ids.contains(e.getSeriesId())) {
           ids.add(e.getSeriesId());
-        }
-        else {
+        } else {
           events.remove(e);
         }
       }

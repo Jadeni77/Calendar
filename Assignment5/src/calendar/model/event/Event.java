@@ -282,6 +282,7 @@ public class Event {
 
   /**
    * Outputs the relevant information about this Event as a String.
+   *
    * @return a String representing the contents of this Event
    */
   @Override

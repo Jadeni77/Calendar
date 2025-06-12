@@ -75,20 +75,22 @@ public interface ICalendar {
 
   /**
    * Creates a single event using the provided fields.
-   * @param eventSubject the subject of the event
+   *
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time and date of the event
-   * @param endDateTime the ending time and date of the event
+   * @param endDateTime   the ending time and date of the event
    */
   void createSingleEvent(String eventSubject, String startDateTime, String endDateTime);
 
   /**
    * Creates a recurring event using the provided fields that repeats on specified days for a
    * certain number of times.
-   * @param eventSubject the subject of the event
+   *
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time and date of the event
-   * @param endDateTime the ending time and date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param repeats how many times the event repeats
+   * @param endDateTime   the ending time and date of the event
+   * @param weekdays      the days of the week on which the event occurs
+   * @param repeats       how many times the event repeats
    */
   void createRecurringEvent(String eventSubject, String startDateTime, String endDateTime,
                             String weekdays, int repeats);
@@ -96,11 +98,12 @@ public interface ICalendar {
   /**
    * Creates a recurring event using the provided fields that repeats on specified days until
    * a specified date.
-   * @param eventSubject the subject of the event
+   *
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time and date of the event
-   * @param endDateTime the ending time and date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param untilDate the day the event cannot occur past
+   * @param endDateTime   the ending time and date of the event
+   * @param weekdays      the days of the week on which the event occurs
+   * @param untilDate     the day the event cannot occur past
    */
   void createRecurringEvent(String eventSubject, String startDateTime, String endDateTime,
                             String weekdays, String untilDate);
@@ -108,18 +111,20 @@ public interface ICalendar {
   /**
    * Creates an all-day event (which starts at 8:00 AM EST and ends at 5:00 PM EST) on the given
    * date.
+   *
    * @param eventSubject the subject of the event
-   * @param onDate the date of the event
+   * @param onDate       the date of the event
    */
   void createAllDayEvent(String eventSubject, String onDate);
 
   /**
    * Creates a recurring all-day event (which starts at 8:00 AM EST and ends at 5:00 PM EST) on the
    * given date, that repeats on specified days until a specified date.
+   *
    * @param eventSubject the subject of the event
-   * @param onDate the date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param untilDate the day the event cannot occur past
+   * @param onDate       the date of the event
+   * @param weekdays     the days of the week on which the event occurs
+   * @param untilDate    the day the event cannot occur past
    */
   void createRecurringAllDayEvent(String eventSubject, String onDate,
                                   String weekdays, String untilDate);
@@ -127,10 +132,11 @@ public interface ICalendar {
   /**
    * Creates a recurring all-day event (which starts at 8:00 AM EST and ends at 5:00 PM EST) on the
    * given date, that repeats on specified days for a certain number of times.
+   *
    * @param eventSubject the subject of the event
-   * @param onDate the date of the event
-   * @param weekdays the days of the week on which the event occurs
-   * @param repeats how many times the event repeats
+   * @param onDate       the date of the event
+   * @param weekdays     the days of the week on which the event occurs
+   * @param repeats      how many times the event repeats
    */
   void createRecurringAllDayEvent(String eventSubject, String onDate,
                                   String weekdays, int repeats);
@@ -138,11 +144,12 @@ public interface ICalendar {
   /**
    * Edits the given property of a single event with the given subject, start time, and end time,
    * replacing it with the given new value.
-   * @param property the property of the event to be edited
-   * @param eventSubject the subject of the event
+   *
+   * @param property      the property of the event to be edited
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time of the event
-   * @param endDateTime the end time of the event
-   * @param newValue the new value replacing the current one for the given property
+   * @param endDateTime   the end time of the event
+   * @param newValue      the new value replacing the current one for the given property
    */
   void editSingleEvent(String property, String eventSubject, String startDateTime,
                        String endDateTime, String newValue);
@@ -150,17 +157,19 @@ public interface ICalendar {
   /**
    * Edits the given properties of multiple events with the given subject and start time, replacing
    * them with the given new value.
-   * @param property the property of the event to be edited
-   * @param eventSubject the subject of the event
+   *
+   * @param property      the property of the event to be edited
+   * @param eventSubject  the subject of the event
    * @param startDateTime the start time of the event
-   * @param newValue the new value replacing the current one for the given property
-   * @param editSeries whether this method should aim to edit a series
+   * @param newValue      the new value replacing the current one for the given property
+   * @param editSeries    whether this method should aim to edit a series
    */
   void editMultipleEvents(String property, String eventSubject, String startDateTime,
                           String newValue, boolean editSeries);
 
   /**
    * Returns the date formatter for the implementation of a Calendar object.
+   *
    * @return a DateFormatter which contains the formatting of a date for a Calendar implementation.
    */
   DateTimeFormatter getDateFormatter();
@@ -168,7 +177,6 @@ public interface ICalendar {
   /**
    * Returns the date-time formatter for the implementation of a Calendar object.
    * @return a DateTimeFormatter which contains the formatting of a date-time for a Calendar
-   *     implementation.
    */
   DateTimeFormatter getDateTimeFormatter();
 }

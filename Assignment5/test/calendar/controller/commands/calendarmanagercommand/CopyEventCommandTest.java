@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
@@ -62,7 +63,8 @@ public class CopyEventCommandTest {
     CalendarManagerCommand cmd = new CopyEventCommand("events on 2023-10-19 " +
             "--target Another Calendar to 2023-10-20");
     cmd.execute(manager, view);
-    String expected = "Events on 2023-10-19 copied successfully to calendar 'Another Calendar' at 2023-10-20.";
+    String expected = "Events on 2023-10-19 copied successfully to calendar 'Another Calendar' " +
+            "at 2023-10-20.";
     assertTrue(log.toString().contains(expected));
   }
 

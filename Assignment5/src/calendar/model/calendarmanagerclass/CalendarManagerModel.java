@@ -65,9 +65,10 @@ public class CalendarManagerModel implements ICalendarManager {
 
   /**
    * Helper method to edit the calendar's name.
+   *
    * @param nameOfCalendarToEdit the name of the calendar to edit
-   * @param targetCalendar the calendar model to edit
-   * @param newValue the new name for the calendar
+   * @param targetCalendar       the calendar model to edit
+   * @param newValue             the new name for the calendar
    */
   private void editNameHelp(String nameOfCalendarToEdit, NewCalendarModel
           targetCalendar, String newValue) {
@@ -85,8 +86,9 @@ public class CalendarManagerModel implements ICalendarManager {
 
   /**
    * Helper method to edit the calendar's time zone.
+   *
    * @param targetCalendar the calendar model to edit
-   * @param newValue the new time zone ID for the calendar
+   * @param newValue       the new time zone ID for the calendar
    */
   private void editTimeZoneHelp(NewCalendarModel targetCalendar, String newValue) {
     ZoneId newZoneId;
@@ -115,6 +117,7 @@ public class CalendarManagerModel implements ICalendarManager {
    * by the user. It represents the user's immediate working context.
    * If there is no current active calendar, or it is not in the manager's list of calendars,
    * this method will throw an exception prompting the user to select a calendar before proceeding.
+   *
    * @return the current calendar being in use
    */
   @Override
@@ -203,11 +206,13 @@ public class CalendarManagerModel implements ICalendarManager {
   }
 
   /**
-   * Helper method to shift the date of events from the source calendar and add them to the target calendar.
+   * Helper method to shift the date of events from the source calendar and add them to the
+   * target calendar.
+   *
    * @param sourceCalendar the calendar from which events are copied
    * @param targetCalendar the calendar to which events are added
-   * @param eventsOnDate the list of events on the specified date in the source calendar
-   * @param dayShift the number of days to shift the event's date
+   * @param eventsOnDate   the list of events on the specified date in the source calendar
+   * @param dayShift       the number of days to shift the event's date
    */
   private void shiftDateAndAddToTargetCalendar(NewCalendarModel sourceCalendar,
                                                NewCalendarModel targetCalendar,
@@ -232,9 +237,10 @@ public class CalendarManagerModel implements ICalendarManager {
 
   /**
    * Helper method to create a new Event with updated start and end times.
-   * @param event the original event to shift
+   *
+   * @param event       the original event to shift
    * @param newStartZdt the new start time for the event
-   * @param newEndZdt the new end time for the event
+   * @param newEndZdt   the new end time for the event
    * @return a new Event object with updated start and end times
    */
   private Event shiftHelp(Event event, ZonedDateTime newStartZdt, ZonedDateTime newEndZdt) {

@@ -27,12 +27,13 @@ public class RecurringEventRule {
 
   /**
    * Constructs a RecurringEventRule with the specified parameters.
-   * @param day the days of the week on which the event occurs, represented as a string
+   *
+   * @param day             the days of the week on which the event occurs, represented as a string
    * @param repetitionCount the number of times the event repeats
-   * @param untilDate the date until which the event repeats in this series.
-   * @param startTime the start time of the event in the series
-   * @param endTime the end time of the event in the series
-   * @param isAllDay  whether the event is an all-day event
+   * @param untilDate       the date until which the event repeats in this series.
+   * @param startTime       the start time of the event in the series
+   * @param endTime         the end time of the event in the series
+   * @param isAllDay        whether the event is an all-day event
    */
   public RecurringEventRule(String day, int repetitionCount, LocalDate untilDate,
                             LocalTime startTime, LocalTime endTime, boolean isAllDay) {
@@ -88,6 +89,7 @@ public class RecurringEventRule {
 
   /**
    * Returns the set of days of the week on which the event occurs.
+   *
    * @return a set of DayOfWeekAbbreviation representing the days of the week
    */
   private Set<DayOfWeek> getDayOfWeeks() {
@@ -96,6 +98,7 @@ public class RecurringEventRule {
 
   /**
    * Return the number of times this event repeats.
+   *
    * @return the repetition count.
    */
   private int getRepetitionCount() {
@@ -104,6 +107,7 @@ public class RecurringEventRule {
 
   /**
    * Return the date until which this event repeats.
+   *
    * @return the until date, or null if it repeats indefinitely.
    */
   private LocalDate getUntilDate() {
@@ -112,6 +116,7 @@ public class RecurringEventRule {
 
   /**
    * Return the start time of the event in the series.
+   *
    * @return the start time of the event.
    */
   private LocalTime getStartTime() {
@@ -120,6 +125,7 @@ public class RecurringEventRule {
 
   /**
    * Return the end time of the event in the series.
+   *
    * @return the end time of the event.
    */
   private LocalTime getEndTime() {
@@ -128,6 +134,7 @@ public class RecurringEventRule {
 
   /**
    * Check if the event is an all-day event.
+   *
    * @return true if the event is all-day, false otherwise.
    */
   private boolean isAllDay() {

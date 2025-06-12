@@ -1,17 +1,9 @@
 package calendar.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.StringReader;
 
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarclass.MockModel;
 import calendar.view.ICalendarView;
-import calendar.view.TextBasedView;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * This JUnit test class tests that the controller correctly handles incorrect user input and
@@ -21,8 +13,9 @@ public class CalendarControllerTest extends AbstractControllerTest {
 
   /**
    * Creates a new CalendarController object using the given fields.
+   *
    * @param view the view to be used in the CalendarController
-   * @param in the input to be read from in the CalendarController
+   * @param in   the input to be read from in the CalendarController
    * @return a new CalendarController object
    */
   @Override
@@ -31,7 +24,8 @@ public class CalendarControllerTest extends AbstractControllerTest {
   }
 
   /**
-   * Creates a new MockModel object
+   * Creates a new MockModel object.
+   *
    * @return a new MockModel object
    */
   @Override

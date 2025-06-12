@@ -18,6 +18,7 @@ public class CreateCalendarCommand implements CalendarManagerCommand {
 
   /**
    * Constructs a CreateCalendarCommand with the given arguments.
+   *
    * @param arguments the command arguments, which specify the calendar name and timezone
    */
   public CreateCalendarCommand(String arguments) {
@@ -29,8 +30,9 @@ public class CreateCalendarCommand implements CalendarManagerCommand {
    * match is found, the method calls the corresponding command from the match and displays
    * necessary information from the view when applicable. Otherwise, displays a message informing
    * the user of incorrect command syntax.
+   *
    * @param manager the calendar manager to apply this command to
-   * @param view  the calendar view to apply this command to
+   * @param view    the calendar view to apply this command to
    */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
@@ -51,9 +53,10 @@ public class CreateCalendarCommand implements CalendarManagerCommand {
 
   /**
    * Parses the matcher to extract calendar name and timezone, and creates a new calendar.
+   *
    * @param matcher the matcher containing the calendar creation details
    * @param manager the calendar manager model to create the calendar
-   * @param view the view to display messages or exceptions
+   * @param view    the view to display messages or exceptions
    */
   private void parseCreateCalendar(Matcher matcher, ICalendarManager manager,
                                    ICalendarView view) {

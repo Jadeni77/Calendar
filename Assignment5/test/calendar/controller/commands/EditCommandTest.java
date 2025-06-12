@@ -56,7 +56,7 @@ public class EditCommandTest {
   @Test
   public void testEditEventSeries() {
     EditCommand cmd = new EditCommand("series location Meeting from 2023-10-01T10:00 with OFFICE");
-    cmd.execute(model,view);
+    cmd.execute(model, view);
     assertEquals("Multiple Events Updated: location, Meeting, 2023-10-01T10:00, OFFICE, true\n",
             model.log.toString());
     assertEquals("Event properties 'location' sucessfully edited to OFFICE.\n",
@@ -69,7 +69,7 @@ public class EditCommandTest {
             "from 2023-10-01T10:00 to 2023-10-01T11:30 with A New Meeting Subject");
     cmd.execute(model, view);
     assertEquals("Single Event Updated: subject, Meeting with Team, " +
-            "2023-10-01T10:00, 2023-10-01T11:30, A New Meeting Subject\n",
+                    "2023-10-01T10:00, 2023-10-01T11:30, A New Meeting Subject\n",
             model.log.toString());
     assertEquals("Event property 'subject' sucessfully edited to A New Meeting Subject.\n",
             log.toString());
@@ -83,8 +83,8 @@ public class EditCommandTest {
     cmd.execute(model, view);
     assertEquals("", model.log.toString());
     assertEquals("Invalid 'edit' command format. Please use 'edit event " +
-            "<property> \"<subject>\" from <start> to <end> with <newValue>' " +
-            "or 'edit series <property> \"<subject>\" from <start> with <newValue>'.\n",
+                    "<property> \"<subject>\" from <start> to <end> with <newValue>' " +
+                    "or 'edit series <property> \"<subject>\" from <start> with <newValue>'.\n",
             log.toString());
   }
 
@@ -97,7 +97,6 @@ public class EditCommandTest {
             "\"<subject>\" from <start> to <end> with <newValue>' or 'edit series <property> " +
             "\"<subject>\" from <start> with <newValue>'.\n", log.toString());
   }
-
 
 
 }

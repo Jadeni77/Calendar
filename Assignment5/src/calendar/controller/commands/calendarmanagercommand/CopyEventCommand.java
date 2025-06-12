@@ -40,8 +40,9 @@ public class CopyEventCommand implements CalendarManagerCommand {
    * match is found, the method calls the corresponding command from the match and displays
    * necessary information from the view when applicable. Otherwise, displays a message informing
    * the user of incorrect command syntax.
+   *
    * @param manager the calendar manager to apply this command to
-   * @param view  the calendar view to apply this command to
+   * @param view    the calendar view to apply this command to
    */
   @Override
   public void execute(ICalendarManager manager, ICalendarView view) {
@@ -98,7 +99,7 @@ public class CopyEventCommand implements CalendarManagerCommand {
    *
    * @param matcher the matcher containing the copy events on date details
    * @param manager the calendar manager model to copy the events
-   * @param view   the view to display messages or exceptions
+   * @param view    the view to display messages or exceptions
    */
   private void parseCopyEventsOnDate(Matcher matcher, ICalendarManager manager,
                                      ICalendarView view) {
@@ -122,7 +123,7 @@ public class CopyEventCommand implements CalendarManagerCommand {
    *
    * @param matcher the matcher containing the copy events between dates details
    * @param manager the calendar manager model to copy the events
-   * @param view  the view to display messages or exceptions
+   * @param view    the view to display messages or exceptions
    */
   private void parseCopyEventsBetweenDates(Matcher matcher, ICalendarManager manager,
                                            ICalendarView view) {

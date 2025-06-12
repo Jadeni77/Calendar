@@ -63,6 +63,7 @@ public abstract class AbstractCalendarModelTest {
 
   /**
    * Constructs a specific ICalendarModel object depending on the implementation.
+   *
    * @return an ICalendarModel object
    */
   public abstract ICalendar createCalendarModel();

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import calendar.model.event.Event;
 import calendar.model.calendarclass.ICalendar;
 import calendar.view.ICalendarView;
@@ -23,6 +24,7 @@ public class PrintCommand implements CalendarCommand {
 
   /**
    * Constructs a PrintCommand with the given arguments.
+   *
    * @param s the command arguments, which can be a date or a date range
    */
   public PrintCommand(String s) {
@@ -55,9 +57,10 @@ public class PrintCommand implements CalendarCommand {
 
   /**
    * Prints events on a specific date.
+   *
    * @param matcher the matcher containing the date string
-   * @param model the calendar model to retrieve events from
-   * @param view the calendar view to display messages
+   * @param model   the calendar model to retrieve events from
+   * @param view    the calendar view to display messages
    */
   private void parsePrintEventsOnDate(Matcher matcher, ICalendar model, ICalendarView view) {
     String dateStr = matcher.group("date");
@@ -79,9 +82,10 @@ public class PrintCommand implements CalendarCommand {
 
   /**
    * Prints events within a specified date-time range.
+   *
    * @param matcher the matcher containing the start and end date-time strings
-   * @param model the calendar model to retrieve events from
-   * @param view the calendar view to display messages
+   * @param model   the calendar model to retrieve events from
+   * @param view    the calendar view to display messages
    */
   private void parsePrintEventsInRange(Matcher matcher, ICalendar model, ICalendarView view) {
     String startStr = matcher.group("start");

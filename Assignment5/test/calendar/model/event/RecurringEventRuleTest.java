@@ -25,9 +25,12 @@ public class RecurringEventRuleTest {
   @Before
   public void setUp() {
     rule = new RecurringEventRule("MTR", 4, null,
-            LocalTime.of(9,0), LocalTime.of(11,0), false);
+            LocalTime.of(9, 0), LocalTime.of(11, 0), false);
     rule2 = new RecurringEventRule("MWF", 1, null,
-            LocalTime.of(9,0), LocalTime.of(11,0), false);
+            LocalTime.of(9, 0), LocalTime.of(11, 0), false);
+    rule3 = new RecurringEventRule("MTR", 4,
+            LocalDate.of(2025, 6, 10),
+            LocalTime.of(9, 0), LocalTime.of(11, 0), false);
   }
 
   /**
@@ -44,5 +47,10 @@ public class RecurringEventRuleTest {
     List<LocalDate> dates2 = rule2.generateOccurrenceDate(LocalDate.of(2025, 6, 3));
     List<LocalDate> expectedDates2 = Arrays.asList(LocalDate.of(2025, 6, 4));
     assertEquals(expectedDates2, dates2);
+    List<LocalDate> dates3 = rule3.generateOccurrenceDate(LocalDate.of(2025, 6, 2));
+    List<LocalDate> expectedDates3 = Arrays.asList(LocalDate.of(2025, 6, 2),
+            LocalDate.of(2025, 6, 3), LocalDate.of(2025, 6, 5),
+            LocalDate.of(2025, 6, 9));
+    assertEquals(expectedDates3, dates3);
   }
 }

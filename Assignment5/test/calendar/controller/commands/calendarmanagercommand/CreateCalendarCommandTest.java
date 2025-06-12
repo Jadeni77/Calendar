@@ -12,6 +12,10 @@ import calendar.view.TextBasedView;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * This class tests the UseCalendarCommand functionality in a calendar application.
+ * It checks if the command correctly switches to a specified calendar.
+ */
 public class CreateCalendarCommandTest {
   private ICalendarManager manager;
   private ICalendarView view;

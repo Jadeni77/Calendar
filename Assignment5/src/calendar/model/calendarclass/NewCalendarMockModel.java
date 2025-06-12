@@ -7,17 +7,22 @@ import java.time.ZoneId;
  * to a StringBuilder in order to verify that data has been received correctly.
  */
 public class NewCalendarMockModel extends MockModel {
-  private String name;
-  private ZoneId timeZone;
 
+  /**
+   * Constructs a new NewCalendarMockModel object with the given name, time zone, and log
+   * StringBuilder.
+   *
+   * @param name      the name of the calendar
+   * @param timeZone  the time zone of the calendar
+   * @param modelLog  the StringBuilder to log model actions
+   */
   public NewCalendarMockModel(String name, ZoneId timeZone, StringBuilder modelLog) {
     super(modelLog);
-    this.name = name;
-    this.timeZone = timeZone;
   }
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @return a dummy String value
    */
   public String getName() {
@@ -27,6 +32,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @param name the name intended to be changed to
    */
   public void setName(String name) {
@@ -35,6 +41,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @return a dummy value
    */
   public ZoneId getTimeZone() {
@@ -44,6 +51,7 @@ public class NewCalendarMockModel extends MockModel {
 
   /**
    * Logs the input of the given event to this Model's log StringBuilder.
+   *
    * @param timeZone the time zone intended to be set to
    */
   public void setTimeZone(ZoneId timeZone) {
