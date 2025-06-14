@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import calendar.model.CalendarObserver;
 import calendar.model.event.Event;
 
 /**
@@ -35,6 +36,17 @@ public class MockModel implements ICalendar {
   @Override
   public DateTimeFormatter getDateFormatter() {
     return this.dateFormatter;
+  }
+
+
+  @Override
+  public void addObserver(CalendarObserver observer) {
+
+  }
+
+  @Override
+  public void removeObserver(CalendarObserver observer) {
+
   }
 
   /**

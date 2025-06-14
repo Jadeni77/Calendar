@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import calendar.model.CalendarObserver;
 import calendar.model.event.Event;
 
 /**
@@ -13,6 +14,9 @@ import calendar.model.event.Event;
  * recurring events.
  */
 public interface ICalendar {
+
+  void addObserver(CalendarObserver observer);
+  void removeObserver(CalendarObserver observer);
 
   /**
    * Adds a single event to the calendar.

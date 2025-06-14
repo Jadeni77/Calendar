@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import calendar.model.CalendarObserver;
 import calendar.model.enumclass.EventStatus;
 import calendar.model.enumclass.DayOfWeekAbbreviation;
 import calendar.model.enumclass.Location;
@@ -33,6 +34,8 @@ public class CalendarModel implements ICalendar {
   protected final Map<String, Set<Event>> seriesEvents; //use set bc cannot have duplicate events
   protected final DateTimeFormatter dateFormatter;
   protected final DateTimeFormatter dateTimeFormatter;
+  private final List<CalendarObserver> observers;
+
 
   /**
    * Constructor for CalendarModel.
@@ -43,7 +46,31 @@ public class CalendarModel implements ICalendar {
     this.seriesEvents = new HashMap<>();
     this.dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     this.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+    this.observers = new ArrayList<>();
   }
+
+  @Override
+  public void addObserver(CalendarObserver observer) {
+    observers.add(observer);
+  }
+
+  @Override
+  public void removeObserver(CalendarObserver observer) {
+    observers.remove(observer);
+  }
+
+  protected void notifyObservers() {
+    // Get all events in the calendar (not filtered by date)
+    List<Event> allEvents = new ArrayList<>(this.events.values());
+
+    // Sort events by start time
+    allEvents.sort(Comparator.comparing(Event::getStartDateTime));
+
+    for (CalendarObserver observer : observers) {
+      observer.eventsUpdated(allEvents);
+    }
+  }
+
 
   @Override
   public DateTimeFormatter getDateTimeFormatter() {
@@ -74,6 +101,7 @@ public class CalendarModel implements ICalendar {
     if (event.getSeriesId() != null) {
       this.seriesEvents.computeIfAbsent(event.getSeriesId(), k -> new HashSet<>()).add(event);
     }
+    notifyObservers();
   }
 
   /**
@@ -139,6 +167,8 @@ public class CalendarModel implements ICalendar {
   private void updateEvent(Event oldEvent, Event newEvent) {
     removeEvent(oldEvent);
     addEvent(newEvent);
+    notifyObservers();
+
   }
 
   /**
@@ -162,6 +192,8 @@ public class CalendarModel implements ICalendar {
         }
       }
     }
+    notifyObservers();
+
   }
 
   @Override
@@ -208,6 +240,7 @@ public class CalendarModel implements ICalendar {
             .endDateTime(end)
             .build();
     this.addEvent(event);
+    notifyObservers();
   }
 
   @Override
@@ -223,6 +256,7 @@ public class CalendarModel implements ICalendar {
             .isAllDayEvent(true)
             .build();
     this.addEvent(event);
+    notifyObservers();
   }
 
   /**
@@ -267,6 +301,7 @@ public class CalendarModel implements ICalendar {
       i++;
     }
     this.addMultipleEvents(recurringEvents);
+    notifyObservers();
   }
 
   /**
@@ -305,6 +340,7 @@ public class CalendarModel implements ICalendar {
     this.recurHelper(start, end, recurringEvent, eventSubject, seriesId, occurrenceDates);
 
     this.addMultipleEvents(recurringEvent);
+    notifyObservers();
   }
 
   /**
@@ -351,6 +387,7 @@ public class CalendarModel implements ICalendar {
     this.recurringEventHelper(occurrenceDates, eventSubject, seriesId, recurringEvent);
 
     this.addMultipleEvents(recurringEvent);
+    notifyObservers();
   }
 
   @Override
@@ -369,6 +406,7 @@ public class CalendarModel implements ICalendar {
     this.recurringEventHelper(occurrenceDates, eventSubject, seriesId, recurringEvent);
 
     this.addMultipleEvents(recurringEvent);
+    notifyObservers();
   }
 
   /**
@@ -427,6 +465,7 @@ public class CalendarModel implements ICalendar {
               "and ending at " + endTime.format(dateFormatter) + ".");
     }
     editEventHelper(targetEvent, property, newValue);
+    notifyObservers();
   }
 
   /**
@@ -485,6 +524,7 @@ public class CalendarModel implements ICalendar {
         }
       }
     }
+    notifyObservers();
   }
 
   /**
