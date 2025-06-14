@@ -36,41 +36,47 @@ public class App {
       }
 
       String mode = args[1].toLowerCase();
-      StringBuilder log = new StringBuilder();
-      ICalendarManager manager = new CalendarManagerModel();
-      IGUIView guiView;
-      IGUIController guiController;
-      EventListenerAdaptor adaptor;
-
-      Reader input;
-      ICalendarView view;
-      CalendarManagerController controller;
+//      StringBuilder log = new StringBuilder();
+//      ICalendarManager manager = new CalendarManagerModel();
+//      IGUIView guiView;
+//      IGUIController guiController;
+//      EventListenerAdaptor adaptor;
+//
+//      Reader input;
+//      ICalendarView view;
+//      CalendarManagerController controller;
 
       if ("interactive".equals(mode)) {
 
-        guiView = new GUIView();
+        ICalendarManager manager = new CalendarManagerModel();
+        GUIView view = new GUIView();
+        IGUIController controller = new GUIController(manager, view);
 
-        guiController = new GUIController(manager, guiView);
+        // Register controller as listener for view actions
+        view.setAddEventButtonListener(e -> controller.handleAddEvent());
+        view.setEditEventButtonListener(e -> controller.handleEditEvent());
+        view.setCreateCalendarButtonListener(e -> controller.handleCreateCalendar());
+        view.setSwitchCalendarComboBoxListener(e -> controller.handleSwitchCalendar());
+        view.setRefreshButtonListener(e -> controller.handleRefreshSchedule());
 
-        adaptor = new EventListenerAdaptor(guiController);
-
-        guiController.start();
-
-        guiView.setVisible(true);
-
-
-
-      } else if ("headless".equals(mode)) {
-        if (args.length < 3) {
-          System.out.println("Missing commands file for headless mode");
-          return;
-        }
-        view = new TextBasedView(log);
-        input = new FileReader("res/" + args[2]);
-        controller = new CalendarManagerController(manager, view, input);
+        // Start the application
         controller.start();
-        System.out.println("Log:\n" + log);
-      } else {
+        view.setVisible(true);
+
+      }
+
+//      } else if ("headless".equals(mode)) {
+//        if (args.length < 3) {
+//          System.out.println("Missing commands file for headless mode");
+//          return;
+//        }
+//        view = new TextBasedView(log);
+//        input = new FileReader("res/" + args[2]);
+//        controller = new CalendarManagerController(manager, view, input);
+//        controller.start();
+//        System.out.println("Log:\n" + log);
+//      }
+      else {
         System.out.println("Invalid mode: " + mode);
       }
     } catch (Exception e) {

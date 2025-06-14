@@ -1,6 +1,7 @@
 package calendar.view;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,14 +15,22 @@ public class GUIView extends JFrame implements IGUIView {
   private JComboBox<String> calendarComboBox; //the dropdown for calendars
   private JLabel statusLabel; //label to show the status of the selected date and time
   private JTable eventTable;
+  private JButton addEventButton;
+  private JButton createCalendarButton;
+  private JButton editEventButton;
+  private JButton refreshButton;
 
   public GUIView() {
     this.eventTableModel = new DefaultTableModel();
     setTitle("Calendar Application");
-    setSize(800, 600);
+    setSize(1000, 700);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     initializeUI();
     setLocationRelativeTo(null);
+
+    //remove auto highlighting of the text field
+    startDateField.setFocusable(false);
+
   }
 
   /**
@@ -39,16 +48,16 @@ public class GUIView extends JFrame implements IGUIView {
     startDateField.setText(LocalDate.now().toString());
     controlPanel.add(startDateField);
 
-    JButton refreshButton = new JButton("Show Schedule");
+    refreshButton = new JButton("Show Schedule");
     refreshButton.setActionCommand("refreshScheduleButton");
     controlPanel.add(refreshButton);
 
     //Action buttons
-    JButton addEventButton = new JButton("Add Event");
+    addEventButton = new JButton("Add Event");
     addEventButton.setActionCommand("addEventButton");
     controlPanel.add(addEventButton);
 
-    JButton createCalendarButton = new JButton("Create Calendar");
+    createCalendarButton = new JButton("Create Calendar");
     createCalendarButton.setActionCommand("createCalendarButton");
     controlPanel.add(createCalendarButton);
 
@@ -71,7 +80,7 @@ public class GUIView extends JFrame implements IGUIView {
     mainPanel.add(scrollPane, BorderLayout.CENTER);
 
     //Edit Event Button
-    JButton editEventButton = new JButton("Edit Event");
+    editEventButton = new JButton("Edit Event");
     editEventButton.setActionCommand("editEventButton");
     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     controlPanel.add(editEventButton);
@@ -83,6 +92,32 @@ public class GUIView extends JFrame implements IGUIView {
 
     add(mainPanel);
 
+  }
+
+  @Override
+  public void setAddEventButtonListener(ActionListener listener) {
+    // Set the listener for the buttons and combo box
+    addEventButton.addActionListener(listener);
+  }
+
+  @Override
+  public void setCreateCalendarButtonListener(ActionListener listener) {
+    createCalendarButton.addActionListener(listener);
+  }
+
+  @Override
+  public void setEditEventButtonListener(ActionListener listener) {
+    editEventButton.addActionListener(listener);
+  }
+
+  @Override
+  public void setRefreshButtonListener(ActionListener listener) {
+    refreshButton.addActionListener(listener);
+  }
+
+  @Override
+  public void setSwitchCalendarComboBoxListener(ActionListener listener) {
+    calendarComboBox.addActionListener(listener);
   }
 
 //  public void setListener(ActionListener l) {
@@ -126,7 +161,7 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public String getSelectedCalendar() {
-    return "";
+    return (String) calendarComboBox.getSelectedItem();
   }
 
   @Override

@@ -1,10 +1,21 @@
 package calendar.view;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import calendar.model.event.Event;
 
 public interface IGUIView extends ICalendarView {
+
+  void setAddEventButtonListener(ActionListener listener);
+
+  void setEditEventButtonListener(ActionListener listener);
+
+  void setCreateCalendarButtonListener(ActionListener listener);
+
+  void setSwitchCalendarComboBoxListener(ActionListener listener);
+
+  void setRefreshButtonListener(ActionListener listener);
 
   void addCalendar(String name);
 
