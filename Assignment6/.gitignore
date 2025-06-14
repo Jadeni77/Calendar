@@ -1,0 +1,26 @@
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# Compilation output
+/out/
+/target/
+/bin/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Java-specific
+*.class
+
+# Temporary files
+*.swp
+*~
+
+*out/
+
+submission.zip
