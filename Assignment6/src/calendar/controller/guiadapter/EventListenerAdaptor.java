@@ -3,6 +3,7 @@ package calendar.controller.guiadapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import calendar.controller.guicontroller.GUIController;
+import calendar.controller.guicontroller.IGUIController;
 import calendar.view.ICalendarView;
 
 /**
@@ -13,9 +14,9 @@ import calendar.view.ICalendarView;
  * so you can wire it to both custom and standard UI events.
  */
 public class EventListenerAdaptor implements ActionListener {
-  private final GUIController controller;
+  private final IGUIController controller;
 
-  public EventListenerAdaptor(GUIController controller) {
+  public EventListenerAdaptor(IGUIController controller) {
     this.controller = controller;
     // this.guiVIew.setListener(this);
   }

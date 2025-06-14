@@ -5,9 +5,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import calendar.controller.CalendarManagerController;
+import calendar.controller.guiadapter.EventListenerAdaptor;
+import calendar.controller.guicontroller.GUIController;
+import calendar.controller.guicontroller.IGUIController;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
+import calendar.view.GUIView;
 import calendar.view.ICalendarView;
+import calendar.view.IGUIView;
 import calendar.view.TextBasedView;
 
 /**
@@ -33,13 +38,28 @@ public class App {
       String mode = args[1].toLowerCase();
       StringBuilder log = new StringBuilder();
       ICalendarManager manager = new CalendarManagerModel();
+      IGUIView guiView;
+      IGUIController guiController;
+      EventListenerAdaptor adaptor;
+
       Reader input;
       ICalendarView view;
       CalendarManagerController controller;
 
       if ("interactive".equals(mode)) {
-        view = new TextBasedView(System.out);
-        input = new InputStreamReader(System.in);
+
+        guiView = new GUIView();
+
+        guiController = new GUIController(manager, guiView);
+
+        adaptor = new EventListenerAdaptor(guiController);
+
+        guiController.start();
+
+        guiView.setVisible(true);
+
+
+
       } else if ("headless".equals(mode)) {
         if (args.length < 3) {
           System.out.println("Missing commands file for headless mode");
@@ -47,14 +67,11 @@ public class App {
         }
         view = new TextBasedView(log);
         input = new FileReader("res/" + args[2]);
+        controller = new CalendarManagerController(manager, view, input);
+        controller.start();
+        System.out.println("Log:\n" + log);
       } else {
         System.out.println("Invalid mode: " + mode);
-        return;
-      }
-      controller = new CalendarManagerController(manager, view, input);
-      controller.start();
-      if ("headless".equals(mode)) {
-        System.out.println("Log:\n" + log);
       }
     } catch (Exception e) {
       System.err.println("Fatal error: " + e.getMessage());

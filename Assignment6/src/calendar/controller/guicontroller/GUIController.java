@@ -8,15 +8,15 @@ import calendar.model.CalendarObserver;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.model.event.Event;
-import calendar.view.GUIView;
+import calendar.view.IGUIView;
 
 public class GUIController implements IGUIController, CalendarObserver {
   private final ICalendarManager manager;
-  private final GUIView view;
+  private final IGUIView view;
   private ICalendar currentCalendar;
   private List<Event> currentDisplayedEvents;
 
-  public GUIController(ICalendarManager manager, GUIView view) {
+  public GUIController(ICalendarManager manager, IGUIView view) {
     this.manager = manager;
     this.view = view;
   }
