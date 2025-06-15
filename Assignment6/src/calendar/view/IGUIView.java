@@ -24,13 +24,17 @@ public interface IGUIView extends ICalendarView {
 
   void addCalendar(String name);
 
-  Event getSelectedEvent();
+  String getSelectedEventSubject();
+
+  String getSelectedEventStart();
+
+  String getSelectedEventEnd();
 
   String getSelectedCalendar();
 
   List<String> showAddEventDialog();
 
-  List<String> showEditEventDialog(Event event);
+  List<String> showEditEventDialog();
 
   List<String> showCreateCalendarDialog();
 

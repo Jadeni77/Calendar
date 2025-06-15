@@ -2,6 +2,8 @@ package calendar.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -141,6 +144,10 @@ public class GUIView extends JFrame implements IGUIView {
     eventTableModel.addColumn("Subject");
     eventTableModel.addColumn("Start Time");
     eventTableModel.addColumn("End Time");
+    eventTable.setRowSelectionAllowed(true);
+    eventTable.setColumnSelectionAllowed(false);
+    eventTable.setDefaultEditor(Object.class, null);
+    eventTable.getTableHeader().setReorderingAllowed(false);
 
     JScrollPane scrollPane = new JScrollPane(eventTable);
     schedulePanel.add(scrollPane, BorderLayout.CENTER);
@@ -311,8 +318,30 @@ public class GUIView extends JFrame implements IGUIView {
   }
 
   @Override
-  public Event getSelectedEvent() {
-    return null;
+  public String getSelectedEventSubject() {
+    int selectedRow = eventTable.getSelectedRow();
+    if (selectedRow == -1) {
+      throw new IllegalArgumentException("No event selected!");
+    }
+    return (String) eventTable.getValueAt(selectedRow, 0);
+  }
+
+  @Override
+  public String getSelectedEventStart() {
+    int selectedRow = eventTable.getSelectedRow();
+    if (selectedRow == -1) {
+      throw new IllegalArgumentException("No event selected!");
+    }
+    return (String) eventTable.getValueAt(selectedRow, 1);
+  }
+
+  @Override
+  public String getSelectedEventEnd() {
+    int selectedRow = eventTable.getSelectedRow();
+    if (selectedRow == -1) {
+      throw new IllegalArgumentException("No event selected!");
+    }
+    return (String) eventTable.getValueAt(selectedRow, 2);
   }
 
   @Override
@@ -329,25 +358,23 @@ public class GUIView extends JFrame implements IGUIView {
     dialog.setTitle("Add Event");
     dialog.setResizable(false);
 
-    JTextField textField1 = new JTextField(20);
-
     JPanel popup = new JPanel();
     popup.setLayout(new BoxLayout(popup, BoxLayout.Y_AXIS));
-    GridBagConstraints gbc = new GridBagConstraints();
 
     JPanel textPanel1 = new JPanel();
+    JTextField textField1 = new JTextField(20);
     JLabel label1 = new JLabel("Name: ");
     textPanel1.add(label1);
     textPanel1.add(textField1);
 
-    JPanel dateTimePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel dateTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JLabel dateTimeLabel = new JLabel("Start Date/Time: ");
     SpinnerDateModel dateTimeModel = new SpinnerDateModel();
     JSpinner dateSpinner = new JSpinner(dateTimeModel);
     dateTimePanel.add(dateTimeLabel);
     dateTimePanel.add(dateSpinner);
 
-    JPanel dateTimePanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel dateTimePanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JLabel dateTimeLabel2 = new JLabel("End Date/Time: ");
     Date plusOneMin = new Date(new Date().getTime() + 60000);
     SpinnerDateModel dateTimeModel2 = new SpinnerDateModel(
@@ -357,13 +384,15 @@ public class GUIView extends JFrame implements IGUIView {
     dateTimePanel2.add(dateSpinner2);
 
     JButton okButton = new JButton("OK");
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.add(okButton);
 
     popup.add(textPanel1);
     popup.add(dateTimePanel);
     popup.add(dateTimePanel2);
 
     dialog.add(popup);
-    dialog.add(okButton, BorderLayout.SOUTH);
+    dialog.add(buttonPanel, BorderLayout.SOUTH);
 
     okButton.addActionListener(e -> {
       String name = textField1.getText();
@@ -403,8 +432,103 @@ public class GUIView extends JFrame implements IGUIView {
   }
 
   @Override
-  public List<String> showEditEventDialog(Event event) {
-    return List.of();
+  public List<String> showEditEventDialog() {
+    ArrayList<String> result = new ArrayList<>();
+
+    ArrayList<String> selectedCard = new ArrayList<>(List.of("Subject"));
+
+    JDialog dialog = new JDialog(this, "Input Dialog", true);
+    dialog.setLayout(new BorderLayout());
+    dialog.setTitle("Edit Event");
+    dialog.setResizable(false);
+
+    CardLayout cardLayout = new CardLayout();
+    JPanel cardPanel = new JPanel(cardLayout);
+
+    JPanel subjectPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel subjectLabel = new JLabel("Enter a new subject: ");
+    JTextField textField1 = new JTextField(20);
+    subjectPanel.add(subjectLabel);
+    subjectPanel.add(textField1);
+    JPanel subjectWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    subjectWrapper.add(subjectPanel);
+
+    JPanel startPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel startLabel = new JLabel("Enter a new start date/time: ");
+    SpinnerDateModel dateTimeModel = new SpinnerDateModel();
+    JSpinner dateSpinner = new JSpinner(dateTimeModel);
+    startPanel.add(startLabel);
+    startPanel.add(dateSpinner);
+    JPanel startWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    startWrapper.add(startPanel);
+
+    JPanel endPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel endLabel = new JLabel("Enter a new end date/time: ");
+    JSpinner dateSpinner2 = new JSpinner(dateTimeModel);
+    endPanel.add(endLabel);
+    endPanel.add(dateSpinner2);
+    JPanel endWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    endWrapper.add(endPanel);
+
+    cardPanel.add(subjectWrapper, "Subject");
+    cardPanel.add(startWrapper, "Start");
+    cardPanel.add(endWrapper, "End");
+
+    String[] options = {"Subject", "Start", "End"};
+    JComboBox<String> cardSelector = new JComboBox<>(options);
+    cardSelector.addActionListener(e -> {
+      String selected = (String) cardSelector.getSelectedItem();
+      selectedCard.set(0, selected);
+      cardLayout.show(cardPanel, selected);
+    });
+
+    JButton okButton = new JButton("OK");
+    okButton.addActionListener(e -> {
+      switch (selectedCard.get(0)) {
+        case "Subject":
+          result.add("subject");
+          result.add(textField1.getText());
+          break;
+        case "Start":
+          result.add("start");
+          Date startDate = (Date) dateSpinner.getValue();
+          LocalDateTime startLDT = startDate.toInstant()
+                  .atZone(ZoneId.systemDefault())
+                  .toLocalDateTime();
+          String startDateStr = this.formatter.format(startLDT);
+          result.add(startDateStr);
+          break;
+        case "End":
+          result.add("end");
+          Date endDate = (Date) dateSpinner2.getValue();
+          LocalDateTime endLDT = endDate.toInstant()
+                  .atZone(ZoneId.systemDefault())
+                  .toLocalDateTime();
+          String endDateStr = this.formatter.format(endLDT);
+          result.add(endDateStr);
+          break;
+      }
+      dialog.dispose();
+    });
+
+    JPanel selectorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    JLabel selectorLabel = new JLabel("Choose a property to edit: ");
+    selectorPanel.add(selectorLabel);
+    selectorPanel.add(cardSelector);
+
+    JPanel okButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    okButtonPanel.add(okButton);
+
+    // Assemble dialog
+    dialog.add(cardPanel, BorderLayout.CENTER);
+    dialog.add(selectorPanel, BorderLayout.NORTH);
+    dialog.add(okButtonPanel, BorderLayout.SOUTH);
+
+    dialog.pack();
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+
+    return result;
   }
 
   @Override
