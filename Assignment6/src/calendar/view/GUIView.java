@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,10 +69,6 @@ public class GUIView extends JFrame implements IGUIView {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     initializeUI();
     setLocationRelativeTo(null);
-//
-//    //remove auto highlighting of the text field
-//    startDateField.setFocusable(false);
-
   }
 
   /**
@@ -94,6 +91,10 @@ public class GUIView extends JFrame implements IGUIView {
     add(statusLabel, BorderLayout.SOUTH);
   }
 
+  /**
+   * Initializes the control panel of the calendar application.
+   * This method sets up the calendar selection dropdown, date control, and action buttons.
+   */
   private void initializeControlPanel() {
     //calendar selection dropdown
     controlPanel.add(new JLabel("Calendar:"));
@@ -120,9 +121,22 @@ public class GUIView extends JFrame implements IGUIView {
     controlPanel.add(refreshButton);
 
     add(controlPanel, BorderLayout.NORTH);
+
+    //when user type, bring them to that date with events
+    startDateField.addActionListener(e -> {
+      try {
+        LocalDate date = LocalDate.parse(startDateField.getText());
+        showEventsForDate(date);
+      } catch (Exception ex) {
+        this.displayException(new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd"));
+      }
+    });
   }
 
-  //from previous version
+  /**
+   * Initializes the schedule view of the calendar application.
+   * This method sets up the event table, adds columns, and initializes the edit button.
+   */
   private void initializeScheduleView() {
     eventTableModel.addColumn("Subject");
     eventTableModel.addColumn("Start Time");
@@ -137,7 +151,10 @@ public class GUIView extends JFrame implements IGUIView {
     schedulePanel.add(editEventButton, BorderLayout.SOUTH);
   }
 
-  //from starter
+  /**
+   * Initializes the month view of the calendar application.
+   * This method sets up the navigation buttons, month label, and the grid for displaying days.
+   */
   private void initializeMonthView() {
     JPanel navigatePanel = new JPanel(new BorderLayout());
      prevMonthButton = new JButton("<");
@@ -156,8 +173,12 @@ public class GUIView extends JFrame implements IGUIView {
     updateMonthView();
   }
 
+  /**
+   * Updates the month view by clearing the existing grid and creating a new one.
+   */
   private void updateMonthView() {
     //keep the navigation buttons and month label
+    //clear existing grid
     if (monthPanel.getComponentCount() > 1) {
       monthPanel.remove(1);
     }
@@ -189,6 +210,12 @@ public class GUIView extends JFrame implements IGUIView {
     for (int day = 1; day <= currentMonth.lengthOfMonth(); day++) {
       LocalDate date = currentMonth.atDay(day);
       JButton dayButton = new JButton(String.valueOf(day));
+
+      // Highlight today
+      if (date.equals(LocalDate.now())) {
+        dayButton.setBackground(new Color(220, 240, 255));
+      }
+
       dayButton.addActionListener(e -> showEvents(date));
       gridPanel.add(dayButton);
     }
@@ -201,13 +228,32 @@ public class GUIView extends JFrame implements IGUIView {
 
   //exactly from the starter
   private void showEvents(LocalDate date) {
-    List<String> dayEvents = events.getOrDefault(date, new ArrayList<>());
-    String eventList = dayEvents.isEmpty() ? "No events" : String.join("\n", dayEvents);
-    String newEvent = JOptionPane.showInputDialog(monthPanel, "Events on " + date + ":\n" + eventList + "\n\nAdd new event:");
-    if (newEvent != null && !newEvent.trim().isEmpty()) {
-      dayEvents.add(newEvent);
-      events.put(date, dayEvents);
-    }
+    this.showEventsForDate(date);
+//    List<String> dayEvents = events.getOrDefault(date, new ArrayList<>());
+//    String eventList = dayEvents.isEmpty() ? "No events" : String.join("\n", dayEvents);
+//    String newEvent = JOptionPane.showInputDialog(monthPanel, "Events on " + date + ":\n" + eventList + "\n\nAdd new event:");
+//    if (newEvent != null && !newEvent.trim().isEmpty()) {
+//      dayEvents.add(newEvent);
+//      events.put(date, dayEvents);
+//    }
+  }
+
+  @Override
+  public void switchToScheduleView() {
+    tabbedPane.setSelectedIndex(0);
+  }
+
+  @Override
+  public void setStartDate(LocalDate startDate) {
+    startDateField.setText(startDate.toString());
+  }
+
+  @Override
+  public void showEventsForDate(LocalDate date) {
+    setStartDate(date);
+    switchToScheduleView();
+    //triger refesh to show events for the selected date
+    refreshButton.doClick();
   }
 
   //fron starter
@@ -387,12 +433,14 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public void refreshEvents(List<Event> events) {
+    //sort the event displaying by start time
+    events.sort(Comparator.comparing(Event::getStartDateTime));
     this.eventTableModel.setRowCount(0);
     for (Event e : events) {
       eventTableModel.addRow(new Object[]{
               e.getSubject(),
-              e.getStartDateTime(),
-              e.getEndDateTime()
+              e.getStartDateTime().format(formatter),
+              e.getEndDateTime().format(formatter),
       });
     }
   }
@@ -405,4 +453,5 @@ public class GUIView extends JFrame implements IGUIView {
   private void updateStatusLabel(String message) {
     statusLabel.setText(message);
   }
+
 }

@@ -1,6 +1,7 @@
 package calendar.controller.guicontroller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -40,11 +41,13 @@ public class GUIController implements IGUIController, CalendarObserver {
   }
 
   private void refreshView() {
-    List<Event> events = currentCalendar.getEventsInRange(
-            LocalDate.now().atStartOfDay(),
-            LocalDate.now().plusDays(7).atTime(23, 59, 59));
-    currentDisplayedEvents = events;
-    view.refreshEvents(currentDisplayedEvents);
+//    List<Event> events = currentCalendar.getEventsInRange(
+//            LocalDate.now().atStartOfDay(),
+//            LocalDate.now().plusDays(7).atTime(23, 59, 59));
+//    currentDisplayedEvents = events;
+//    view.refreshEvents(currentDisplayedEvents);
+    view.setStartDate(LocalDate.now());
+    handleRefreshSchedule();
   }
 
   @Override
@@ -147,7 +150,15 @@ public class GUIController implements IGUIController, CalendarObserver {
   @Override
   public void handleRefreshSchedule() {
     try {
-      this.refreshView();
+      String startDate = view.getStartDate();
+      LocalDate date = LocalDate.parse(startDate);
+
+      LocalDateTime startOfDay = date.atStartOfDay();
+      LocalDateTime endOfDay = date.atTime(23, 59, 59);
+
+      List<Event> events = currentCalendar.getEventsInRange(startOfDay, endOfDay);
+      view.refreshEvents(events);
+
     } catch (Exception e) {
       view.displayException(e);
     }

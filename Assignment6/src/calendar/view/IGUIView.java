@@ -1,6 +1,7 @@
 package calendar.view;
 
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import calendar.model.event.Event;
@@ -21,8 +22,6 @@ public interface IGUIView extends ICalendarView {
 
   void setNextMonthListener(ActionListener listener);
 
-
-
   void addCalendar(String name);
 
   Event getSelectedEvent();
@@ -35,10 +34,16 @@ public interface IGUIView extends ICalendarView {
 
   List<String> showCreateCalendarDialog();
 
-  String getStartDate();
-
-
   void changeMonth(int direction);
 
   void refreshEvents(List<Event> events);
+
+  void switchToScheduleView();
+
+  String getStartDate();
+
+  void setStartDate(LocalDate startDate);
+
+  void showEventsForDate(LocalDate date);
+
 }
