@@ -1,19 +1,10 @@
 package calendar;
 
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import calendar.controller.CalendarManagerController;
-import calendar.controller.guiadapter.EventListenerAdaptor;
 import calendar.controller.guicontroller.GUIController;
 import calendar.controller.guicontroller.IGUIController;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.GUIView;
-import calendar.view.ICalendarView;
-import calendar.view.IGUIView;
-import calendar.view.TextBasedView;
 
 /**
  * The driver of the calendar application.
@@ -40,7 +31,7 @@ public class App {
 //      ICalendarManager manager = new CalendarManagerModel();
 //      IGUIView guiView;
 //      IGUIController guiController;
-//      EventListenerAdaptor adaptor;
+//      EventListenerAdapter adapter;
 //
 //      Reader input;
 //      ICalendarView view;

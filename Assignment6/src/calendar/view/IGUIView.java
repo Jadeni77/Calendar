@@ -40,4 +40,5 @@ public interface IGUIView extends ICalendarView {
 
   void changeMonth(int direction);
 
+  void refreshEvents(List<Event> events);
 }

@@ -2,9 +2,8 @@ package calendar.controller.guiadapter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import calendar.controller.guicontroller.GUIController;
+
 import calendar.controller.guicontroller.IGUIController;
-import calendar.view.ICalendarView;
 
 /**
  * An adapter class that implements the ViewEventListenerAdapter and ActionListener interfaces.
@@ -13,10 +12,10 @@ import calendar.view.ICalendarView;
  * It implements both ViewEventListener (custom events) and ActionListener (Swing events),
  * so you can wire it to both custom and standard UI events.
  */
-public class EventListenerAdaptor implements ActionListener {
+public class EventListenerAdapter implements ViewEventListenerAdapter {
   private final IGUIController controller;
 
-  public EventListenerAdaptor(IGUIController controller) {
+  public EventListenerAdapter(IGUIController controller) {
     this.controller = controller;
     // this.guiVIew.setListener(this);
   }

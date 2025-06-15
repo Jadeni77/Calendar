@@ -44,7 +44,7 @@ public class GUIController implements IGUIController, CalendarObserver {
             LocalDate.now().atStartOfDay(),
             LocalDate.now().plusDays(7).atTime(23, 59, 59));
     currentDisplayedEvents = events;
-    view.printEvents(events);
+    view.refreshEvents(currentDisplayedEvents);
   }
 
   @Override
@@ -63,7 +63,7 @@ public class GUIController implements IGUIController, CalendarObserver {
 
       try {
         currentCalendar.createSingleEvent(subject, start, end);
-        view.displayMessage("Added event: " + subject);
+        view.displayMessage("Added event: " + subject + " !");
       } catch (Exception e) {
         view.displayException(e);
       }
@@ -147,12 +147,7 @@ public class GUIController implements IGUIController, CalendarObserver {
   @Override
   public void handleRefreshSchedule() {
     try {
-      LocalDate startDate = LocalDate.parse(view.getStartDate());
-      List<Event> event = currentCalendar.getEventsInRange(
-              startDate.atStartOfDay(),
-              startDate.plusDays(7).atTime(23, 59, 59));
-      currentDisplayedEvents = event;
-      view.printEvents(event);
+      this.refreshView();
     } catch (Exception e) {
       view.displayException(e);
     }

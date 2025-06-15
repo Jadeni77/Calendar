@@ -4,9 +4,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,13 +45,7 @@ public class GUIView extends JFrame implements IGUIView {
 
   private Map<LocalDate, List<String>> events;
 
-
-
-  //  private JButton addEventButton;
-//  private JButton createCalendarButton;
-//  private JButton editEventButton;
-//  private JButton refreshButton;
-
+  private DateTimeFormatter formatter;
 
   public GUIView() {
     this.eventTableModel = new DefaultTableModel();
@@ -62,6 +61,7 @@ public class GUIView extends JFrame implements IGUIView {
 
     this.events = new HashMap<>();
 
+    this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     setTitle("Calendar Application");
     setSize(1000, 700);
@@ -92,62 +92,6 @@ public class GUIView extends JFrame implements IGUIView {
     initializeControlPanel();
 
     add(statusLabel, BorderLayout.SOUTH);
-
-
-//    JPanel mainPanel = new JPanel(new BorderLayout());
-//
-//    JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//
-//    //Date Control
-//    controlPanel.add(new JLabel("Start Date (yyyy-MM-dd):"));
-//    startDateField = new JTextField(10);
-//    startDateField.setText(LocalDate.now().toString());
-//    controlPanel.add(startDateField);
-//
-//    refreshButton = new JButton("Show Schedule");
-//    refreshButton.setActionCommand("refreshScheduleButton");
-//    controlPanel.add(refreshButton);
-//
-//    //Action buttons
-//    addEventButton = new JButton("Add Event");
-//    addEventButton.setActionCommand("addEventButton");
-//    controlPanel.add(addEventButton);
-//
-//    createCalendarButton = new JButton("Create Calendar");
-//    createCalendarButton.setActionCommand("createCalendarButton");
-//    controlPanel.add(createCalendarButton);
-//
-//    //Calendar Switching Dropdown
-//    controlPanel.add(new JLabel("Calendar:"));
-//    calendarComboBox = new JComboBox<>();
-//    calendarComboBox.addItem("Default");
-//    calendarComboBox.setActionCommand("calendarComboBox");
-//    controlPanel.add(calendarComboBox);
-//
-//    mainPanel.add(controlPanel, BorderLayout.NORTH);
-//
-//    //Event Table
-//    eventTableModel.addColumn("Subject");
-//    eventTableModel.addColumn("Start Time");
-//    eventTableModel.addColumn("End Time");
-//    eventTable = new JTable(eventTableModel);
-//    eventTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//    JScrollPane scrollPane = new JScrollPane(eventTable); //scrolling
-//    mainPanel.add(scrollPane, BorderLayout.CENTER);
-//
-//    //Edit Event Button
-//    editEventButton = new JButton("Edit Event");
-//    editEventButton.setActionCommand("editEventButton");
-//    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-//    controlPanel.add(editEventButton);
-//    mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-//
-//    //Status Label
-//    statusLabel = new JLabel("Ready");
-//    mainPanel.add(statusLabel, BorderLayout.SOUTH);
-//
-//    add(mainPanel);
-
   }
 
   private void initializeControlPanel() {
@@ -266,14 +210,12 @@ public class GUIView extends JFrame implements IGUIView {
     }
   }
 
-
   //fron starter
   @Override
   public void changeMonth(int direction) {
     currentMonth = currentMonth.plusMonths(direction);
     updateMonthView();
   }
-
 
   @Override
   public void setAddEventButtonListener(ActionListener listener) {
@@ -334,7 +276,84 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public List<String> showAddEventDialog() {
-    return List.of();
+    List<String> result = new ArrayList<>();
+
+    JDialog dialog = new JDialog(this, "Input Dialog", true);
+    dialog.setLayout(new BorderLayout());
+    dialog.setTitle("Add Event");
+    dialog.setResizable(false);
+
+    JTextField textField1 = new JTextField(20);
+
+    JPanel popup = new JPanel();
+    popup.setLayout(new BoxLayout(popup, BoxLayout.Y_AXIS));
+    GridBagConstraints gbc = new GridBagConstraints();
+
+    JPanel textPanel1 = new JPanel();
+    JLabel label1 = new JLabel("Name: ");
+    textPanel1.add(label1);
+    textPanel1.add(textField1);
+
+    JPanel dateTimePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel dateTimeLabel = new JLabel("Start Date/Time: ");
+    SpinnerDateModel dateTimeModel = new SpinnerDateModel();
+    JSpinner dateSpinner = new JSpinner(dateTimeModel);
+    dateTimePanel.add(dateTimeLabel);
+    dateTimePanel.add(dateSpinner);
+
+    JPanel dateTimePanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel dateTimeLabel2 = new JLabel("End Date/Time: ");
+    Date plusOneMin = new Date(new Date().getTime() + 60000);
+    SpinnerDateModel dateTimeModel2 = new SpinnerDateModel(
+            plusOneMin, null, null, Calendar.MINUTE);
+    JSpinner dateSpinner2 = new JSpinner(dateTimeModel2);
+    dateTimePanel2.add(dateTimeLabel2);
+    dateTimePanel2.add(dateSpinner2);
+
+    JButton okButton = new JButton("OK");
+
+    popup.add(textPanel1);
+    popup.add(dateTimePanel);
+    popup.add(dateTimePanel2);
+
+    dialog.add(popup);
+    dialog.add(okButton, BorderLayout.SOUTH);
+
+    okButton.addActionListener(e -> {
+      String name = textField1.getText();
+      Date startDate = (Date) dateSpinner.getValue();
+      Date endDate = (Date) dateSpinner2.getValue();
+      LocalDateTime startLDT = startDate.toInstant()
+              .atZone(ZoneId.systemDefault())
+              .toLocalDateTime();
+      LocalDateTime endLDT = endDate.toInstant()
+              .atZone(ZoneId.systemDefault())
+              .toLocalDateTime();
+      String startDateStr = this.formatter.format(startLDT);
+      String endDateStr = this.formatter.format(endLDT);
+
+      if (name.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(dialog, "Please enter a name!");
+        return;
+      } if (startDateStr.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(dialog, "Please enter a start date!");
+        return;
+      } if (endDateStr.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(dialog, "Please enter a end date!");
+        return;
+      }
+
+      result.add(name);
+      result.add(startDateStr);
+      result.add(endDateStr);
+      dialog.dispose();
+    });
+
+    dialog.pack();
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+
+    return result;
   }
 
   @Override
@@ -352,7 +371,6 @@ public class GUIView extends JFrame implements IGUIView {
     return startDateField.getText();
   }
 
-
   @Override
   public void displayMessage(String message) {
     JOptionPane.showMessageDialog(this, message);
@@ -365,6 +383,18 @@ public class GUIView extends JFrame implements IGUIView {
     JOptionPane.showMessageDialog(this, e.getMessage());
     updateStatusLabel("Error: " + e.getMessage());
 
+  }
+
+  @Override
+  public void refreshEvents(List<Event> events) {
+    this.eventTableModel.setRowCount(0);
+    for (Event e : events) {
+      eventTableModel.addRow(new Object[]{
+              e.getSubject(),
+              e.getStartDateTime(),
+              e.getEndDateTime()
+      });
+    }
   }
 
   @Override
