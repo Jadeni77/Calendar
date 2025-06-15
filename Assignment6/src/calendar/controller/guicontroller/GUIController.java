@@ -157,5 +157,17 @@ public class GUIController implements IGUIController, CalendarObserver {
       view.displayException(e);
     }
   }
+
+  @Override
+  public void handlePrevMonth() {
+    view.changeMonth(-1);
+
+  }
+
+  @Override
+  public void handleNextMonth() {
+    view.changeMonth(1);
+
+  }
 }
 

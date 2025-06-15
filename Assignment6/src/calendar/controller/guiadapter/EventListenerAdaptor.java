@@ -41,6 +41,12 @@ public class EventListenerAdaptor implements ActionListener {
       case "refreshScheduleButton":
         controller.handleRefreshSchedule();
         break;
+      case "prevMonthButton":
+        controller.handlePrevMonth();
+        break;
+      case "nextMonthButton":
+        controller.handleNextMonth();
+        break;
       default:
         //guiView.displayMessage("Unknown action: " + source);
     }

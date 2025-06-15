@@ -15,4 +15,8 @@ public interface IGUIController extends ICalendarController {
   void handleSwitchCalendar();
 
   void handleRefreshSchedule();
+
+  void handlePrevMonth();
+
+  void handleNextMonth();
 }

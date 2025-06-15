@@ -13,9 +13,15 @@ public interface IGUIView extends ICalendarView {
 
   void setCreateCalendarButtonListener(ActionListener listener);
 
-  void setSwitchCalendarComboBoxListener(ActionListener listener);
+  void setSwitchCalendarListener(ActionListener listener);
 
   void setRefreshButtonListener(ActionListener listener);
+
+  void setPrevMonthListener(ActionListener listener);
+
+  void setNextMonthListener(ActionListener listener);
+
+
 
   void addCalendar(String name);
 
@@ -30,5 +36,8 @@ public interface IGUIView extends ICalendarView {
   List<String> showCreateCalendarDialog();
 
   String getStartDate();
+
+
+  void changeMonth(int direction);
 
 }

@@ -56,8 +56,11 @@ public class App {
         view.setAddEventButtonListener(e -> controller.handleAddEvent());
         view.setEditEventButtonListener(e -> controller.handleEditEvent());
         view.setCreateCalendarButtonListener(e -> controller.handleCreateCalendar());
-        view.setSwitchCalendarComboBoxListener(e -> controller.handleSwitchCalendar());
+
+        view.setSwitchCalendarListener(e -> controller.handleSwitchCalendar());
         view.setRefreshButtonListener(e -> controller.handleRefreshSchedule());
+        view.setPrevMonthListener(e -> controller.handlePrevMonth());
+        view.setNextMonthListener(e -> controller.handleNextMonth());
 
         // Start the application
         controller.start();
