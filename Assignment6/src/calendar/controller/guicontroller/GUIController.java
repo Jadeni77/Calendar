@@ -1,6 +1,7 @@
 package calendar.controller.guicontroller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -72,42 +73,38 @@ public class GUIController implements IGUIController, CalendarObserver {
 
   @Override
   public void handleEditEvent() {
-    Event selectedEvent = view.getSelectedEvent();
-    if (selectedEvent != null) {
-      List<String> newData = view.showEditEventDialog(selectedEvent);
-      if (newData != null && newData.size() == 3) {
-        String newSubject = newData.get(0);
-        String newStart = newData.get(1);
-        String newEnd = newData.get(2);
+    try {
+      Event selectedEvent = currentCalendar.getEvent(
+              view.getSelectedEventSubject(),
+              LocalDateTime.parse(view.getSelectedEventStart(),
+                      currentCalendar.getDateTimeFormatter()),
+              LocalDateTime.parse(view.getSelectedEventEnd(),
+                      currentCalendar.getDateTimeFormatter())
+      );
+      if (selectedEvent != null) {
+        List<String> newData = view.showEditEventDialog();
+        if (newData != null && newData.size() == 2) {
+          String editedProperty = newData.get(0);
+          String newProperty = newData.get(1);
 
-        try {
-          String originalSubject = selectedEvent.getSubject();
-          String originalStart = selectedEvent.getStartDateTime()
-                  .format(currentCalendar.getDateTimeFormatter());
-          String originalEnd = selectedEvent.getEndDateTime()
-                  .format(currentCalendar.getDateTimeFormatter());
-          //update subject
-          if (!originalSubject.equals(newSubject)) {
-            currentCalendar.editSingleEvent("subject", originalSubject, originalStart,
-                    originalEnd, newSubject);
+          try {
+            String originalSubject = selectedEvent.getSubject();
+            String originalStart = selectedEvent.getStartDateTime()
+                    .format(currentCalendar.getDateTimeFormatter());
+            String originalEnd = selectedEvent.getEndDateTime()
+                    .format(currentCalendar.getDateTimeFormatter());
+            currentCalendar.editSingleEvent(editedProperty, originalSubject, originalStart,
+                    originalEnd, newProperty);
+            view.displayMessage("Updated event: " + originalSubject);
+          } catch (Exception e) {
+            view.displayException(e);
           }
-          //update start time
-          if (!originalStart.equals(newStart)) {
-            currentCalendar.editSingleEvent("start", originalSubject, originalStart,
-                    originalEnd, newStart);
-          }
-          //update end time
-          if (!originalEnd.equals(newEnd)) {
-            currentCalendar.editSingleEvent("end", originalSubject, originalStart,
-                    originalEnd, newEnd);
-          }
-          view.displayMessage("Updated event: " + originalSubject);
-        } catch (Exception e) {
-          view.displayException(e);
         }
+      } else {
+        view.displayMessage("No event selected for editing.");
       }
-    } else {
-      view.displayMessage("No event selected for editing.");
+    } catch (IllegalArgumentException e) {
+      view.displayException(e);
     }
   }
 
