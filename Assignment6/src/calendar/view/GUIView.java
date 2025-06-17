@@ -353,6 +353,7 @@ public class GUIView extends JFrame implements IGUIView {
     textPanel1.add(label1);
     textPanel1.add(textField1);
 
+    // TODO make date current date, keep time
     JPanel dateTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JLabel dateTimeLabel = new JLabel("Start Date/Time: ");
     SpinnerDateModel dateTimeModel = new SpinnerDateModel();
@@ -360,6 +361,7 @@ public class GUIView extends JFrame implements IGUIView {
     dateTimePanel.add(dateTimeLabel);
     dateTimePanel.add(dateSpinner);
 
+    // TODO make date current date, keep time
     JPanel dateTimePanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JLabel dateTimeLabel2 = new JLabel("End Date/Time: ");
     Date plusOneMin = new Date(new Date().getTime() + 60000);
