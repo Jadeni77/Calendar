@@ -1,10 +1,19 @@
 package calendar;
 
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import calendar.controller.CalendarManagerController;
+import calendar.controller.guiadapter.EventListenerAdapter;
+import calendar.controller.guiadapter.ViewEventListenerAdapter;
 import calendar.controller.guicontroller.GUIController;
 import calendar.controller.guicontroller.IGUIController;
 import calendar.model.calendarmanagerclass.CalendarManagerModel;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.view.GUIView;
+import calendar.view.ICalendarView;
+import calendar.view.TextBasedView;
 
 /**
  * The driver of the calendar application.
@@ -21,63 +30,46 @@ public class App {
   public static void main(String[] args) {
     try {
       if (args.length < 2 || !args[0].equalsIgnoreCase("--mode")) {
-        System.out.println("Usage: java calendar.App --mode interactive");
-        System.out.println("       java calendar.App --mode headless <commands-file>");
-        return;
-      }
-
-      String mode = args[1].toLowerCase();
-//      StringBuilder log = new StringBuilder();
-//      ICalendarManager manager = new CalendarManagerModel();
-//      IGUIView guiView;
-//      IGUIController guiController;
-//      EventListenerAdapter adapter;
-//
-//      Reader input;
-//      ICalendarView view;
-//      CalendarManagerController controller;
-
-      if ("interactive".equals(mode)) {
-
         ICalendarManager manager = new CalendarManagerModel();
         GUIView view = new GUIView();
         IGUIController controller = new GUIController(manager, view);
-
-        // Register controller as listener for view actions
-        view.setAddEventButtonListener(e -> controller.handleAddEvent());
-        view.setEditEventButtonListener(e -> controller.handleEditEvent());
-        view.setCreateCalendarButtonListener(e -> controller.handleCreateCalendar());
-
-        view.setSwitchCalendarListener(e -> controller.handleSwitchCalendar());
-        view.setRefreshButtonListener(e -> controller.handleRefreshSchedule());
-        view.setPrevMonthListener(e -> controller.handlePrevMonth());
-        view.setNextMonthListener(e -> controller.handleNextMonth());
+        ViewEventListenerAdapter adapter = new EventListenerAdapter(controller, view);
 
         // Start the application
         controller.start();
         view.setVisible(true);
-
+        return;
       }
 
-//      } else if ("headless".equals(mode)) {
-//        if (args.length < 3) {
-//          System.out.println("Missing commands file for headless mode");
-//          return;
-//        }
-//        view = new TextBasedView(log);
-//        input = new FileReader("res/" + args[2]);
-//        controller = new CalendarManagerController(manager, view, input);
-//        controller.start();
-//        System.out.println("Log:\n" + log);
-//      }
-      else {
+      String mode = args[1].toLowerCase();
+      StringBuilder log = new StringBuilder();
+      ICalendarManager manager = new CalendarManagerModel();
+      Reader input;
+      ICalendarView view;
+      CalendarManagerController controller;
+
+      if ("interactive".equals(mode)) {
+        view = new TextBasedView(System.out);
+        input = new InputStreamReader(System.in);
+      } else if ("headless".equals(mode)) {
+        if (args.length < 3) {
+          System.out.println("Missing commands file for headless mode");
+          return;
+        }
+        view = new TextBasedView(log);
+        input = new FileReader("res/" + args[2]);
+      } else {
         System.out.println("Invalid mode: " + mode);
+        return;
+      }
+      controller = new CalendarManagerController(manager, view, input);
+      controller.start();
+      if ("headless".equals(mode)) {
+        System.out.println("Log:\n" + log);
       }
     } catch (Exception e) {
       System.err.println("Fatal error: " + e.getMessage());
       e.printStackTrace();
     }
   }
-
 }
-//

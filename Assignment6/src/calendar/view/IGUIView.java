@@ -8,19 +8,7 @@ import calendar.model.event.Event;
 
 public interface IGUIView extends ICalendarView {
 
-  void setAddEventButtonListener(ActionListener listener);
-
-  void setEditEventButtonListener(ActionListener listener);
-
-  void setCreateCalendarButtonListener(ActionListener listener);
-
-  void setSwitchCalendarListener(ActionListener listener);
-
-  void setRefreshButtonListener(ActionListener listener);
-
-  void setPrevMonthListener(ActionListener listener);
-
-  void setNextMonthListener(ActionListener listener);
+  void setListeners(ActionListener listener);
 
   void addCalendar(String name);
 

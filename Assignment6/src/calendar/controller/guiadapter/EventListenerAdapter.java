@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import calendar.controller.guicontroller.IGUIController;
+import calendar.view.IGUIView;
 
 /**
  * An adapter class that implements the ViewEventListenerAdapter and ActionListener interfaces.
@@ -14,10 +15,12 @@ import calendar.controller.guicontroller.IGUIController;
  */
 public class EventListenerAdapter implements ViewEventListenerAdapter {
   private final IGUIController controller;
+  private final IGUIView view;
 
-  public EventListenerAdapter(IGUIController controller) {
+  public EventListenerAdapter(IGUIController controller, IGUIView view) {
     this.controller = controller;
-    // this.guiVIew.setListener(this);
+    this.view = view;
+    this.view.setListeners(this);
   }
 
   @Override
