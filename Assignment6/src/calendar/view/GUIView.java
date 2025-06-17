@@ -2,6 +2,7 @@ package calendar.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -34,8 +36,7 @@ public class GUIView extends JFrame implements IGUIView {
   private final JPanel controlPanel;
   private final JLabel monthLabel; //from starter
   private YearMonth currentMonth; //from starter
-  private JTextField startDateField; //the text field for start date indicate the date for the calendar
-  //the startDateField does nothing right now besides showing the current date
+  private JSpinner startDateSpinner; //the text field for start date indicate the date for the calendar
 
   private JButton addEventButton;
   private JButton editEventButton;
@@ -47,6 +48,7 @@ public class GUIView extends JFrame implements IGUIView {
   private Map<LocalDate, List<String>> events;
 
   private DateTimeFormatter formatter;
+  private SimpleDateFormat dateFormat;
 
   public GUIView() {
     this.eventTableModel = new DefaultTableModel();
@@ -62,6 +64,7 @@ public class GUIView extends JFrame implements IGUIView {
 
     this.events = new HashMap<>();
 
+    this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     setTitle("Calendar Application");
@@ -103,8 +106,10 @@ public class GUIView extends JFrame implements IGUIView {
 
     //date control
     controlPanel.add(new JLabel("Start Date:"));
-    startDateField = new JTextField(LocalDate.now().toString(), 10);
-    controlPanel.add(startDateField);
+    startDateSpinner = new JSpinner(new SpinnerDateModel());
+    JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(startDateSpinner, "yyyy-MM-dd");
+    startDateSpinner.setEditor(dateEditor);
+    controlPanel.add(startDateSpinner);
 
     //Action buttons
      addEventButton = new JButton("Add Event");
@@ -123,9 +128,10 @@ public class GUIView extends JFrame implements IGUIView {
     add(controlPanel, BorderLayout.NORTH);
 
     //when user type, bring them to that date with events
-    startDateField.addActionListener(e -> {
+    startDateSpinner.addChangeListener(e -> {
       try {
-        LocalDate date = LocalDate.parse(startDateField.getText());
+        Date startDate = (Date) startDateSpinner.getValue();
+        LocalDate date = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         showEventsForDate(date);
       } catch (Exception ex) {
         this.displayException(new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd"));
@@ -249,7 +255,8 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public void setStartDate(LocalDate startDate) {
-    startDateField.setText(startDate.toString());
+    Date date = Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    startDateSpinner.setValue(date);
   }
 
   @Override
@@ -510,7 +517,7 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public String getStartDate() {
-    return startDateField.getText();
+    return dateFormat.format((Date) startDateSpinner.getValue());
   }
 
   @Override
