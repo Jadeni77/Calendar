@@ -150,9 +150,11 @@ public class GUIController implements IGUIController, CalendarObserver {
       LocalDate date = LocalDate.parse(startDate);
 
       LocalDateTime startOfDay = date.atStartOfDay();
-      LocalDateTime endOfDay = date.atTime(23, 59, 59);
 
-      List<Event> events = currentCalendar.getEventsInRange(startOfDay, endOfDay);
+      List<Event> events = currentCalendar.getEventsInRange(startOfDay, LocalDateTime.MAX);
+      if (events.size() > 10) {
+        events = events.subList(0, 10);
+      }
       view.refreshEvents(events);
 
     } catch (Exception e) {
