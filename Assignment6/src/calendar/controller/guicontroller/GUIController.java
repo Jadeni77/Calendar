@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-import calendar.model.CalendarObserver;
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.model.event.Event;
@@ -153,7 +152,7 @@ public class GUIController implements IGUIController, CalendarObserver {
       LocalDateTime endOfDay = date.atTime(23, 59, 59);
 
       List<Event> events = currentCalendar.getEventsInRange(startOfDay, endOfDay);
-      view.refreshEvents(events);
+      view.printEvents(events);
 
     } catch (Exception e) {
       view.displayException(e);

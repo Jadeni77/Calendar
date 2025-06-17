@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import calendar.model.CalendarObserver;
+import calendar.controller.guicontroller.CalendarObserver;
 import calendar.model.enumclass.EventStatus;
 import calendar.model.enumclass.DayOfWeekAbbreviation;
 import calendar.model.enumclass.Location;

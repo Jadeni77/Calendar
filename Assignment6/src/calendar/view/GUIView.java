@@ -528,8 +528,8 @@ public class GUIView extends JFrame implements IGUIView {
   }
 
   @Override
-  public void refreshEvents(List<Event> events) {
-    //sort the event displaying by start time
+  public void printEvents(List<Event> events) {
+//sort the event displaying by start time
     events.sort(Comparator.comparing(Event::getStartDateTime));
     this.eventTableModel.setRowCount(0);
     for (Event e : events) {
@@ -539,11 +539,6 @@ public class GUIView extends JFrame implements IGUIView {
               e.getEndDateTime().format(formatter),
       });
     }
-  }
-
-  @Override
-  public void printEvents(List<Event> events) {
-
   }
 
   private void updateStatusLabel(String message) {

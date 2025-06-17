@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import calendar.model.CalendarObserver;
+import calendar.controller.guicontroller.CalendarObserver;
 import calendar.model.event.Event;
 
 /**
