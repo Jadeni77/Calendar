@@ -5,8 +5,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+import javax.swing.*;
+
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
+import calendar.model.enumclass.EventStatus;
+import calendar.model.enumclass.Location;
 import calendar.model.event.Event;
 import calendar.view.IGUIView;
 
@@ -14,7 +18,6 @@ public class GUIController implements IGUIController, CalendarObserver {
   private final ICalendarManager manager;
   private final IGUIView view;
   private ICalendar currentCalendar;
-  private List<Event> currentDisplayedEvents;
 
   public GUIController(ICalendarManager manager, IGUIView view) {
     this.manager = manager;
@@ -58,13 +61,27 @@ public class GUIController implements IGUIController, CalendarObserver {
   public void handleAddEvent() {
     List<String> eventsData = view.showAddEventDialog();
 
-    if (eventsData != null && eventsData.size() == 3) {
+    if (eventsData != null && eventsData.size() == 6) {
       String subject = eventsData.get(0);
       String start = eventsData.get(1);
       String end = eventsData.get(2);
+      String description = eventsData.get(3);
+      String location = eventsData.get(4);
+      String status = eventsData.get(5);
+
+      Event.EventBuilder builder = new Event.EventBuilder()
+              .subject(subject)
+              .startDateTime(LocalDateTime.parse(start, currentCalendar.getDateTimeFormatter()))
+              .endDateTime(LocalDateTime.parse(end, currentCalendar.getDateTimeFormatter()))
+              .description(description)
+              .location(Location.valueOf(location))
+              .status(EventStatus.valueOf(status));
+
+      Event newEvent;
 
       try {
-        currentCalendar.createSingleEvent(subject, start, end);
+        newEvent = builder.build();
+        currentCalendar.addEvent(newEvent);
         view.displayMessage("Added event: " + subject + " !");
       } catch (Exception e) {
         view.displayException(e);
@@ -86,7 +103,7 @@ public class GUIController implements IGUIController, CalendarObserver {
         List<String> newData = view.showEditEventDialog();
         if (newData != null && newData.size() == 2) {
           String editedProperty = newData.get(0);
-          String newProperty = newData.get(1);
+          String newValue = newData.get(1);
 
           try {
             String originalSubject = selectedEvent.getSubject();
@@ -95,7 +112,7 @@ public class GUIController implements IGUIController, CalendarObserver {
             String originalEnd = selectedEvent.getEndDateTime()
                     .format(currentCalendar.getDateTimeFormatter());
             currentCalendar.editSingleEvent(editedProperty, originalSubject, originalStart,
-                    originalEnd, newProperty);
+                    originalEnd, newValue);
             view.displayMessage("Updated event: " + originalSubject);
           } catch (Exception e) {
             view.displayException(e);
@@ -131,8 +148,12 @@ public class GUIController implements IGUIController, CalendarObserver {
     String selected = view.getSelectedCalendar();
     if (selected != null && !selected.equals("Default")) {
       try {
+        // Remove the current calendar observer before switching
+        currentCalendar.removeObserver(this);
+
         manager.setCurrentCalendar(selected);
         currentCalendar = manager.getCurrentActiveCalendar();
+        //add observer to the new current calendar
         currentCalendar.addObserver(this);
         view.displayMessage("Switched to calendar: " + selected);
         refreshView();
@@ -152,6 +173,12 @@ public class GUIController implements IGUIController, CalendarObserver {
       LocalDateTime endOfDay = date.atTime(23, 59, 59);
 
       List<Event> events = currentCalendar.getEventsInRange(startOfDay, endOfDay);
+
+      if (events.size() > 10) {
+        events = events.subList(0, 10); // Limit to 10 events for display
+        view.displayMessage("Showing only the first 10 events.");
+      }
+
       view.printEvents(events);
 
     } catch (Exception e) {

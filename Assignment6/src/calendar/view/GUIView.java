@@ -19,10 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import calendar.model.enumclass.EventStatus;
+import calendar.model.enumclass.Location;
 import calendar.model.event.Event;
 
 public class GUIView extends JFrame implements IGUIView {
@@ -147,6 +151,9 @@ public class GUIView extends JFrame implements IGUIView {
     eventTableModel.addColumn("Subject");
     eventTableModel.addColumn("Start Time");
     eventTableModel.addColumn("End Time");
+    eventTableModel.addColumn("Description");
+    eventTableModel.addColumn("Location");
+    eventTableModel.addColumn("Status");
     eventTable.setRowSelectionAllowed(true);
     eventTable.setColumnSelectionAllowed(false);
     eventTable.setDefaultEditor(Object.class, null);
@@ -366,9 +373,33 @@ public class GUIView extends JFrame implements IGUIView {
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(okButton);
 
+    //Description panel
+    JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JTextField descriptionTextField = new JTextField(20);
+    JLabel descriptionLabel = new JLabel("Description: ");
+    descriptionPanel.add(descriptionLabel);
+    descriptionPanel.add(descriptionTextField);
+
+    //Location panel
+    JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JComboBox<Location> locationComboBox = new JComboBox<>(Location.values());
+    JLabel locationLabel = new JLabel("Location: ");
+    locationPanel.add(locationLabel);
+    locationPanel.add(locationComboBox);
+
+    //Status panel
+    JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JComboBox<EventStatus> statusComboBox = new JComboBox<>(EventStatus.values());
+    JLabel statusLabel = new JLabel("Status: ");
+    statusPanel.add(statusLabel);
+    statusPanel.add(statusComboBox);
+
     popup.add(textPanel1);
     popup.add(dateTimePanel);
     popup.add(dateTimePanel2);
+    popup.add(descriptionPanel);
+    popup.add(locationPanel);
+    popup.add(statusPanel);
 
     dialog.add(popup);
     dialog.add(buttonPanel, BorderLayout.SOUTH);
@@ -400,6 +431,9 @@ public class GUIView extends JFrame implements IGUIView {
       result.add(name);
       result.add(startDateStr);
       result.add(endDateStr);
+      result.add(descriptionTextField.getText());
+      result.add(Objects.requireNonNull(locationComboBox.getSelectedItem()).toString());
+      result.add(Objects.requireNonNull(statusComboBox.getSelectedItem()).toString());
       dialog.dispose();
     });
 
@@ -453,7 +487,16 @@ public class GUIView extends JFrame implements IGUIView {
     cardPanel.add(startWrapper, "Start");
     cardPanel.add(endWrapper, "End");
 
-    String[] options = {"Subject", "Start", "End"};
+    //Add new properties to the card layout
+    JPanel descriptionPanel = this.createTextPanel("Description:", new JTextField(20));
+    JPanel locationPanel = this.createComboPanel("Location:", Location.values());
+    JPanel statusPanel = this.createComboPanel("Status:", EventStatus.values());
+
+    cardPanel.add(descriptionPanel, "Description");
+    cardPanel.add(locationPanel, "Location");
+    cardPanel.add(statusPanel, "Status");
+
+    String[] options = {"Subject", "Start", "End", "Description", "Location", "Status"};
     JComboBox<String> cardSelector = new JComboBox<>(options);
     cardSelector.addActionListener(e -> {
       String selected = (String) cardSelector.getSelectedItem();
@@ -486,6 +529,20 @@ public class GUIView extends JFrame implements IGUIView {
           String endDateStr = this.formatter.format(endLDT);
           result.add(endDateStr);
           break;
+        case "Description":
+          result.add("description");
+          result.add(((JTextField) getComponentFromPanel(descriptionPanel, 1)).getText());
+          break;
+        case "Location":
+          result.add("location");
+          result.add(Objects.requireNonNull(((JComboBox<?>) getComponentFromPanel(locationPanel, 1))
+                  .getSelectedItem()).toString());
+          break;
+        case "Status":
+          result.add("status");
+          result.add(Objects.requireNonNull(((JComboBox<?>) getComponentFromPanel(statusPanel, 1))
+                  .getSelectedItem()).toString());
+          break;
       }
       dialog.dispose();
     });
@@ -508,6 +565,32 @@ public class GUIView extends JFrame implements IGUIView {
     dialog.setVisible(true);
 
     return result;
+  }
+
+  private Component getComponentFromPanel(JPanel panel, int index) {
+    return ((JPanel) panel.getComponent(0)).getComponent(index);
+  }
+
+  private JPanel createTextPanel(String labelText, JTextField textField) {
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    panel.add(new JLabel(labelText));
+    panel.add(textField);
+    JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    wrapper.add(panel);
+    return wrapper;
+  }
+
+  private JPanel createComboPanel(String labelText, Enum[] enumValues) {
+    JComboBox<String> comboBox = new JComboBox<>();
+    for (Enum value : enumValues) {
+      comboBox.addItem(value.toString());
+    }
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    panel.add(new JLabel(labelText));
+    panel.add(comboBox);
+    JPanel wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    wrapper.add(panel);
+    return wrapper;
   }
 
   @Override
@@ -544,6 +627,9 @@ public class GUIView extends JFrame implements IGUIView {
               e.getSubject(),
               e.getStartDateTime().format(formatter),
               e.getEndDateTime().format(formatter),
+              e.getDescription(),
+              e.getLocation() != null ? e.getLocation().toString() : "",
+              e.getStatus().toString()
       });
     }
   }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import calendar.model.event.Event;
 
+
 public class MockGUIController implements IGUIController, CalendarObserver {
   public StringBuilder log;
 
