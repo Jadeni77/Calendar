@@ -18,7 +18,6 @@ public class GUIController implements IGUIController, CalendarObserver {
   private final ICalendarManager manager;
   private final IGUIView view;
   private ICalendar currentCalendar;
-  private List<Event> currentDisplayedEvents;
 
   public GUIController(ICalendarManager manager, IGUIView view) {
     this.manager = manager;
@@ -174,6 +173,12 @@ public class GUIController implements IGUIController, CalendarObserver {
       LocalDateTime endOfDay = date.atTime(23, 59, 59);
 
       List<Event> events = currentCalendar.getEventsInRange(startOfDay, endOfDay);
+
+      if (events.size() > 10) {
+        events = events.subList(0, 10); // Limit to 10 events for display
+        view.displayMessage("Showing only the first 10 events.");
+      }
+
       view.printEvents(events);
 
     } catch (Exception e) {
