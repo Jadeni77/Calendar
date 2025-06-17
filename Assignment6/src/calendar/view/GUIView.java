@@ -3,6 +3,7 @@ package calendar.view;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -116,16 +117,16 @@ public class GUIView extends JFrame implements IGUIView {
     controlPanel.add(startDateSpinner);
 
     //Action buttons
-     addEventButton = new JButton("Add Event");
+    addEventButton = new JButton("Add Event");
     addEventButton.setActionCommand("addEventButton");
     controlPanel.add(addEventButton);
 
     //create calendar button
-     createCalendarButton = new JButton("Create Calendar");
+    createCalendarButton = new JButton("Create Calendar");
     createCalendarButton.setActionCommand("createCalendarButton");
     controlPanel.add(createCalendarButton);
 
-     refreshButton = new JButton("Refresh");
+    refreshButton = new JButton("Refresh");
     refreshButton.setActionCommand("refreshScheduleButton");
     controlPanel.add(refreshButton);
 
@@ -163,7 +164,7 @@ public class GUIView extends JFrame implements IGUIView {
     schedulePanel.add(scrollPane, BorderLayout.CENTER);
 
     //edit button
-     editEventButton = new JButton("Edit Event");
+    editEventButton = new JButton("Edit Event");
     editEventButton.setActionCommand("editEventButton");
     schedulePanel.add(editEventButton, BorderLayout.SOUTH);
   }
@@ -174,8 +175,8 @@ public class GUIView extends JFrame implements IGUIView {
    */
   private void initializeMonthView() {
     JPanel navigatePanel = new JPanel(new BorderLayout());
-     prevMonthButton = new JButton("<");
-     nextMonthButton = new JButton(">");
+    prevMonthButton = new JButton("<");
+    nextMonthButton = new JButton(">");
     prevMonthButton.setActionCommand("prevMonthButton");
     nextMonthButton.setActionCommand("nextMonthButton");
 
@@ -420,10 +421,12 @@ public class GUIView extends JFrame implements IGUIView {
       if (name.trim().isEmpty()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a name!");
         return;
-      } if (startDateStr.trim().isEmpty()) {
+      }
+      if (startDateStr.trim().isEmpty()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a start date!");
         return;
-      } if (endDateStr.trim().isEmpty()) {
+      }
+      if (endDateStr.trim().isEmpty()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a end date!");
         return;
       }
@@ -595,7 +598,65 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public List<String> showCreateCalendarDialog() {
-    return List.of();
+    List<String> result = new ArrayList<>();
+
+    JDialog dialog = new JDialog(this, "Create Calendar", true);
+    dialog.setLayout(new BorderLayout());
+    dialog.setTitle("Create Calendar");
+    dialog.setSize(400, 200);
+
+    JPanel contentPanel = new JPanel(new GridLayout(3,2,5,5));
+    contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+    //name selection
+    JLabel nameLabel = new JLabel("Calendar Name:");
+    JTextField nameTextField = new JTextField(20);
+    contentPanel.add(nameLabel);
+    contentPanel.add(nameTextField);
+
+    //time zone selection
+    JLabel tzLabel = new JLabel("Time Zone:");
+    JComboBox<String> tzComboBox = new JComboBox<>();
+    tzComboBox.setEditable(true); //allow user to type for tz
+
+    ZoneId.getAvailableZoneIds().stream().sorted().forEach(tzComboBox::addItem);
+    contentPanel.add(tzLabel);
+    contentPanel.add(tzComboBox);
+
+    JPanel buttonPanel = new JPanel();
+    JButton okButton = new JButton("OK");
+    JButton cancelButton = new JButton("Cancel");
+    buttonPanel.add(okButton);
+    buttonPanel.add(cancelButton);
+
+    okButton.addActionListener(e -> {
+      String name = nameTextField.getText();
+      String tz = Objects.requireNonNull(tzComboBox.getSelectedItem()).toString();
+
+      if (name.isEmpty()) {
+        JOptionPane.showMessageDialog(dialog, "Please enter a calendar name!");
+      }
+      if (tz.trim().isEmpty() ) {
+        JOptionPane.showMessageDialog(dialog, "Please select or enter a time zone!");
+      }
+
+      try {
+        ZoneId.of(tz); //validate the time zone
+      } catch (DateTimeException ex) {
+        JOptionPane.showMessageDialog(dialog, "Invalid time zone: " + tz);
+      }
+      result.add(name);
+      result.add(tz);
+      dialog.dispose();
+    });
+
+    cancelButton.addActionListener(e -> dialog.dispose());
+
+    dialog.add(contentPanel, BorderLayout.CENTER);
+    dialog.add(buttonPanel, BorderLayout.SOUTH);
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true);
+
+    return result;
   }
 
   @Override

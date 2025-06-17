@@ -3,6 +3,8 @@ package calendar.controller.guiadapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.*;
+
 import calendar.controller.guicontroller.IGUIController;
 import calendar.view.IGUIView;
 
@@ -26,6 +28,11 @@ public class EventListenerAdapter implements ViewEventListenerAdapter {
   @Override
   public void actionPerformed(ActionEvent e) {
     String source = e.getActionCommand();
+
+    if (e.getSource() instanceof JComboBox) {
+      controller.handleSwitchCalendar();
+      return;
+    }
 
     switch (source) {
       case "addEventButton":
