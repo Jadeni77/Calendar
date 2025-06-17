@@ -58,11 +58,6 @@ public class MockGUIView implements IGUIView {
   }
 
   @Override
-  public void refreshEvents(List<Event> events) {
-
-  }
-
-  @Override
   public void switchToScheduleView() {
 
   }

@@ -2,8 +2,8 @@ package calendar.controller.guicontroller;
 
 import java.util.List;
 
-import calendar.model.CalendarObserver;
 import calendar.model.event.Event;
+
 
 public class MockGUIController implements IGUIController, CalendarObserver {
   @Override
