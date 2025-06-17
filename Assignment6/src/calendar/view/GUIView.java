@@ -107,6 +107,7 @@ public class GUIView extends JFrame implements IGUIView {
     //calendar selection dropdown
     controlPanel.add(new JLabel("Calendar:"));
     calendarComboBox.addItem("Default");
+    calendarComboBox.setActionCommand("switchCalendarButton");
     controlPanel.add(calendarComboBox);
 
     //date control

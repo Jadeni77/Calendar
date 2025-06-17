@@ -29,10 +29,10 @@ public class EventListenerAdapter implements ViewEventListenerAdapter {
   public void actionPerformed(ActionEvent e) {
     String source = e.getActionCommand();
 
-    if (e.getSource() instanceof JComboBox) {
-      controller.handleSwitchCalendar();
-      return;
-    }
+//    if (e.getSource() instanceof JComboBox) {
+//      controller.handleSwitchCalendar();
+//      return;
+//    }
 
     switch (source) {
       case "addEventButton":
