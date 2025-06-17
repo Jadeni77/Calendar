@@ -50,7 +50,7 @@ public class EventListenerAdapter implements ViewEventListenerAdapter {
         controller.handleNextMonth();
         break;
       default:
-        //guiView.displayMessage("Unknown action: " + source);
+        view.displayMessage("Unknown action: " + source);
     }
   }
 }

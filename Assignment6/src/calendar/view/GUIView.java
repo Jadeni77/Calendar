@@ -374,21 +374,21 @@ public class GUIView extends JFrame implements IGUIView {
     buttonPanel.add(okButton);
 
     //Description panel
-    JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel descriptionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JTextField descriptionTextField = new JTextField(20);
     JLabel descriptionLabel = new JLabel("Description: ");
     descriptionPanel.add(descriptionLabel);
     descriptionPanel.add(descriptionTextField);
 
     //Location panel
-    JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel locationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JComboBox<Location> locationComboBox = new JComboBox<>(Location.values());
     JLabel locationLabel = new JLabel("Location: ");
     locationPanel.add(locationLabel);
     locationPanel.add(locationComboBox);
 
     //Status panel
-    JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     JComboBox<EventStatus> statusComboBox = new JComboBox<>(EventStatus.values());
     JLabel statusLabel = new JLabel("Status: ");
     statusPanel.add(statusLabel);
