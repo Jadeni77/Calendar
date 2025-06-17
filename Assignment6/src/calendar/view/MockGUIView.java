@@ -19,7 +19,7 @@ public class MockGUIView implements IGUIView {
 
   @Override
   public void setListeners(ActionListener listener) {
-    log.append("Listener set: ").append(listener).append("\n");
+    log.append("Listener set\n");
   }
 
   @Override
