@@ -2,8 +2,6 @@ package calendar.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +10,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -271,38 +268,13 @@ public class GUIView extends JFrame implements IGUIView {
   }
 
   @Override
-  public void setAddEventButtonListener(ActionListener listener) {
-    // Set the listener for the buttons and combo box
+  public void setListeners(ActionListener listener) {
     addEventButton.addActionListener(listener);
-  }
-
-  @Override
-  public void setCreateCalendarButtonListener(ActionListener listener) {
     createCalendarButton.addActionListener(listener);
-  }
-
-  @Override
-  public void setEditEventButtonListener(ActionListener listener) {
     editEventButton.addActionListener(listener);
-  }
-
-  @Override
-  public void setRefreshButtonListener(ActionListener listener) {
     refreshButton.addActionListener(listener);
-  }
-
-  @Override
-  public void setSwitchCalendarListener(ActionListener listener) {
     calendarComboBox.addActionListener(listener);
-  }
-
-  @Override
-  public void setPrevMonthListener(ActionListener listener) {
     prevMonthButton.addActionListener(listener);
-  }
-
-  @Override
-  public void setNextMonthListener(ActionListener listener) {
     nextMonthButton.addActionListener(listener);
   }
 
