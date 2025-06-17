@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-
-import javax.swing.*;
-
 import calendar.model.calendarclass.ICalendar;
 import calendar.model.calendarmanagerclass.ICalendarManager;
 import calendar.model.enumclass.EventStatus;
@@ -43,11 +40,6 @@ public class GUIController implements IGUIController, CalendarObserver {
   }
 
   private void refreshView() {
-//    List<Event> events = currentCalendar.getEventsInRange(
-//            LocalDate.now().atStartOfDay(),
-//            LocalDate.now().plusDays(7).atTime(23, 59, 59));
-//    currentDisplayedEvents = events;
-//    view.refreshEvents(currentDisplayedEvents);
     view.setStartDate(LocalDate.now());
     handleRefreshSchedule();
   }
@@ -146,7 +138,7 @@ public class GUIController implements IGUIController, CalendarObserver {
   @Override
   public void handleSwitchCalendar() {
     String selected = view.getSelectedCalendar();
-    if (selected != null && !selected.equals("Default")) {
+    if (selected != null) {
       try {
         // Remove the current calendar observer before switching
         currentCalendar.removeObserver(this);
@@ -155,8 +147,8 @@ public class GUIController implements IGUIController, CalendarObserver {
         currentCalendar = manager.getCurrentActiveCalendar();
         //add observer to the new current calendar
         currentCalendar.addObserver(this);
-        view.displayMessage("Switched to calendar: " + selected);
         refreshView();
+        view.displayMessage("Switched to calendar: " + selected);
       } catch (Exception e) {
         view.displayException(e);
       }

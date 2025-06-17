@@ -52,6 +52,7 @@ public class CalendarModel implements ICalendar {
   @Override
   public void addObserver(CalendarObserver observer) {
     observers.add(observer);
+    notifyObservers();
   }
 
   @Override
@@ -60,13 +61,14 @@ public class CalendarModel implements ICalendar {
   }
 
   protected void notifyObservers() {
+    List<CalendarObserver> copyObservers = new ArrayList<>(this.observers);
     // Get all events in the calendar (not filtered by date)
     List<Event> allEvents = new ArrayList<>(this.events.values());
 
     // Sort events by start time
     allEvents.sort(Comparator.comparing(Event::getStartDateTime));
 
-    for (CalendarObserver observer : observers) {
+    for (CalendarObserver observer : copyObservers) {
       observer.eventsUpdated(allEvents);
     }
   }
