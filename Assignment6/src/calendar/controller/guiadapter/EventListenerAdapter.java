@@ -2,6 +2,7 @@ package calendar.controller.guiadapter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -36,13 +37,32 @@ public class EventListenerAdapter implements ViewEventListenerAdapter {
 
     switch (source) {
       case "addEventButton":
-        controller.handleAddEvent();
+        List<String> eventsData = view.showAddEventDialog();
+        if (eventsData != null && eventsData.size() == 6) {
+          String subject = eventsData.get(0);
+          String start = eventsData.get(1);
+          String end = eventsData.get(2);
+          String description = eventsData.get(3);
+          String location = eventsData.get(4);
+          String status = eventsData.get(5);
+          controller.handleAddEvent(subject, start, end, description, location, status);
+        }
         break;
       case "editEventButton":
-        controller.handleEditEvent();
+        List<String> newData = view.showEditEventDialog();
+        if (newData != null && newData.size() == 2) {
+          String editedProperty = newData.get(0);
+          String newValue = newData.get(1);
+          controller.handleEditEvent(editedProperty, newValue);
+        }
         break;
       case "createCalendarButton":
-        controller.handleCreateCalendar();
+        List<String> calendarData = view.showCreateCalendarDialog();
+        if (calendarData != null && calendarData.size() == 2) {
+          String calendarName = calendarData.get(0);
+          String timeZone = calendarData.get(1);
+          controller.handleCreateCalendar(calendarName, timeZone);
+        }
         break;
       case "switchCalendarButton":
         controller.handleSwitchCalendar();

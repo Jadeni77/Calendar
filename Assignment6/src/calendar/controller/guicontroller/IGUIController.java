@@ -4,11 +4,12 @@ import calendar.controller.ICalendarController;
 
 public interface IGUIController extends ICalendarController {
 
-  void handleAddEvent();
+  void handleAddEvent(String subject, String start, String end, String description,
+                      String location, String status);
 
-  void handleEditEvent();
+  void handleEditEvent(String editedProperty, String newValue);
 
-  void handleCreateCalendar();
+  void handleCreateCalendar(String calendarName, String timeZone);
 
   void handleSwitchCalendar();
 

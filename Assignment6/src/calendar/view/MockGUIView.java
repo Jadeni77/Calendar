@@ -2,19 +2,28 @@ package calendar.view;
 
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import calendar.model.event.Event;
 
 public class MockGUIView implements IGUIView {
   public StringBuilder log;
+  private String selectedEventSubject;
+  private String selectedEventStart;
+  private String selectedEventEnd;
 
   public MockGUIView(StringBuilder log) {
     this.log = log;
   }
 
-  public MockGUIView() {
-    log = new StringBuilder();
+  public MockGUIView(StringBuilder log, String subject, String start, String end) {
+    this.log = log;
+    this.selectedEventSubject = subject;
+    this.selectedEventStart = start;
+    this.selectedEventEnd = end;
   }
 
   @Override
@@ -30,19 +39,19 @@ public class MockGUIView implements IGUIView {
   @Override
   public String getSelectedEventSubject() {
     log.append("Selected event subject queried\n");
-    return "selected event subject";
+    return selectedEventSubject;
   }
 
   @Override
   public String getSelectedEventStart() {
     log.append("Selected event start date/time queried\n");
-    return "selected event start";
+    return selectedEventStart;
   }
 
   @Override
   public String getSelectedEventEnd() {
     log.append("Selected event end date/time queried\n");
-    return "selected event end";
+    return selectedEventEnd;
   }
 
   @Override
@@ -54,19 +63,20 @@ public class MockGUIView implements IGUIView {
   @Override
   public List<String> showAddEventDialog() {
     log.append("Add Event dialog shown\n");
-    return List.of(); // TODO change
+    return new ArrayList<>(Arrays.asList("add event subject", "add event start", "add event end",
+            "add event description", "add event location", "add event status"));
   }
 
   @Override
   public List<String> showEditEventDialog() {
     log.append("Edit Event dialog shown\n");
-    return List.of(); // TODO change
+    return new ArrayList<>(Arrays.asList("edit event property", "edit event new value"));
   }
 
   @Override
   public List<String> showCreateCalendarDialog() {
     log.append("Create Calendar dialog shown\n");
-    return List.of(); // TODO change
+    return new ArrayList<>(Arrays.asList("create calendar name", "create calendar timezone"));
   }
 
   @Override
@@ -82,7 +92,8 @@ public class MockGUIView implements IGUIView {
   @Override
   public String getStartDate() {
     log.append("Start date queried\n");
-    return "start date";
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    return LocalDate.now().format(formatter);
   }
 
   @Override
@@ -107,10 +118,7 @@ public class MockGUIView implements IGUIView {
 
   @Override
   public void printEvents(List<Event> events) {
-    log.append("Printing events:\n");
-    for (Event event : events) {
-      log.append(event.toString()).append("\n");
-    }
+    log.append("Printing events\n");
   }
 
   @Override

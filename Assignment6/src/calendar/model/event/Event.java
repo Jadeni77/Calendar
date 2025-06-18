@@ -56,7 +56,7 @@ public class Event {
    * @param endDateTime   The end date and time of the event.
    */
   public Event(String subject, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-    this(subject, startDateTime, null, null, null, EventStatus.PUBLIC, null, false);
+    this(subject, startDateTime, endDateTime, null, null, EventStatus.PUBLIC, null, false);
   }
 
   /**

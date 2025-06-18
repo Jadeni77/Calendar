@@ -1,5 +1,6 @@
 package calendar.model.calendarmanagerclass;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import calendar.model.calendarclass.NewCalendarMockModel;
@@ -15,7 +16,18 @@ public class CalendarManagerMockModel implements ICalendarManager {
   private final String currentCalendarName;
 
   /**
-   * Constructs a CalendarManagerModel with an empty calendar map.
+   * Constructs a CalendarManagerMockModel with the given StringBuilder as its log.
+   */
+  public CalendarManagerMockModel(StringBuilder log) {
+    this.log = log;
+    this.calendars = new HashMap<>();
+    calendars.put("test1", new NewCalendarMockModel(
+            "test1", ZoneId.of("America/New_York"), new StringBuilder()));
+    this.currentCalendarName = "test1";
+  }
+
+  /**
+   * Constructs a CalendarManagerMockModel with a test calendar in the map.
    */
   public CalendarManagerMockModel(NewCalendarMockModel modelMock) {
     this.log = new StringBuilder();

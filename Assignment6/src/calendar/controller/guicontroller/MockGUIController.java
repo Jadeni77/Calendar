@@ -17,17 +17,18 @@ public class MockGUIController implements IGUIController, CalendarObserver {
   }
 
   @Override
-  public void handleAddEvent() {
+  public void handleAddEvent(String subject, String name, String description,
+                             String location, String start, String end) {
     log.append("Add Event\n");
   }
 
   @Override
-  public void handleEditEvent() {
+  public void handleEditEvent(String editedProperty, String newValue) {
     log.append("Edit Event\n");
   }
 
   @Override
-  public void handleCreateCalendar() {
+  public void handleCreateCalendar(String calendarName, String timeZone) {
     log.append("Create Calendar\n");
   }
 
