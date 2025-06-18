@@ -9,16 +9,33 @@ import java.util.List;
 
 import calendar.model.event.Event;
 
+/**
+ * This class represents a mock GUIView class used to test other components which use or
+ * work with a GUIView.
+ */
 public class MockGUIView implements IGUIView {
   public StringBuilder log;
   private String selectedEventSubject;
   private String selectedEventStart;
   private String selectedEventEnd;
 
+  /**
+   * Initializes a new MockGUIView with the given StringBuilder as its log.
+   * @param log
+   */
   public MockGUIView(StringBuilder log) {
     this.log = log;
   }
 
+  /**
+   * Initializes a new MockGUIView with the given StringBuilder as its log and the subject, start,
+   * and end of a fake event to be selected within the mock in order to allow its methods to return
+   * the proper information.
+   * @param log
+   * @param subject
+   * @param start
+   * @param end
+   */
   public MockGUIView(StringBuilder log, String subject, String start, String end) {
     this.log = log;
     this.selectedEventSubject = subject;

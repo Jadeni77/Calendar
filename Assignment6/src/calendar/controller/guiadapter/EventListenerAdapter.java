@@ -1,10 +1,7 @@
 package calendar.controller.guiadapter;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
-
-import javax.swing.*;
 
 import calendar.controller.guicontroller.IGUIController;
 import calendar.view.IGUIView;
@@ -20,20 +17,24 @@ public class EventListenerAdapter implements ViewEventListenerAdapter {
   private final IGUIController controller;
   private final IGUIView view;
 
+  /**
+   * Initializes an EventListenerAdapter with the given controller and model.
+   * @param controller the given controller
+   * @param view the given view
+   */
   public EventListenerAdapter(IGUIController controller, IGUIView view) {
     this.controller = controller;
     this.view = view;
     this.view.setListeners(this);
   }
 
+  /**
+   * Invoked when any listeners from the view are triggered because of a button press.
+   * @param e the ActionEvent to be processed
+   */
   @Override
   public void actionPerformed(ActionEvent e) {
     String source = e.getActionCommand();
-
-//    if (e.getSource() instanceof JComboBox) {
-//      controller.handleSwitchCalendar();
-//      return;
-//    }
 
     switch (source) {
       case "addEventButton":

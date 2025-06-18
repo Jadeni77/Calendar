@@ -4,14 +4,24 @@ import java.util.List;
 
 import calendar.model.event.Event;
 
-
+/**
+ * This class represents a mock GUIController class used to test other components which use or
+ * work with a GUIController.
+ */
 public class MockGUIController implements IGUIController, CalendarObserver {
   public StringBuilder log;
 
+  /**
+   * Initializes a MockGUIController with the given StringBuilder as its log.
+   * @param log
+   */
   public MockGUIController(StringBuilder log) {
     this.log = log;
   }
 
+  /**
+   * Initializes a default MockGUIController with a new log.
+   */
   public MockGUIController() {
     log = new StringBuilder();
   }

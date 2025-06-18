@@ -11,12 +11,23 @@ import calendar.model.enumclass.Location;
 import calendar.model.event.Event;
 import calendar.view.IGUIView;
 
+/**
+ * The GUIController class represents the controller for managing actions from the GUI view
+ * for a virtual calendar program and carrying out its corresponding command, including adding
+ * and editing events, adding and switching calendars, refreshing the view, and navigating through
+ * a monthly view.
+ */
 public class GUIController implements IGUIController, CalendarObserver {
   private final ICalendarManager manager;
   private final IGUIView view;
   private ICalendar currentCalendar;
   private String defaultCalendarName;
 
+  /**
+   * Initializes the controller with the given manager and GUI view.
+   * @param manager the given manager
+   * @param view the given GUI view
+   */
   public GUIController(ICalendarManager manager, IGUIView view) {
     this.manager = manager;
     this.view = view;

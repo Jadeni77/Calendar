@@ -30,6 +30,13 @@ import calendar.model.enumclass.EventStatus;
 import calendar.model.enumclass.Location;
 import calendar.model.event.Event;
 
+/**
+ * This class represents an interactive GUI for a virtual calendar application. It offers a
+ * schedule view that displays events in the order they occur in for up to 10 events. It also
+ * offers a monthly view to select a day to start from in the schedule view. It supports the
+ * creation of events and calendars, editing events, switching calendars, and refreshing the view,
+ * all through the use of buttons, and entering information in text fields, spinners, and cards.
+ */
 public class GUIView extends JFrame implements IGUIView {
   private final DefaultTableModel eventTableModel;
   private final JComboBox<String> calendarComboBox; //the dropdown for calendars
@@ -55,6 +62,9 @@ public class GUIView extends JFrame implements IGUIView {
   private DateTimeFormatter formatter;
   private SimpleDateFormat dateFormat;
 
+  /**
+   * Initializes a new GUI view with the proper components.
+   */
   public GUIView() {
     this.eventTableModel = new DefaultTableModel();
     this.eventTable = new JTable(eventTableModel);
