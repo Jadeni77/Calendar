@@ -1,6 +1,7 @@
 package calendar.model.calendarmanagerclass;
 
 import java.time.DateTimeException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -146,6 +147,8 @@ public class CalendarManagerModel implements ICalendarManager {
 
     LocalDateTime sourceStartTime = LocalDateTime.parse(startDateTime,
             sourceCalendar.getDateTimeFormatter());
+    LocalDateTime targetStartTime = LocalDateTime.parse(newDateTime,
+            targetCalendar.getDateTimeFormatter());
     //find events with the name and start time
     List<Event> events = sourceCalendar.findEventsBySubjectAndStart(eventName, sourceStartTime);
     if (events.isEmpty()) {
@@ -159,12 +162,21 @@ public class CalendarManagerModel implements ICalendarManager {
             .atZone(sourceCalendar.getTimeZone());
     ZonedDateTime sourceEndZdt = originalEvent.getEndDateTime()
             .atZone(sourceCalendar.getTimeZone());
+    ZonedDateTime targetStartZdt = targetStartTime.atZone(targetCalendar.getTimeZone());
     Instant startInstant = sourceStartZdt.toInstant();
     Instant endInstant = sourceEndZdt.toInstant();
+    Instant targetStartInstant = targetStartZdt.toInstant();
 
     // Convert instants to target calendar's timezone
-    ZonedDateTime newStartZdt = ZonedDateTime.ofInstant(startInstant, targetCalendar.getTimeZone());
-    ZonedDateTime newEndZdt = ZonedDateTime.ofInstant(endInstant, targetCalendar.getTimeZone());
+    ZonedDateTime newStartZdt = ZonedDateTime.ofInstant
+            (startInstant, targetCalendar.getTimeZone());
+    ZonedDateTime newEndZdt = ZonedDateTime.ofInstant(
+            endInstant, targetCalendar.getTimeZone());
+
+    Duration shift = Duration.between(newStartZdt,
+            ZonedDateTime.ofInstant(targetStartInstant, targetCalendar.getTimeZone()));
+    newStartZdt = newStartZdt.plus(shift);
+    newEndZdt = newEndZdt.plus(shift);
 
     Event newEvent = shiftHelp(originalEvent, newStartZdt, newEndZdt);
 

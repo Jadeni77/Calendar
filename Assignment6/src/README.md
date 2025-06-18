@@ -12,6 +12,12 @@
   this constructor for the Event Class to properly initialize an event within its model, but the
   endDateTime argument was being ignored and passed through as null, so it was changed to properly
   pass it through.
+* The logic for copying events in the ManagerModel was changed slightly to properly shift the time
+to the desired starting time.
+  * While looking over tests for the ManagerModel, we discovered that a test for copying events to
+  new calendars with a different time would pass no matter the target start time. So, additional
+  logic had to be added to account for the expected shift to ensure the tests would only pass in the
+  expected cases.
 
 
 ## How to use:
@@ -88,7 +94,7 @@ We coded in tandem for basically the first half of the assignment. This section 
 not be entirely accurate because of this, but it is close enough.
 * Code Refactoring:
   * Xiaobin incorporated the Observer pattern into the CalendarModel class.
-  * Christopher made the small change to the Event class.
+  * Christopher made the small changes to the Event and ManagerModel classes.
 * GUI View
   * Xiaobin created the structure of the GUI, placing the buttons and text fields. He also created
   and maintained the 'Month View' section.
