@@ -1,0 +1,73 @@
+1. Launching the Application
+Run the program without command-line arguments
+
+The GUI will open with:
+- Default calendar created
+- Current date displayed
+- Empty event list
+
+2. Main Interface Components
+
+Control Panel (Top):
+- Calendar selection dropdown
+- Start date field
+- Action buttons
+
+Tabbed Views:
+- Schedule View: Lists events for selected date
+- Month View: Calendar grid navigation
+
+Event Table:
+- Shows subject, start/end times, description, location, status
+
+Status Bar (Bottom):
+- Shows system messages
+
+3. Core Operations
+Create an Event:
+- Click Add Event button
+- Fill in dialog:
+- Subject: Event name
+- Start/End: Use date/time pickers
+- Description: Optional details
+- Location: Physical/Online
+- Status: Public/Private
+- Click OK
+- Event appears in schedule view
+
+Edit an Event:
+- Select event in table
+- Click Edit Event button
+- Choose property to modify:
+    - Subject, Start/End times, Description, etc.
+- Enter new value
+- Click OK
+- Changes appear immediately
+
+Create a New Calendar:
+- Click Create Calendar button
+- Enter in dialog:
+    - Calendar Name: Unique identifier
+    - Timezone: Type or select from dropdown
+- Click OK
+- New calendar appears in dropdown
+
+Switch Calendars:
+- Select calendar from dropdown
+- Events automatically refresh
+
+View Schedule:
+- Enter date in Start Date field (YYYY-MM-DD)
+- Press Enter or click Refresh
+- Shows up to 10 events for that date
+
+Navigate Month View:
+- Switch to Month View tab
+- Use < and > buttons to change months
+- Click any date to:
+    - View events for that day
+    - Navigate to Schedule View
+
+
+
+
