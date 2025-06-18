@@ -66,7 +66,7 @@ public class GUIView extends JFrame implements IGUIView {
   private final JPanel controlPanel;
   private final JLabel monthLabel; //from starter
   private YearMonth currentMonth; //from starter
-  private JSpinner startDateSpinner; //the text field for start date indicate the date for the calendar
+  private JSpinner startDateSpinner;
 
   private JButton addEventButton;
   private JButton editEventButton;
@@ -74,8 +74,6 @@ public class GUIView extends JFrame implements IGUIView {
   private JButton refreshButton;
   private JButton prevMonthButton;
   private JButton nextMonthButton;
-
-  private Map<LocalDate, List<String>> events;
 
   private final DateTimeFormatter formatter;
   private final SimpleDateFormat dateFormat;
@@ -95,7 +93,7 @@ public class GUIView extends JFrame implements IGUIView {
     this.statusLabel = new JLabel("Ready");
     this.calendarComboBox = new JComboBox<>();
 
-    this.events = new HashMap<>();
+    Map<LocalDate, List<String>> events = new HashMap<>();
 
     this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -276,13 +274,6 @@ public class GUIView extends JFrame implements IGUIView {
   //exactly from the starter
   private void showEvents(LocalDate date) {
     this.showEventsForDate(date);
-//    List<String> dayEvents = events.getOrDefault(date, new ArrayList<>());
-//    String eventList = dayEvents.isEmpty() ? "No events" : String.join("\n", dayEvents);
-//    String newEvent = JOptionPane.showInputDialog(monthPanel, "Events on " + date + ":\n" + eventList + "\n\nAdd new event:");
-//    if (newEvent != null && !newEvent.trim().isEmpty()) {
-//      dayEvents.add(newEvent);
-//      events.put(date, dayEvents);
-//    }
   }
 
   @Override
@@ -577,6 +568,9 @@ public class GUIView extends JFrame implements IGUIView {
           result.add(Objects.requireNonNull(((JComboBox<?>) getComponentFromPanel(statusPanel, 1))
                   .getSelectedItem()).toString());
           break;
+        default:
+          JOptionPane.showMessageDialog(dialog, "Please select a property to edit!");
+          return;
       }
       dialog.dispose();
     });
