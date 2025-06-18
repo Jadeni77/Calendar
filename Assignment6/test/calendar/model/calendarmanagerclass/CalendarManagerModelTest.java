@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -31,6 +32,35 @@ public class CalendarManagerModelTest {
   public void setUp() {
     this.dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
     this.cmm = new CalendarManagerModel();
+  }
+
+  @Test
+  public void testPrintAfterEditTimeZone() {
+    cmm.createCalendar("test1", "America/New_York");
+    NewCalendarModel test1 = cmm.getTargetCalendar("test1");
+    assertEquals("test1", test1.getName());
+    assertEquals(ZoneId.of("America/New_York"), test1.getTimeZone());
+
+    test1.createSingleEvent("meeting", "2025-06-11T10:00", "2025-06-11T11:00");
+    Event event = test1.getEventsOnDate(LocalDate.of(2025, 6, 11)).get(0);
+    assertEquals(LocalDateTime.parse("2025-06-11T10:00", dateTimeFormatter),
+            event.getStartDateTime());
+    assertEquals(LocalDateTime.parse("2025-06-11T11:00", dateTimeFormatter),
+            event.getEndDateTime());
+
+    cmm.editCalendar("test1", "timezone", "America/Los_Angeles");
+    assertEquals("test1", test1.getName());
+    assertEquals(ZoneId.of("America/Los_Angeles"), test1.getTimeZone());
+
+    // The event's local time should remain the same, but its instant in time is now different
+    // To verify, convert the event's start time in LA to NY and check the instant
+    LocalDateTime laStart = event.getStartDateTime();
+    ZonedDateTime laZdt = laStart.atZone(ZoneId.of("America/Los_Angeles"));
+    ZonedDateTime nyZdt = laZdt.withZoneSameInstant(ZoneId.of("America/New_York"));
+    // The original event was at 10:00 NY, so after changing to LA, the instant should match
+    assertEquals(13, nyZdt.getHour());
+
+
   }
 
   /**
