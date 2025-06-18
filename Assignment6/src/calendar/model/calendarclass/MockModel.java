@@ -41,12 +41,17 @@ public class MockModel implements ICalendar {
 
   @Override
   public void addObserver(CalendarObserver observer) {
-
+    log.append("Observer added.\n");
   }
 
   @Override
   public void removeObserver(CalendarObserver observer) {
+    log.append("Observer removed.\n");
+  }
 
+  @Override
+  public void notifyObservers() {
+    log.append("Observers notified of changes.\n");
   }
 
   /**

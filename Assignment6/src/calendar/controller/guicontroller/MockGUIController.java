@@ -13,7 +13,7 @@ public class MockGUIController implements IGUIController, CalendarObserver {
 
   /**
    * Initializes a MockGUIController with the given StringBuilder as its log.
-   * @param log
+   * @param log the StringBuilder to log actions
    */
   public MockGUIController(StringBuilder log) {
     this.log = log;

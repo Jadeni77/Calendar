@@ -60,7 +60,8 @@ public class CalendarModel implements ICalendar {
     observers.remove(observer);
   }
 
-  protected void notifyObservers() {
+  @Override
+  public void notifyObservers() {
     List<CalendarObserver> copyObservers = new ArrayList<>(this.observers);
     // Get all events in the calendar (not filtered by date)
     List<Event> allEvents = new ArrayList<>(this.events.values());

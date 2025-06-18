@@ -21,7 +21,7 @@ public class GUIController implements IGUIController, CalendarObserver {
   private final ICalendarManager manager;
   private final IGUIView view;
   private ICalendar currentCalendar;
-  private String defaultCalendarName;
+  private final String defaultCalendarName;
 
   /**
    * Initializes the controller with the given manager and GUI view.
@@ -51,6 +51,10 @@ public class GUIController implements IGUIController, CalendarObserver {
     view.displayMessage("Calendar application started.");
   }
 
+  /**
+   * Refreshes the view by setting the start date to today and
+   * calling the method to refresh the schedule.
+   */
   private void refreshView() {
     view.setStartDate(LocalDate.now());
     handleRefreshSchedule();

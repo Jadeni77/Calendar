@@ -4,9 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.event.ActionEvent;
-
-import javax.swing.*;
-
 import calendar.controller.guiadapter.EventListenerAdapter;
 import calendar.controller.guicontroller.IGUIController;
 import calendar.controller.guicontroller.MockGUIController;

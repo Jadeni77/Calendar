@@ -15,8 +15,22 @@ import calendar.model.event.Event;
  */
 public interface ICalendar {
 
+  /**
+   * Adds an observer to the calendar to listen for changes in events.
+   * @param observer the observer to be added
+   */
   void addObserver(CalendarObserver observer);
+
+  /**
+   * Removes an observer from the calendar, stopping it from receiving updates.
+   * @param observer the observer to be removed
+   */
   void removeObserver(CalendarObserver observer);
+
+  /**
+   * Notifies all observers of changes in the calendar, such as when an event is added or edited.
+   */
+  void notifyObservers();
 
   /**
    * Adds a single event to the calendar.

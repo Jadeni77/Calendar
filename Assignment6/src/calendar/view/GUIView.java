@@ -11,7 +11,6 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -59,8 +58,8 @@ public class GUIView extends JFrame implements IGUIView {
 
   private Map<LocalDate, List<String>> events;
 
-  private DateTimeFormatter formatter;
-  private SimpleDateFormat dateFormat;
+  private final DateTimeFormatter formatter;
+  private final SimpleDateFormat dateFormat;
 
   /**
    * Initializes a new GUI view with the proper components.
@@ -583,10 +582,23 @@ public class GUIView extends JFrame implements IGUIView {
     return result;
   }
 
+  /**
+   * Retrieves a component from a panel at the specified index.
+   *
+   * @param panel the panel to retrieve the component from
+   * @param index the index of the component to retrieve
+   * @return the component at the specified index
+   */
   private Component getComponentFromPanel(JPanel panel, int index) {
     return ((JPanel) panel.getComponent(0)).getComponent(index);
   }
 
+  /**
+   * Creates a text panel with a label and a text field.
+   * @param labelText the text for the label
+   * @param textField the text field to be added to the panel
+   * @return
+   */
   private JPanel createTextPanel(String labelText, JTextField textField) {
     JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     panel.add(new JLabel(labelText));
@@ -596,6 +608,12 @@ public class GUIView extends JFrame implements IGUIView {
     return wrapper;
   }
 
+  /**
+   * Creates a combo panel with a label and a combo box populated with enum values.
+   * @param labelText the text for the label
+   * @param enumValues the enum values to populate the combo box
+   * @return a JPanel containing the label and combo box
+   */
   private JPanel createComboPanel(String labelText, Enum[] enumValues) {
     JComboBox<String> comboBox = new JComboBox<>();
     for (Enum value : enumValues) {
@@ -618,7 +636,7 @@ public class GUIView extends JFrame implements IGUIView {
     dialog.setTitle("Create Calendar");
     dialog.setSize(400, 200);
 
-    JPanel contentPanel = new JPanel(new GridLayout(3,2,5,5));
+    JPanel contentPanel = new JPanel(new GridLayout(3, 2, 5, 5));
     contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
     //name selection
     JLabel nameLabel = new JLabel("Calendar Name:");
@@ -648,7 +666,7 @@ public class GUIView extends JFrame implements IGUIView {
       if (name.isEmpty()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a calendar name!");
       }
-      if (tz.trim().isEmpty() ) {
+      if (tz.trim().isEmpty()) {
         JOptionPane.showMessageDialog(dialog, "Please select or enter a time zone!");
       }
 
@@ -693,7 +711,7 @@ public class GUIView extends JFrame implements IGUIView {
 
   @Override
   public void printEvents(List<Event> events) {
-//sort the event displaying by start time
+    //sort the event displaying by start time
     events.sort(Comparator.comparing(Event::getStartDateTime));
     this.eventTableModel.setRowCount(0);
     for (Event e : events) {
@@ -708,6 +726,11 @@ public class GUIView extends JFrame implements IGUIView {
     }
   }
 
+  /**
+   * Updates the status label with a given message.
+   *
+   * @param message The message to be displayed in the status label
+   */
   private void updateStatusLabel(String message) {
     statusLabel.setText(message);
   }
