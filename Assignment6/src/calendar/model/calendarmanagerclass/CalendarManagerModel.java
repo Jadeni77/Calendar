@@ -168,8 +168,8 @@ public class CalendarManagerModel implements ICalendarManager {
     Instant targetStartInstant = targetStartZdt.toInstant();
 
     // Convert instants to target calendar's timezone
-    ZonedDateTime newStartZdt = ZonedDateTime.ofInstant
-            (startInstant, targetCalendar.getTimeZone());
+    ZonedDateTime newStartZdt = ZonedDateTime.ofInstant(startInstant,
+            targetCalendar.getTimeZone());
     ZonedDateTime newEndZdt = ZonedDateTime.ofInstant(
             endInstant, targetCalendar.getTimeZone());
 

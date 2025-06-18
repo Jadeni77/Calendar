@@ -25,14 +25,28 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import calendar.model.enumclass.EventStatus;
 import calendar.model.enumclass.Location;
 import calendar.model.event.Event;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.SpinnerDateModel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.BoxLayout;
 
 /**
  * This class represents an interactive GUI for a virtual calendar application. It offers a
