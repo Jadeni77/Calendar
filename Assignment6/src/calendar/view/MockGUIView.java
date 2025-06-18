@@ -21,7 +21,8 @@ public class MockGUIView implements IGUIView {
 
   /**
    * Initializes a new MockGUIView with the given StringBuilder as its log.
-   * @param log
+   *
+   * @param log the StringBuilder to log actions to
    */
   public MockGUIView(StringBuilder log) {
     this.log = log;
@@ -31,10 +32,11 @@ public class MockGUIView implements IGUIView {
    * Initializes a new MockGUIView with the given StringBuilder as its log and the subject, start,
    * and end of a fake event to be selected within the mock in order to allow its methods to return
    * the proper information.
-   * @param log
-   * @param subject
-   * @param start
-   * @param end
+   *
+   * @param log the StringBuilder to log actions to
+   * @param subject the subject of the selected event
+   * @param start the start date/time of the selected event
+   * @param end the end date/time of the selected event
    */
   public MockGUIView(StringBuilder log, String subject, String start, String end) {
     this.log = log;

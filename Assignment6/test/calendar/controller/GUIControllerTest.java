@@ -23,11 +23,9 @@ import static org.junit.Assert.assertEquals;
  * controller.
  */
 public class GUIControllerTest {
-  private StringBuilder viewLog = new StringBuilder();
+  private final StringBuilder viewLog = new StringBuilder();
   private StringBuilder managerLog = new StringBuilder();
   private GUIController controller;
-  private IGUIView view;
-  private ICalendarManager manager;
   private String currentDate;
 
   /**
@@ -35,9 +33,9 @@ public class GUIControllerTest {
    */
   @Before
   public void setUp() {
-    this.view = new MockGUIView(viewLog, "testEvent", "2025-06-15T09:30",
+    IGUIView view = new MockGUIView(viewLog, "testEvent", "2025-06-15T09:30",
             "2025-06-15T11:30");
-    this.manager = new CalendarManagerMockModel(managerLog);
+    ICalendarManager manager = new CalendarManagerMockModel(managerLog);
     this.controller = new GUIController(manager, view);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     this.currentDate = LocalDate.now().format(formatter);

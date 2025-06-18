@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.event.ActionEvent;
+
 import calendar.controller.guiadapter.EventListenerAdapter;
 import calendar.controller.guicontroller.IGUIController;
 import calendar.controller.guicontroller.MockGUIController;
@@ -18,10 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class EventListenerAdapterTest {
   private StringBuilder controllerLog;
-  private StringBuilder viewLog;
   private EventListenerAdapter listenerAdapter;
-  private IGUIController controller;
-  private IGUIView view;
   private ActionEvent addEventAction;
   private ActionEvent editEventAction;
   private ActionEvent createCalendarAction;
@@ -36,9 +34,9 @@ public class EventListenerAdapterTest {
   @Before
   public void setUp() {
     controllerLog = new StringBuilder();
-    viewLog = new StringBuilder();
-    this.controller = new MockGUIController(controllerLog);
-    this.view = new MockGUIView(viewLog);
+    StringBuilder viewLog = new StringBuilder();
+    IGUIController controller = new MockGUIController(controllerLog);
+    IGUIView view = new MockGUIView(viewLog);
     this.listenerAdapter = new EventListenerAdapter(controller, view);
     this.addEventAction = new ActionEvent(
             view, ActionEvent.ACTION_PERFORMED, "addEventButton");
