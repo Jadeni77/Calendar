@@ -129,4 +129,9 @@ not be entirely accurate because of this, but it is close enough.
   * Feeling refreshed to be finished! :)
 
 * From Xiaobin
-  * ...
+  * This assignment was a bit challenging as we had not learned too much about GUI during lectures.
+  We had a called for around like 3 hours at night just to discuss how to start the assignment and 
+  the best way we can think of to approach the instructions while maintaining the structure of our
+  previous assignments. Good thing we figured everything out and we were able to finish.
+  * We spend a lot of time on the GUI, and we had a lot of fun working on it. Thankful to Chris for
+  the time and effort.
