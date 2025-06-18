@@ -146,9 +146,11 @@ public class CalendarManagerModelTest {
   public void testCopyEvent() {
     cmm.createCalendar("test1", "America/New_York");
     cmm.createCalendar("test2", "America/Los_Angeles");
+    cmm.createCalendar("test3", "America/New_York");
     cmm.setCurrentCalendar("test1");
     NewCalendarModel test1 = cmm.getTargetCalendar("test1");
     NewCalendarModel test2 = cmm.getTargetCalendar("test2");
+    NewCalendarModel test3 = cmm.getTargetCalendar("test3");
     assertTrue(test2.getEventsOnDate(LocalDate.of(2025, 6, 10)).isEmpty());
     test1.createSingleEvent("event1", "2025-06-11T00:30", "2025-06-11T05:30");
     cmm.copyEvent("event1", "2025-06-11T00:30", "test2", "2025-06-11T03:30");
@@ -161,14 +163,15 @@ public class CalendarManagerModelTest {
     assertEquals(LocalDateTime.parse("2025-06-11T02:30", dateTimeFormatter),
             copiedEvent.getEndDateTime());
 
+    // tests copying to the same timezone
     test1.createSingleEvent("event2", "2025-06-11T04:30", "2025-06-11T05:30");
-    cmm.copyEvent("event2", "2025-06-11T04:30", "test2", "2025-06-12T07:30");
-    assertEquals(2, test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).size());
-    Event copiedEvent2 = test2.getEventsOnDate(LocalDate.of(2025, 6, 11)).get(1);
+    cmm.copyEvent("event2", "2025-06-11T04:30", "test3", "2025-06-12T04:30");
+    assertEquals(1, test3.getEventsOnDate(LocalDate.of(2025, 6, 11)).size());
+    Event copiedEvent2 = test3.getEventsOnDate(LocalDate.of(2025, 6, 11)).get(0);
     assertEquals("event2", copiedEvent2.getSubject());
-    assertEquals(LocalDateTime.parse("2025-06-11T01:30", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-11T04:30", dateTimeFormatter),
             copiedEvent2.getStartDateTime());
-    assertEquals(LocalDateTime.parse("2025-06-11T02:30", dateTimeFormatter),
+    assertEquals(LocalDateTime.parse("2025-06-11T05:30", dateTimeFormatter),
             copiedEvent2.getEndDateTime());
   }
 
@@ -180,11 +183,14 @@ public class CalendarManagerModelTest {
   public void testCopyEventsOnDate() {
     cmm.createCalendar("test1", "America/New_York");
     cmm.createCalendar("test2", "America/Los_Angeles");
+    cmm.createCalendar("test3", "America/New_York");
     cmm.setCurrentCalendar("test1");
     NewCalendarModel test1 = cmm.getTargetCalendar("test1");
     NewCalendarModel test2 = cmm.getTargetCalendar("test2");
+    NewCalendarModel test3 = cmm.getTargetCalendar("test3");
     test1.createSingleEvent("event1", "2025-06-11T03:30", "2025-06-11T05:30");
     test1.createRecurringEvent("class", "2025-06-11T13:00", "2025-06-11T15:00", "MWR", 1);
+    // tests copying to a different timezone
     cmm.copyEventsOnDate("2025-06-11", "test2", "2025-06-12");
     assertEquals(2, test2.getEventsOnDate(LocalDate.of(2025, 6, 12)).size());
     Event copiedEvent = test2.getEventsOnDate(LocalDate.of(2025, 6, 12)).get(0);
@@ -199,6 +205,20 @@ public class CalendarManagerModelTest {
             copiedEvent2.getStartDateTime());
     assertEquals(LocalDateTime.parse("2025-06-12T12:00", dateTimeFormatter),
             copiedEvent2.getEndDateTime());
+    // tests copying to the same timezone
+    cmm.copyEventsOnDate("2025-06-11", "test3", "2025-06-12");
+    assertEquals(2, test3.getEventsOnDate(LocalDate.of(2025, 6, 12)).size());
+    Event copied = test3.getEventsOnDate(LocalDate.of(2025, 6, 12)).get(0);
+    Event copied2 = test3.getEventsOnDate(LocalDate.of(2025, 6, 12)).get(1);
+    assertEquals(LocalDateTime.parse("2025-06-12T03:30", dateTimeFormatter),
+            copied.getStartDateTime());
+    assertEquals(LocalDateTime.parse("2025-06-12T05:30", dateTimeFormatter),
+            copied.getEndDateTime());
+    assertEquals("class", copiedEvent2.getSubject());
+    assertEquals(LocalDateTime.parse("2025-06-12T13:00", dateTimeFormatter),
+            copied2.getStartDateTime());
+    assertEquals(LocalDateTime.parse("2025-06-12T15:00", dateTimeFormatter),
+            copied2.getEndDateTime());
   }
 
   /**
