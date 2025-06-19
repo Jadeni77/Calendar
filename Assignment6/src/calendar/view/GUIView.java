@@ -440,15 +440,15 @@ public class GUIView extends JFrame implements IGUIView {
       String startDateStr = this.formatter.format(startLDT);
       String endDateStr = this.formatter.format(endLDT);
 
-      if (name.trim().isEmpty()) {
+      if (name.trim().isBlank()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a name!");
         return;
       }
-      if (startDateStr.trim().isEmpty()) {
+      if (startDateStr.trim().isBlank()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a start date!");
         return;
       }
-      if (endDateStr.trim().isEmpty()) {
+      if (endDateStr.trim().isBlank()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a end date!");
         return;
       }
@@ -610,7 +610,7 @@ public class GUIView extends JFrame implements IGUIView {
    * Creates a text panel with a label and a text field.
    * @param labelText the text for the label
    * @param textField the text field to be added to the panel
-   * @return
+   * @return a JPanel containing the label and text field
    */
   private JPanel createTextPanel(String labelText, JTextField textField) {
     JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -676,11 +676,13 @@ public class GUIView extends JFrame implements IGUIView {
       String name = nameTextField.getText();
       String tz = Objects.requireNonNull(tzComboBox.getSelectedItem()).toString();
 
-      if (name.isEmpty()) {
+      if (name.isBlank()) {
         JOptionPane.showMessageDialog(dialog, "Please enter a calendar name!");
+        return;
       }
-      if (tz.trim().isEmpty()) {
+      if (tz.trim().isBlank()) {
         JOptionPane.showMessageDialog(dialog, "Please select or enter a time zone!");
+        return;
       }
 
       try {
