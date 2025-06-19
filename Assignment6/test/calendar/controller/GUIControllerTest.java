@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class GUIControllerTest {
   private final StringBuilder viewLog = new StringBuilder();
-  private StringBuilder managerLog = new StringBuilder();
+  private final StringBuilder managerLog = new StringBuilder();
   private GUIController controller;
   private String currentDate;
 
